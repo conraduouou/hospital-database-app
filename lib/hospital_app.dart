@@ -6,9 +6,12 @@ class HospitalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Hospital Database App',
-      home: LoginScreen(),
+    return const TooltipVisibility(
+      visible: false,
+      child: MaterialApp(
+        title: 'Hospital Database App',
+        home: LoginScreen(),
+      ),
     );
   }
 }
