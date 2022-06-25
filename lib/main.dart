@@ -10,5 +10,5 @@ void main() {
     setWindowTitle('Hospital Database App');
     setWindowMinSize(const Size(1280, 720));
   }
-  runApp(const HospitalApp());
+  runApp(HospitalApp());
 }

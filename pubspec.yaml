@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_svg: ^1.1.0
   
   window_size:
     git:
@@ -53,7 +55,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+  - assets/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -73,3 +76,8 @@ flutter:
         - asset: assets/fonts/OpenSauceSans-BoldItalic.ttf
           style: italic
           weight: 700
+        - asset: assets/fonts/OpenSauceSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/OpenSauceSans-SemiBoldItalic.ttf
+          style: italic
+          weight: 600
