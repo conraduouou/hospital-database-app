@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/components/custom_button.dart';
 import 'package:hospital_database_app/components/custom_field.dart';
 import 'package:hospital_database_app/constants.dart';
-import 'package:hospital_database_app/views/home_screen.dart';
+import 'package:hospital_database_app/views/home/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);

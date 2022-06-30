@@ -23,6 +23,12 @@ const kBlackStyle = TextStyle(
   fontWeight: FontWeight.w800,
 );
 
+const kXBoldStyle = TextStyle(
+  color: Colors.black,
+  fontFamily: kRegularFont,
+  fontWeight: FontWeight.w700,
+);
+
 const kBoldStyle = TextStyle(
   color: Colors.black,
   fontFamily: kRegularFont,
