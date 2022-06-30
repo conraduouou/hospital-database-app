@@ -5,7 +5,12 @@ import 'package:hospital_database_app/constants.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
+    required this.gearOnTap,
+    required this.addOnTap,
   }) : super(key: key);
+
+  final VoidCallback gearOnTap;
+  final VoidCallback addOnTap;
 
   @override
   // change height of app bar by adjusting the value
@@ -27,7 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: addOnTap,
           iconSize: 30,
           icon: SvgPicture.asset(
             'assets/add.svg',
@@ -35,7 +40,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: gearOnTap,
           iconSize: 43,
           icon: SvgPicture.asset(
             'assets/gear.svg',
