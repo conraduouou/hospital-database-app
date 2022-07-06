@@ -23,47 +23,51 @@ class GearDropdown extends StatelessWidget {
             height: 90,
             width: 240,
             color: kDarkPurpleColor,
-            child: Column(
-              children: [
-                for (int i = 0; i < provider.gearItems.length; i++)
-                  InkWell(
-                    onHover: (isHovered) {
-                      provider.hoverMenuItem(
-                        i,
-                        isHovered: isHovered,
-                        menuType: MenuType.gear,
-                      );
-                    },
-                    onTap: () {
-                      provider.selectMenuItem(
-                        i,
-                        menuType: MenuType.gear,
-                      );
-                    },
-                    child: Container(
-                      width: 240,
-                      height: 45,
-                      padding: i == 0
-                          ? const EdgeInsets.only(top: 10)
-                          : const EdgeInsets.only(bottom: 10),
-                      color:
-                          provider.gearItems[i].isHovered ? kPurpleColor : null,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            provider.gearItems[i].content,
-                            style: kBoldStyle.copyWith(
-                              color: Colors.white,
-                              fontSize: kRegularSize,
+            child: FocusTraversalGroup(
+              descendantsAreFocusable: provider.shouldShowGearOptions,
+              child: Column(
+                children: [
+                  for (int i = 0; i < provider.gearItems.length; i++)
+                    InkWell(
+                      onHover: (isHovered) {
+                        provider.hoverMenuItem(
+                          i,
+                          isHovered: isHovered,
+                          menuType: MenuType.gear,
+                        );
+                      },
+                      onTap: () {
+                        provider.selectMenuItem(
+                          i,
+                          menuType: MenuType.gear,
+                        );
+                      },
+                      child: Container(
+                        width: 240,
+                        height: 45,
+                        padding: i == 0
+                            ? const EdgeInsets.only(top: 10)
+                            : const EdgeInsets.only(bottom: 10),
+                        color: provider.gearItems[i].isHovered
+                            ? kPurpleColor
+                            : null,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              provider.gearItems[i].content,
+                              style: kBoldStyle.copyWith(
+                                color: Colors.white,
+                                fontSize: kRegularSize,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 20),
-                        ],
+                            const SizedBox(width: 20),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         );

@@ -20,39 +20,41 @@ class AddBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              heading,
-              style: kBoldStyle.copyWith(
-                fontSize: kXLargeSize,
-              ),
-            ),
-            const SizedBox(width: 90),
-            showClose
-                ? IconButton(
-                    onPressed: onClose,
-                    icon: const Icon(Icons.close),
-                    color: Colors.red,
-                  )
-                : Container()
-          ],
-        ),
-        const SizedBox(height: 45),
-        for (final child in children)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return FocusTraversalGroup(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              child,
-              const SizedBox(height: 24),
+              Text(
+                heading,
+                style: kBoldStyle.copyWith(
+                  fontSize: kXLargeSize,
+                ),
+              ),
+              const SizedBox(width: 90),
+              showClose
+                  ? IconButton(
+                      onPressed: onClose,
+                      icon: const Icon(Icons.close),
+                      color: Colors.red,
+                    )
+                  : Container()
             ],
           ),
-      ],
+          const SizedBox(height: 45),
+          for (final child in children)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                child,
+                const SizedBox(height: 24),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }

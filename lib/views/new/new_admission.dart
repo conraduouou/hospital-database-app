@@ -48,47 +48,49 @@ class NewAdmissionScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 150),
-                      child: CustomScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        slivers: [
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const AdmissionRow(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const PatientRow(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const RoomRow(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const ProcedureGrid(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          SliverToBoxAdapter(
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 200),
-                              alignment: Alignment.centerRight,
-                              child: const CustomButton(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 40,
-                                  vertical: 22,
+                      child: FocusTraversalGroup(
+                        child: CustomScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          slivers: [
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: 70),
+                            ),
+                            const AdmissionRow(),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: 70),
+                            ),
+                            const PatientRow(),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: 70),
+                            ),
+                            const RoomRow(),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: 70),
+                            ),
+                            const ProcedureGrid(),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: 70),
+                            ),
+                            SliverToBoxAdapter(
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 200),
+                                alignment: Alignment.centerRight,
+                                child: const CustomButton(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 40,
+                                    vertical: 22,
+                                  ),
+                                  text: 'Add new admission',
+                                  color: kGrayColor,
                                 ),
-                                text: 'Add new admission',
-                                color: kGrayColor,
                               ),
                             ),
-                          ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 150),
-                          ),
-                        ],
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: 150),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     AnimatedPositioned(

@@ -23,54 +23,58 @@ class AddDropdown extends StatelessWidget {
             height: 220,
             width: 240,
             color: kDarkPurpleColor,
-            child: Column(
-              children: [
-                for (int i = 0; i < provider.addItems.length; i++)
-                  InkWell(
-                    onHover: (isHovered) {
-                      provider.hoverMenuItem(
-                        i,
-                        isHovered: isHovered,
-                        menuType: MenuType.add,
-                      );
-                    },
-                    onTap: () {
-                      provider.selectMenuItem(
-                        i,
-                        menuType: MenuType.add,
-                      );
+            child: FocusTraversalGroup(
+              descendantsAreFocusable: provider.shouldShowAddOptions,
+              child: Column(
+                children: [
+                  for (int i = 0; i < provider.addItems.length; i++)
+                    InkWell(
+                      onHover: (isHovered) {
+                        provider.hoverMenuItem(
+                          i,
+                          isHovered: isHovered,
+                          menuType: MenuType.add,
+                        );
+                      },
+                      onTap: () {
+                        provider.selectMenuItem(
+                          i,
+                          menuType: MenuType.add,
+                        );
 
-                      Navigator.pushNamed(ctx, NewAdmissionScreen.id);
-                    },
-                    child: Container(
-                      height:
-                          i == 0 || i == provider.addItems.length - 1 ? 50 : 40,
-                      width: 240,
-                      padding: i == 0
-                          ? const EdgeInsets.only(top: 10)
-                          : i == provider.addItems.length - 1
-                              ? const EdgeInsets.only(bottom: 10)
-                              : null,
-                      color: provider.addItems[i].isHovered ||
-                              provider.addItems[i].isSelected
-                          ? kPurpleColor
-                          : null,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            provider.addItems[i].content,
-                            style: kBoldStyle.copyWith(
-                              color: Colors.white,
-                              fontSize: kRegularSize,
+                        Navigator.pushNamed(ctx, NewAdmissionScreen.id);
+                      },
+                      child: Container(
+                        height: i == 0 || i == provider.addItems.length - 1
+                            ? 50
+                            : 40,
+                        width: 240,
+                        padding: i == 0
+                            ? const EdgeInsets.only(top: 10)
+                            : i == provider.addItems.length - 1
+                                ? const EdgeInsets.only(bottom: 10)
+                                : null,
+                        color: provider.addItems[i].isHovered ||
+                                provider.addItems[i].isSelected
+                            ? kPurpleColor
+                            : null,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              provider.addItems[i].content,
+                              style: kBoldStyle.copyWith(
+                                color: Colors.white,
+                                fontSize: kRegularSize,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 20),
-                        ],
+                            const SizedBox(width: 20),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         );
