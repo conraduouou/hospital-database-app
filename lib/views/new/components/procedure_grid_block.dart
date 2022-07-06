@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hospital_database_app/components/add_block.dart';
+import 'package:hospital_database_app/views/new/components/add_block.dart';
 import 'package:hospital_database_app/components/custom_dropdown.dart';
 import 'package:hospital_database_app/components/custom_field.dart';
 import 'package:hospital_database_app/constants.dart';
