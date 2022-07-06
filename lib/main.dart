@@ -9,6 +9,7 @@ void main() {
   if (Platform.isMacOS) {
     setWindowTitle('Hospital Database App');
     setWindowMinSize(const Size(1280, 720));
+    setWindowMaxSize(const Size(1280, 720));
   }
   runApp(HospitalApp());
 }
