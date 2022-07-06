@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/constants.dart';
 
+// purposefully wrapped in a Hero widget to give the illusion of being
+// persistent
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
@@ -19,36 +21,39 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      toolbarHeight: 70,
-      backgroundColor: kPurpleColor,
-      centerTitle: false,
-      title: Text(
-        'Hello, User',
-        style: kBlackStyle.copyWith(
-          color: Colors.white,
-          fontSize: kLargeSize,
+    return Hero(
+      tag: 'appBar',
+      child: AppBar(
+        toolbarHeight: 70,
+        backgroundColor: kPurpleColor,
+        centerTitle: false,
+        title: Text(
+          'Hello, User',
+          style: kBlackStyle.copyWith(
+            color: Colors.white,
+            fontSize: kLargeSize,
+          ),
         ),
+        actions: [
+          IconButton(
+            onPressed: addOnTap,
+            iconSize: 30,
+            icon: SvgPicture.asset(
+              'assets/add.svg',
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            onPressed: gearOnTap,
+            iconSize: 43,
+            icon: SvgPicture.asset(
+              'assets/gear.svg',
+              color: Colors.white,
+            ),
+          )
+        ],
+        elevation: 0,
       ),
-      actions: [
-        IconButton(
-          onPressed: addOnTap,
-          iconSize: 30,
-          icon: SvgPicture.asset(
-            'assets/add.svg',
-            color: Colors.white,
-          ),
-        ),
-        IconButton(
-          onPressed: gearOnTap,
-          iconSize: 43,
-          icon: SvgPicture.asset(
-            'assets/gear.svg',
-            color: Colors.white,
-          ),
-        )
-      ],
-      elevation: 0,
     );
   }
 }

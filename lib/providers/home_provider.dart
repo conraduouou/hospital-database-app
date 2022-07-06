@@ -47,8 +47,6 @@ class HomeProvider with ChangeNotifier {
 
   // state management
   bool _isOpened = false;
-  bool _shouldShowGearOptions = false;
-  bool _shouldShowAddOptions = false;
   final menuItems = <AnimatedMenuItem>[
     AnimatedMenuItem(content: 'Admissions', isSelected: true),
     AnimatedMenuItem(content: 'Patients'),
@@ -58,21 +56,9 @@ class HomeProvider with ChangeNotifier {
   ];
 
   bool get isOpened => _isOpened;
-  bool get shouldShowGearOptions => _shouldShowGearOptions;
-  bool get shouldShowAddOptions => _shouldShowAddOptions;
 
   void toggleOpened() {
     _isOpened = !_isOpened;
-    notifyListeners();
-  }
-
-  set shouldShowGearOptions(bool value) {
-    _shouldShowGearOptions = value;
-    notifyListeners();
-  }
-
-  set shouldShowAddOptions(bool value) {
-    _shouldShowAddOptions = value;
     notifyListeners();
   }
 
@@ -85,6 +71,18 @@ class HomeProvider with ChangeNotifier {
     }
 
     menuItems[index].toggleSelected();
+    notifyListeners();
+  }
+
+  void hoverMenuItem(int index, {bool? isHovered}) {
+    for (final menuItem in menuItems) {
+      if (menuItem.isHovered) {
+        menuItem.toggleHovered();
+        break;
+      }
+    }
+
+    menuItems[index].isHovered = isHovered ?? !menuItems[index].isHovered;
     notifyListeners();
   }
 

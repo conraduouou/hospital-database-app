@@ -12,6 +12,7 @@ class AdmissionsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('body built');
     return Consumer<HomeProvider>(
       builder: (context, provider, child) {
         return Stack(

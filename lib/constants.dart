@@ -16,6 +16,8 @@ const double kRegularSize = 18;
 const double kLargeSize = 28;
 const double kXLargeSize = 40;
 
+const double kTextFieldWidth = 380;
+
 /// Styles
 const kBlackStyle = TextStyle(
   color: Colors.black,
