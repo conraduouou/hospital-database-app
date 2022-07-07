@@ -15,9 +15,6 @@ class AddBlock extends StatelessWidget {
   final bool showClose;
   final VoidCallback? onClose;
 
-  //TODO: Wrap AddBlock with that widget that directs the TAB keyboard input;
-  // gotta watch that one flutter video again.
-
   @override
   Widget build(BuildContext context) {
     return FocusTraversalGroup(

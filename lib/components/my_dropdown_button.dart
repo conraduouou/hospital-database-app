@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/constants.dart';
 
-class CustomDropdown extends StatefulWidget {
-  const CustomDropdown({
+class MyDropdownButton extends StatefulWidget {
+  const MyDropdownButton({
     Key? key,
     required this.text,
     this.onTap,
@@ -25,10 +25,10 @@ class CustomDropdown extends StatefulWidget {
   final double? width;
 
   @override
-  State<CustomDropdown> createState() => _CustomDropdownState();
+  State<MyDropdownButton> createState() => _MyDropdownButtonState();
 }
 
-class _CustomDropdownState extends State<CustomDropdown> {
+class _MyDropdownButtonState extends State<MyDropdownButton> {
   bool _isHovered = false;
 
   @override

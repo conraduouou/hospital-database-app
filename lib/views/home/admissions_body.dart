@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/constants.dart';
@@ -12,7 +13,9 @@ class AdmissionsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('body built');
+    if (kDebugMode) {
+      print('body built');
+    }
     return Consumer<HomeProvider>(
       builder: (context, provider, child) {
         return Stack(

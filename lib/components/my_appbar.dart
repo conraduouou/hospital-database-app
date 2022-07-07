@@ -1,18 +1,25 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/constants.dart';
 
 // purposefully wrapped in a Hero widget to give the illusion of being
 // persistent
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MyAppBar({
     Key? key,
+    required this.isHome,
     required this.gearOnTap,
     required this.addOnTap,
+    this.leadingOnPressed,
   }) : super(key: key);
 
+  final bool isHome;
   final VoidCallback gearOnTap;
   final VoidCallback addOnTap;
+
+  /// must not be null when isHome is false
+  final VoidCallback? leadingOnPressed;
 
   @override
   // change height of app bar by adjusting the value
@@ -21,9 +28,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print('appbar built');
+    }
     return Hero(
       tag: 'appBar',
       child: AppBar(
+        leading: !isHome
+            ? IconButton(
+                icon: const BackButtonIcon(),
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                color: Colors.white,
+                onPressed: leadingOnPressed,
+              )
+            : null,
         toolbarHeight: 70,
         backgroundColor: kPurpleColor,
         centerTitle: false,

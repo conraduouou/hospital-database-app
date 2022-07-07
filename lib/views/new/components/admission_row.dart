@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/views/new/components/add_block.dart';
-import 'package:hospital_database_app/components/custom_dropdown.dart';
-import 'package:hospital_database_app/components/custom_field.dart';
+import 'package:hospital_database_app/components/my_dropdown_button.dart';
+import 'package:hospital_database_app/components/my_field.dart';
 import 'package:hospital_database_app/constants.dart';
 
 class AdmissionRow extends StatelessWidget {
@@ -20,17 +20,17 @@ class AdmissionRow extends StatelessWidget {
         const AddBlock(
           heading: 'New Admission',
           children: [
-            CustomField(
+            MyField(
               enabled: false,
               color: kLightGrayColor,
               hintText: 'AID-0013',
               width: kTextFieldWidth,
             ),
-            CustomDropdown(
+            MyDropdownButton(
               text: '06/24/2022',
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               hintText: 'Illness',
               width: kTextFieldWidth,
             ),

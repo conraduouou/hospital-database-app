@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
@@ -21,7 +22,9 @@ class AnimatedMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('menu built');
+    if (kDebugMode) {
+      print('menu built');
+    }
     return Consumer<HomeProvider>(
       builder: (ctx, provider, child) {
         return AnimatedPositioned(
@@ -39,7 +42,7 @@ class AnimatedMenu extends StatelessWidget {
                 top: bigRectangleHeight / 2 - smallRectangleHeight / 2,
                 child: Consumer<AppBarProvider>(
                   builder: (ctx2, appBarProvider, child) {
-                    return GestureDetector(
+                    return InkWell(
                       onTap: () {
                         appBarProvider.unshowOptions();
 
@@ -51,6 +54,7 @@ class AnimatedMenu extends StatelessWidget {
 
                         provider.toggleOpened();
                       },
+                      borderRadius: BorderRadius.circular(20),
                       child: Container(
                         height: smallRectangleHeight,
                         width: smallRectangleWidth,

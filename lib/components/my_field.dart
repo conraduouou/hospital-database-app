@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/constants.dart';
 
-class CustomField extends StatefulWidget {
-  const CustomField({
+class MyField extends StatefulWidget {
+  const MyField({
     Key? key,
     this.width,
     this.radius,
@@ -20,10 +20,10 @@ class CustomField extends StatefulWidget {
   final bool enabled;
 
   @override
-  State<CustomField> createState() => _CustomFieldState();
+  State<MyField> createState() => _MyFieldState();
 }
 
-class _CustomFieldState extends State<CustomField> {
+class _MyFieldState extends State<MyField> {
   late TextEditingController controller;
 
   @override

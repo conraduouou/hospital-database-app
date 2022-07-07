@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/views/new/components/add_block.dart';
-import 'package:hospital_database_app/components/custom_dropdown.dart';
-import 'package:hospital_database_app/components/custom_field.dart';
+import 'package:hospital_database_app/components/my_dropdown_button.dart';
+import 'package:hospital_database_app/components/my_field.dart';
 import 'package:hospital_database_app/constants.dart';
 
 class RoomRow extends StatelessWidget {
@@ -20,22 +20,22 @@ class RoomRow extends StatelessWidget {
         const AddBlock(
           heading: 'Room',
           children: [
-            CustomDropdown(
+            MyDropdownButton(
               text: '302 (new)',
               color: kLightGrayColor,
               textColor: kDarkGrayColor,
               enabled: false,
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               hintText: 'Type',
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               hintText: 'Cost',
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               hintText: 'Capacity',
               width: kTextFieldWidth,
             ),
@@ -44,22 +44,22 @@ class RoomRow extends StatelessWidget {
         const AddBlock(
           heading: 'Doctor',
           children: [
-            CustomDropdown(
+            MyDropdownButton(
               text: 'DID-0032 (new)',
               color: kLightGrayColor,
               textColor: kDarkGrayColor,
               enabled: false,
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               hintText: 'Name',
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               hintText: 'PCF (Peso conversion factor)',
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               hintText: 'Department',
               width: kTextFieldWidth,
             ),

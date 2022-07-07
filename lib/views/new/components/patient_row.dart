@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/views/new/components/add_block.dart';
-import 'package:hospital_database_app/components/custom_dropdown.dart';
-import 'package:hospital_database_app/components/custom_field.dart';
+import 'package:hospital_database_app/components/my_dropdown_button.dart';
+import 'package:hospital_database_app/components/my_field.dart';
 import 'package:hospital_database_app/constants.dart';
 
 class PatientRow extends StatelessWidget {
@@ -20,22 +20,22 @@ class PatientRow extends StatelessWidget {
         AddBlock(
           heading: 'Patient',
           children: [
-            const CustomDropdown(
+            const MyDropdownButton(
               text: 'PID-0013 (new)',
               color: kLightGrayColor,
               textColor: kDarkGrayColor,
               enabled: false,
               width: kTextFieldWidth,
             ),
-            const CustomField(
+            const MyField(
               hintText: 'Name',
               width: kTextFieldWidth,
             ),
-            const CustomField(
+            const MyField(
               hintText: 'Address',
               width: kTextFieldWidth,
             ),
-            const CustomField(
+            const MyField(
               hintText: 'Contact number',
               width: kTextFieldWidth,
             ),
@@ -44,11 +44,11 @@ class PatientRow extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  CustomField(
+                  MyField(
                     hintText: 'Age',
                     width: 170,
                   ),
-                  CustomDropdown(
+                  MyDropdownButton(
                     width: 190,
                     text: 'Gender',
                     textColor: kDarkGrayColor,
@@ -66,15 +66,15 @@ class PatientRow extends StatelessWidget {
               child: AddBlock(
                 heading: 'Contact person',
                 children: [
-                  CustomField(
+                  MyField(
                     hintText: 'Name',
                     width: kTextFieldWidth,
                   ),
-                  CustomField(
+                  MyField(
                     hintText: 'Relation with patient',
                     width: kTextFieldWidth,
                   ),
-                  CustomField(
+                  MyField(
                     hintText: 'Contact number',
                     width: kTextFieldWidth,
                   ),

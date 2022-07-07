@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/views/new/components/add_block.dart';
-import 'package:hospital_database_app/components/custom_dropdown.dart';
-import 'package:hospital_database_app/components/custom_field.dart';
+import 'package:hospital_database_app/components/my_dropdown_button.dart';
+import 'package:hospital_database_app/components/my_field.dart';
 import 'package:hospital_database_app/constants.dart';
 
 class ProcedureGridBlock extends StatelessWidget {
@@ -56,19 +56,19 @@ class ProcedureGridBlock extends StatelessWidget {
           showClose: showClose,
           onClose: onClose,
           children: [
-            CustomDropdown(
+            MyDropdownButton(
               text: id,
               color: kLightGrayColor,
               textColor: kDarkGrayColor,
               enabled: false,
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               initialText: name,
               hintText: 'Name',
               width: kTextFieldWidth,
             ),
-            CustomField(
+            MyField(
               initialText: cost.toString(),
               hintText: 'Cost',
               width: kTextFieldWidth,

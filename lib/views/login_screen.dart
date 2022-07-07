@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hospital_database_app/components/custom_button.dart';
-import 'package:hospital_database_app/components/custom_field.dart';
+import 'package:hospital_database_app/components/my_button.dart';
+import 'package:hospital_database_app/components/my_field.dart';
 import 'package:hospital_database_app/constants.dart';
+import 'package:hospital_database_app/providers/appbar_provider.dart';
 import 'package:hospital_database_app/views/home/home_screen.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   static const id = '/login';
-
-  void onPressed(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      HomeScreen.id,
-      (route) => false,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +27,28 @@ class LoginScreen extends StatelessWidget {
               style: kBlackStyle.copyWith(fontSize: 40),
             ),
             const SizedBox(height: 10),
-            const CustomField(
+            const MyField(
               width: 400,
               hintText: 'Username',
             ),
             const SizedBox(height: 15),
-            const CustomField(
+            const MyField(
               width: 400,
               hintText: 'Password',
             ),
             const SizedBox(height: 60),
-            CustomButton(
-              text: 'Log in',
-              onPressed: () {
-                onPressed(context);
+            Consumer<AppBarProvider>(
+              builder: (ctx, provider, child) {
+                return MyButton(
+                  text: 'Log in',
+                  onPressed: () {
+                    provider.isHome = true;
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      HomeScreen.id,
+                      (route) => false,
+                    );
+                  },
+                );
               },
             ),
           ],

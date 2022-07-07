@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/constants.dart';
 
-class CustomButton extends StatelessWidget {
-  const CustomButton({
+class MyButton extends StatelessWidget {
+  const MyButton({
     Key? key,
     this.color,
     this.textColor,
