@@ -24,39 +24,43 @@ class AddDropdownItem extends StatelessWidget {
         if (kDebugMode) {
           print('add item $index');
         }
-        return MyDropdownItem(
-          text: provider.addItems[index].content,
-          height: index == 0 || index == provider.addItems.length - 1 ? 50 : 40,
-          padding: index == 0
-              ? const EdgeInsets.only(top: 10)
-              : index == provider.addItems.length - 1
-                  ? const EdgeInsets.only(bottom: 10)
-                  : null,
-          color: isHovered || provider.addItems[index].isSelected
-              ? kPurpleColor
-              : null,
-          onHover: (isHovered) {
-            provider.hoverMenuItem(
-              index,
-              isHovered: isHovered,
-              menuType: MenuType.add,
-            );
-          },
-          onTap: () {
-            provider.isHome = true;
-            provider.selectMenuItem(
-              index,
-              menuType: MenuType.add,
-            );
+        return Selector<AppBarProvider, bool>(
+          selector: (ctx, provider) => provider.addItems[index].isSelected,
+          builder: (ctx, isSelected, child) {
+            return MyDropdownItem(
+              text: provider.addItems[index].content,
+              height:
+                  index == 0 || index == provider.addItems.length - 1 ? 50 : 40,
+              padding: index == 0
+                  ? const EdgeInsets.only(top: 10)
+                  : index == provider.addItems.length - 1
+                      ? const EdgeInsets.only(bottom: 10)
+                      : null,
+              color: isHovered || isSelected ? kPurpleColor : null,
+              onHover: (isHovered) {
+                provider.hoverMenuItem(
+                  index,
+                  isHovered: isHovered,
+                  menuType: MenuType.add,
+                );
+              },
+              onTap: () {
+                provider.isHome = false;
+                provider.selectMenuItem(
+                  index,
+                  menuType: MenuType.add,
+                );
 
-            String id = NewAdmissionScreen.id;
-            try {
-              id = provider.addScreens[index];
-            } on RangeError {
-              id = NewAdmissionScreen.id;
-            } finally {
-              Navigator.pushNamed(context, id);
-            }
+                String id = NewAdmissionScreen.id;
+                try {
+                  id = provider.addScreens[index];
+                } on RangeError {
+                  id = NewAdmissionScreen.id;
+                } finally {
+                  Navigator.pushNamed(context, id);
+                }
+              },
+            );
           },
         );
       },

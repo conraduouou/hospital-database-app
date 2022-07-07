@@ -21,13 +21,13 @@ class NewAdmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print('admission screen built');
-    }
     return ChangeNotifierProvider<NewAdmissionProvider>(
       create: (context) => NewAdmissionProvider(),
       child: Consumer<AppBarProvider>(
         builder: (ctx, provider, child) {
+          if (kDebugMode) {
+            print('admission screen built');
+          }
           return GestureDetector(
             onTap: provider.unshowOptions,
             child: Scaffold(
@@ -35,6 +35,9 @@ class NewAdmissionScreen extends StatelessWidget {
               appBar: MyAppBar(
                 isHome: provider.isHome,
                 leadingOnPressed: () {
+                  if (kDebugMode) {
+                    print('here');
+                  }
                   provider.deselectAddItems();
                   provider.unshowOptions();
 
