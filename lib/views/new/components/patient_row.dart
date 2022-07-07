@@ -7,7 +7,10 @@ import 'package:hospital_database_app/constants.dart';
 class PatientRow extends StatelessWidget {
   const PatientRow({
     Key? key,
+    this.isNew = false,
   }) : super(key: key);
+
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +21,12 @@ class PatientRow extends StatelessWidget {
       ),
       delegate: SliverChildListDelegate([
         AddBlock(
-          heading: 'Patient',
+          heading: isNew ? 'New Patient' : 'Patient',
           children: [
-            const MyDropdownButton(
+            MyDropdownButton(
               text: 'PID-0013 (new)',
-              color: kLightGrayColor,
               textColor: kDarkGrayColor,
-              enabled: false,
+              showDropdown: !isNew,
               width: kTextFieldWidth,
             ),
             const MyField(

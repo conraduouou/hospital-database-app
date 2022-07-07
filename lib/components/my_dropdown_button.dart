@@ -12,6 +12,7 @@ class MyDropdownButton extends StatefulWidget {
     this.textColor,
     this.hoverColor,
     this.enabled = true,
+    this.showDropdown = true,
     this.width,
   }) : super(key: key);
 
@@ -22,6 +23,7 @@ class MyDropdownButton extends StatefulWidget {
   final VoidCallback? onTap;
   final VoidCallback? onHover;
   final bool enabled;
+  final bool showDropdown;
   final double? width;
 
   @override
@@ -51,8 +53,8 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           color: _isHovered && widget.enabled
-              ? widget.hoverColor ?? kLightGrayColor
-              : widget.color ?? kOffWhiteColor,
+              ? widget.hoverColor ?? kGrayColor
+              : widget.color ?? kLightGrayColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -65,10 +67,12 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
                 color: widget.textColor ?? Colors.black,
               ),
             ),
-            SvgPicture.asset(
-              'assets/dropdown.svg',
-              color: kDarkGrayColor,
-            ),
+            widget.showDropdown
+                ? SvgPicture.asset(
+                    'assets/dropdown.svg',
+                    color: kDarkGrayColor,
+                  )
+                : Container(),
           ],
         ),
       ),
