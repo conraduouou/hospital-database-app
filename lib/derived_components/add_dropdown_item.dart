@@ -44,22 +44,24 @@ class AddDropdownItem extends StatelessWidget {
                   menuType: MenuType.add,
                 );
               },
-              onTap: () {
-                provider.isHome = false;
-                provider.selectMenuItem(
-                  index,
-                  menuType: MenuType.add,
-                );
+              onTap: !isSelected
+                  ? () {
+                      provider.isHome = false;
+                      provider.selectMenuItem(
+                        index,
+                        menuType: MenuType.add,
+                      );
 
-                String id = NewAdmissionScreen.id;
-                try {
-                  id = provider.addScreens[index];
-                } on RangeError {
-                  id = NewAdmissionScreen.id;
-                } finally {
-                  Navigator.pushNamed(context, id);
-                }
-              },
+                      String id = NewAdmissionScreen.id;
+                      try {
+                        id = provider.addScreens[index];
+                      } on RangeError {
+                        id = NewAdmissionScreen.id;
+                      } finally {
+                        Navigator.pushNamed(context, id);
+                      }
+                    }
+                  : () {},
             );
           },
         );

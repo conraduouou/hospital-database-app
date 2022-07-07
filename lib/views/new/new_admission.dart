@@ -21,96 +21,88 @@ class NewAdmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<AppBarProvider>();
+
     return ChangeNotifierProvider<NewAdmissionProvider>(
       create: (context) => NewAdmissionProvider(),
-      child: Consumer<AppBarProvider>(
-        builder: (ctx, provider, child) {
-          if (kDebugMode) {
-            print('admission screen built');
-          }
-          return GestureDetector(
-            onTap: provider.unshowOptions,
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: MyAppBar(
-                isHome: provider.isHome,
-                leadingOnPressed: () {
-                  if (kDebugMode) {
-                    print('here');
-                  }
-                  provider.deselectAddItems();
-                  provider.unshowOptions();
+      child: GestureDetector(
+        onTap: provider.unshowOptions,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: MyAppBar(
+            isHome: provider.isHome,
+            leadingOnPressed: () {
+              if (kDebugMode) {
+                print('here');
+              }
+              provider.deselectAddItems();
+              provider.unshowOptions();
 
-                  Navigator.popUntil(
-                    context,
-                    ModalRoute.withName(HomeScreen.id),
-                  );
-                },
-                gearOnTap: () {
-                  provider.shouldShowGearOptions =
-                      !provider.shouldShowGearOptions;
-                },
-                addOnTap: () {
-                  provider.shouldShowAddOptions =
-                      !provider.shouldShowAddOptions;
-                },
-              ),
-              body: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 150),
-                    child: FocusTraversalGroup(
-                      child: CustomScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        slivers: [
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const AdmissionRow(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const PatientRow(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const RoomRow(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          const ProcedureGrid(),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 70),
-                          ),
-                          SliverToBoxAdapter(
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 200),
-                              alignment: Alignment.centerRight,
-                              child: const MyButton(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 40,
-                                  vertical: 22,
-                                ),
-                                text: 'Add new admission',
-                                color: kGrayColor,
-                              ),
-                            ),
-                          ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 150),
-                          ),
-                        ],
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(HomeScreen.id),
+              );
+            },
+            gearOnTap: () {
+              provider.shouldShowGearOptions = !provider.shouldShowGearOptions;
+            },
+            addOnTap: () {
+              provider.shouldShowAddOptions = !provider.shouldShowAddOptions;
+            },
+          ),
+          body: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 150),
+                child: FocusTraversalGroup(
+                  child: CustomScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 70),
                       ),
-                    ),
+                      const AdmissionRow(),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 70),
+                      ),
+                      const PatientRow(),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 70),
+                      ),
+                      const RoomRow(),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 70),
+                      ),
+                      const ProcedureGrid(),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 70),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 200),
+                          alignment: Alignment.centerRight,
+                          child: const MyButton(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 22,
+                            ),
+                            text: 'Add new admission',
+                            color: kGrayColor,
+                          ),
+                        ),
+                      ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 150),
+                      ),
+                    ],
                   ),
-                  const AppBarOptions()
-                ],
+                ),
               ),
-            ),
-          );
-        },
+              const AppBarOptions()
+            ],
+          ),
+        ),
       ),
     );
   }

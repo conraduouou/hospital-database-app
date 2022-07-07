@@ -34,6 +34,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Hero(
       tag: 'appBar',
       child: AppBar(
+        automaticallyImplyLeading: false,
         leading: !isHome
             ? IconButton(
                 icon: const BackButtonIcon(),
