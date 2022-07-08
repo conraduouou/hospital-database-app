@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/models/core/animated_menu_item.dart';
 import 'package:hospital_database_app/views/new/new_admission.dart';
+import 'package:hospital_database_app/views/new/new_doctor.dart';
 import 'package:hospital_database_app/views/new/new_patient.dart';
+import 'package:hospital_database_app/views/new/new_procedure.dart';
+import 'package:hospital_database_app/views/new/new_room.dart';
 
 enum MenuType {
   add,
@@ -24,6 +27,9 @@ class AppBarProvider with ChangeNotifier {
   final addScreens = <String>[
     NewAdmissionScreen.id,
     NewPatientScreen.id,
+    NewRoomScreen.id,
+    NewDoctorScreen.id,
+    NewProcedureScreen.id,
   ];
 
   bool _shouldShowGearOptions = false;

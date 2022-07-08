@@ -7,7 +7,10 @@ import 'package:hospital_database_app/constants.dart';
 class RoomRow extends StatelessWidget {
   const RoomRow({
     Key? key,
+    this.isNew = false,
   }) : super(key: key);
+
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -17,55 +20,80 @@ class RoomRow extends StatelessWidget {
         mainAxisExtent: 420,
       ),
       delegate: SliverChildListDelegate([
-        const AddBlock(
-          heading: 'Room',
-          children: [
-            MyDropdownButton(
-              text: '302 (new)',
-              color: kLightGrayColor,
-              textColor: kDarkGrayColor,
-              enabled: false,
-              width: kTextFieldWidth,
-            ),
-            MyField(
-              hintText: 'Type',
-              width: kTextFieldWidth,
-            ),
-            MyField(
-              hintText: 'Cost',
-              width: kTextFieldWidth,
-            ),
-            MyField(
-              hintText: 'Capacity',
-              width: kTextFieldWidth,
-            ),
-          ],
-        ),
-        const AddBlock(
-          heading: 'Doctor',
-          children: [
-            MyDropdownButton(
-              text: 'DID-0032 (new)',
-              color: kLightGrayColor,
-              textColor: kDarkGrayColor,
-              enabled: false,
-              width: kTextFieldWidth,
-            ),
-            MyField(
-              hintText: 'Name',
-              width: kTextFieldWidth,
-            ),
-            MyField(
-              hintText: 'PCF (Peso conversion factor)',
-              width: kTextFieldWidth,
-            ),
-            MyField(
-              hintText: 'Department',
-              width: kTextFieldWidth,
-            ),
-          ],
-        ),
+        const RoomBlock(),
+        const DoctorBlock(),
       ]),
+    );
+  }
+}
+
+class RoomBlock extends StatelessWidget {
+  const RoomBlock({
+    Key? key,
+    this.isNew = false,
+  }) : super(key: key);
+
+  final bool isNew;
+
+  @override
+  Widget build(BuildContext context) {
+    return AddBlock(
+      heading: isNew ? 'New Room' : 'Room',
+      children: [
+        MyDropdownButton(
+          text: '302 (new)',
+          textColor: kDarkGrayColor,
+          showDropdown: !isNew,
+          width: kTextFieldWidth,
+        ),
+        const MyField(
+          hintText: 'Type',
+          width: kTextFieldWidth,
+        ),
+        const MyField(
+          hintText: 'Cost',
+          width: kTextFieldWidth,
+        ),
+        const MyField(
+          hintText: 'Capacity',
+          width: kTextFieldWidth,
+        ),
+      ],
+    );
+  }
+}
+
+class DoctorBlock extends StatelessWidget {
+  const DoctorBlock({
+    Key? key,
+    this.isNew = false,
+  }) : super(key: key);
+
+  final bool isNew;
+  @override
+  Widget build(BuildContext context) {
+    return AddBlock(
+      heading: isNew ? 'New Doctor' : 'Doctor',
+      children: [
+        MyDropdownButton(
+          text: 'DID-0032 (new)',
+          textColor: kDarkGrayColor,
+          showDropdown: !isNew,
+          width: kTextFieldWidth,
+        ),
+        const MyField(
+          hintText: 'Name',
+          width: kTextFieldWidth,
+        ),
+        const MyField(
+          hintText: 'PCF (Peso conversion factor)',
+          width: kTextFieldWidth,
+        ),
+        const MyField(
+          hintText: 'Department',
+          width: kTextFieldWidth,
+        ),
+      ],
     );
   }
 }

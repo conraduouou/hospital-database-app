@@ -8,20 +8,23 @@ import 'package:hospital_database_app/constants.dart';
 class ProcedureGridBlock extends StatelessWidget {
   const ProcedureGridBlock({
     Key? key,
-    required this.crossFadeState,
-    this.showClose = false,
+    required this.showFirst,
     required this.heading,
     required this.id,
+    this.isNew = false,
+    this.showClose = false,
     this.name,
     this.cost,
     this.onClose,
     this.addOnTap,
   }) : super(key: key);
 
-  final CrossFadeState crossFadeState;
+  /// Tells which child to show.
+  final bool showFirst;
   final bool showClose;
   final String heading;
   final String id;
+  final bool isNew;
   final String? name;
   final String? cost;
   final VoidCallback? onClose;
@@ -30,7 +33,8 @@ class ProcedureGridBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedCrossFade(
-      crossFadeState: crossFadeState,
+      crossFadeState:
+          showFirst ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       duration: const Duration(milliseconds: 200),
       layoutBuilder: (firstChild, firstKey, secondChild, secondKey) {
         return Stack(
@@ -57,10 +61,11 @@ class ProcedureGridBlock extends StatelessWidget {
           onClose: onClose,
           children: [
             MyDropdownButton(
+              showDropdown: !isNew,
               text: id,
               color: kLightGrayColor,
               textColor: kDarkGrayColor,
-              enabled: false,
+              enabled: true,
               width: kTextFieldWidth,
             ),
             MyField(

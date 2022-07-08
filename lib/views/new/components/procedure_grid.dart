@@ -24,9 +24,7 @@ class ProcedureGrid extends StatelessWidget {
           for (int i = 0; i <= procedures.length; i++) {
             list.add(
               ProcedureGridBlock(
-                crossFadeState: i == procedures.length
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
+                showFirst: i == 0,
                 showClose: i != 0,
                 heading: 'Procedure ${i + 1}',
                 id: i < procedures.length
