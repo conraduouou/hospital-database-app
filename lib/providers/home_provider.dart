@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/models/core/animated_menu_item.dart';
 import 'package:hospital_database_app/models/core/column_field.dart';
 
 class HomeProvider with ChangeNotifier {
   HomeProvider() {
-    headerColumns = <ColumnField>[
+    headers = <ColumnField>[
       ColumnField(
         contents: 'Admission ID',
         columnSize: ColumnField.admissionIdWidth,
@@ -31,19 +32,43 @@ class HomeProvider with ChangeNotifier {
       ),
     ];
 
-    bodyColumns = <ColumnField>[
-      ColumnField(contents: 'AID-0012'),
-      ColumnField(contents: '3/14/2022'),
-      ColumnField(contents: 'John Lloyd Dela Cruz'),
-      ColumnField(contents: 'Tuberculosis'),
-      ColumnField(contents: 'Dr. Angel R. Sikat'),
-      ColumnField(contents: '301'),
+    bodyRows = <List<ColumnField>>[
+      ...(() {
+        final contents = <String>[
+          'AID-0012',
+          '3/14/2022',
+          'John Lloyd Dela Cruz',
+          'Tuberculosis',
+          'Dr. Angel R. Sikat',
+          '301',
+        ];
+
+        final rows = <List<ColumnField>>[];
+
+        rows.add(
+          (() {
+            final columnFields = <ColumnField>[];
+            for (int i = 0; i < contents.length; i++) {
+              columnFields.add(
+                ColumnField(
+                  contents: contents[i],
+                  columnSize: headers[i].columnSize,
+                ),
+              );
+            }
+
+            return columnFields;
+          })(),
+        );
+
+        return rows;
+      })()
     ];
   }
 
   // data to provide
-  late final List<ColumnField> headerColumns;
-  late final List<ColumnField> bodyColumns;
+  late final List<ColumnField> headers;
+  late final List<List<ColumnField>> bodyRows;
 
   // state management
   bool _isOpened = false;
@@ -74,33 +99,52 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void hoverMenuItem(int index, {bool? isHovered}) {
-    for (final menuItem in menuItems) {
-      if (menuItem.isHovered) {
-        menuItem.toggleHovered();
-        break;
-      }
-    }
-
-    menuItems[index].isHovered = isHovered ?? !menuItems[index].isHovered;
-    notifyListeners();
-  }
-
   void hideColumns(List<int> indices) {
-    for (int i = 0; i < headerColumns.length; i++) {
+    for (int i = 0; i < headers.length; i++) {
       if (indices.contains(i)) {
-        headerColumns[i].shouldShow = false;
-        bodyColumns[i].shouldShow = false;
+        headers[i].shouldShow = false;
+
+        for (int j = 0; j < bodyRows.length; j++) {
+          bodyRows[j][i].shouldShow = false;
+        }
       }
     }
   }
 
   void showColumns(List<int> indices) {
-    for (int i = 0; i < headerColumns.length; i++) {
+    for (int i = 0; i < headers.length; i++) {
       if (indices.contains(i)) {
-        headerColumns[i].shouldShow = true;
-        bodyColumns[i].shouldShow = true;
+        headers[i].shouldShow = true;
+
+        for (int j = 0; j < bodyRows.length; j++) {
+          bodyRows[j][i].shouldShow = true;
+        }
       }
     }
+  }
+
+  void selectHeader(int index) {
+    for (final header in headers) {
+      if (header.isSelected) {
+        header.isSelected = false;
+
+        // if (kDebugMode) {
+        //   print('${header.contents}: ${header.isSelected}');
+        // }
+
+        if (headers.indexOf(header) == index) {
+          notifyListeners();
+          return;
+        }
+        break;
+      }
+    }
+
+    headers[index].isSelected = !headers[index].isSelected;
+    notifyListeners();
+
+    // if (kDebugMode) {
+    //   print('${headers[index].contents}: ${headers[index].isSelected}');
+    // }
   }
 }

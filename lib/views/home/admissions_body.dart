@@ -1,6 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hospital_database_app/components/my_dropdown_button.dart';
+import 'package:hospital_database_app/components/my_table_body.dart';
+import 'package:hospital_database_app/components/my_table_cell.dart';
+import 'package:hospital_database_app/components/my_table_header.dart';
+import 'package:hospital_database_app/components/my_table_row.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/column_field.dart';
 import 'package:hospital_database_app/providers/home_provider.dart';
@@ -13,17 +18,21 @@ class AdmissionsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<HomeProvider>();
+
     if (kDebugMode) {
       print('body built');
     }
-    return Consumer<HomeProvider>(
-      builder: (context, provider, child) {
-        return Stack(
-          children: [
-            AnimatedPositioned(
+
+    return Stack(
+      children: [
+        Selector<HomeProvider, bool>(
+          selector: (ctx, provider) => provider.headers[3].shouldShow,
+          builder: (ctx, shouldShow, child) {
+            return AnimatedPositioned(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOutQuart,
-              left: provider.headerColumns[3].shouldShow ? 95 : 300,
+              left: shouldShow ? 95 : 300,
               top: 90,
               child: Row(
                 children: [
@@ -38,214 +47,129 @@ class AdmissionsBody extends StatelessWidget {
                   )
                 ],
               ),
-            ),
-            Positioned(
-              right: 337,
-              top: 94,
-              child: SvgPicture.asset(
-                'assets/search.svg',
-                height: 40,
-              ),
-            ),
-            const Positioned(
-              right: 92,
-              top: 88,
-              child: SortDropdown(),
-            ),
-            AnimatedPositioned(
+            );
+          },
+        ),
+        Positioned(
+          right: 337,
+          top: 94,
+          child: SvgPicture.asset(
+            'assets/search.svg',
+            height: 40,
+          ),
+        ),
+        const Positioned(
+          right: 92,
+          top: 88,
+          child: MyDropdownButton(
+            text: 'Admission date',
+          ),
+        ),
+        Selector<HomeProvider, bool>(
+          selector: (ctx, provider) => provider.headers[3].shouldShow,
+          builder: (ctx, shouldShow, child) {
+            return AnimatedPositioned(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOutQuart,
-              left: provider.headerColumns[3].shouldShow ? 90 : 300,
+              left: shouldShow ? 90 : 300,
               top: 170,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeOutQuart,
-                    width: provider.headerColumns[3].shouldShow ? 1098 : 888,
-                    child: TableHeader(headerColumns: provider.headerColumns),
+                  MyTableHeader(
+                    shouldShow: shouldShow,
+                    children: [
+                      ...(() {
+                        // list of headers to render
+                        final widgets = <Widget>[];
+
+                        // list of header details
+                        final headers = provider.headers
+                            .where((h) => h.shouldShow)
+                            .toList();
+
+                        // `MyTableRow` isn't used here since `MyTableRow`
+                        // is used specifically for `MyTableBody`. Instead,
+                        // separate `MyTableCell`s are used.
+                        for (int i = 0; i < headers.length; i++) {
+                          widgets.add(
+                            Selector<HomeProvider, bool>(
+                              // provider shortened to p
+                              selector: (ctx, p) => p
+                                  .headers[p.headers.indexOf(headers[i])]
+                                  .isSelected,
+                              builder: (ctx, isSelected, child) {
+                                return MyTableCell(
+                                  width: headers[i].columnSize!.value,
+                                  content: headers[i].contents,
+                                  hoverColor: kOffWhiteColor,
+                                  isSelected: isSelected,
+                                  onTap: () {
+                                    provider.selectHeader(i);
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        return widgets;
+                      })()
+                    ],
                   ),
                   const SizedBox(height: 15),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeOutQuart,
-                    width: provider.headerColumns[3].shouldShow ? 1098 : 888,
-                    child: TableBody(
-                      headerColumns: provider.headerColumns,
-                      bodyColumns: provider.bodyColumns,
-                    ),
+                  MyTableBody(
+                    shouldShow: shouldShow,
+                    rowCount: provider.bodyRows.length,
+                    rows: [
+                      // makes use of spread operator in Dart to lay out
+                      // list of MyTableRows
+                      ...(() {
+                        // the widgets to return
+                        final widgets = <Widget>[];
+
+                        // the rows of the table body
+                        final bodyRows = provider.bodyRows;
+
+                        // the header cells
+                        final headersToShow = provider.headers
+                            .where((h) => h.shouldShow)
+                            .toList();
+
+                        // number of rows to render
+                        final length =
+                            bodyRows.length >= 6 ? bodyRows.length : 6;
+
+                        // loop through each row...
+                        for (int i = 0; i < length; i++) {
+                          // determine which cells to show
+                          final cellsToShow = i == 0
+                              ? bodyRows[i].where((r) => r.shouldShow).toList()
+                              : List<ColumnField>.generate(
+                                  headersToShow.length,
+                                  (j) => ColumnField(
+                                    contents: '',
+                                    columnSize: headersToShow[j].columnSize,
+                                  ),
+                                );
+
+                          // pass cells to show and construct via MyTableRow
+                          widgets.add(
+                            MyTableRow(
+                              cellsToShow: cellsToShow,
+                            ),
+                          );
+                        }
+
+                        return widgets;
+                      })()
+                    ],
                   ),
                 ],
               ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class TableBody extends StatelessWidget {
-  const TableBody({
-    Key? key,
-    required this.headerColumns,
-    required this.bodyColumns,
-  }) : super(key: key);
-
-  final List<ColumnField> headerColumns;
-  final List<ColumnField> bodyColumns;
-
-  @override
-  Widget build(BuildContext context) {
-    int index = 0;
-    final widthsMap = <int, TableColumnWidth>{};
-
-    for (final column in headerColumns.where((element) => element.shouldShow)) {
-      widthsMap.addAll({index++: column.columnSize!});
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: kLightGrayColor,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 22),
-        child: Table(
-          columnWidths: widthsMap,
-          children: [
-            TableRow(
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: kDarkGrayColor,
-                    width: 1,
-                  ),
-                ),
-              ),
-              children: [
-                for (final field
-                    in bodyColumns.where((column) => column.shouldShow))
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 10),
-                    child: Text(
-                      field.contents,
-                      style: kBoldStyle.copyWith(
-                        fontSize: kRegularSize,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            for (int i = 0; i < 4; i++)
-              TableRow(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: kDarkGrayColor,
-                      width: 1,
-                    ),
-                  ),
-                ),
-                children: [
-                  for (int i = 0;
-                      i <
-                          bodyColumns
-                              .where((element) => element.shouldShow)
-                              .length;
-                      i++)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 18, bottom: 10),
-                      child: Text(
-                        '',
-                        style: kBoldStyle.copyWith(fontSize: 18),
-                      ),
-                    ),
-                ],
-              ),
-          ],
+            );
+          },
         ),
-      ),
-    );
-  }
-}
-
-class TableHeader extends StatelessWidget {
-  const TableHeader({
-    Key? key,
-    required this.headerColumns,
-  }) : super(key: key);
-
-  final List<ColumnField> headerColumns;
-
-  @override
-  Widget build(BuildContext context) {
-    int index = 0;
-    final widthsMap = <int, TableColumnWidth>{};
-
-    for (final column in headerColumns.where((element) => element.shouldShow)) {
-      widthsMap.addAll({index++: column.columnSize!});
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: kGreenishColor,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 22),
-        child: Table(
-          columnWidths: widthsMap,
-          children: [
-            TableRow(
-              children: [
-                for (final field
-                    in headerColumns.where((column) => column.shouldShow))
-                  Text(
-                    field.contents,
-                    style: kBoldStyle.copyWith(
-                      color: Colors.white,
-                      fontSize: kRegularSize,
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SortDropdown extends StatelessWidget {
-  const SortDropdown({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: kLightGrayColor,
-        borderRadius: BorderRadius.circular(13),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Row(
-          children: [
-            Text(
-              'Admission date',
-              style: kBoldStyle.copyWith(fontSize: kRegularSize),
-            ),
-            const SizedBox(width: 15),
-            SvgPicture.asset(
-              'assets/dropdown.svg',
-              height: 8,
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

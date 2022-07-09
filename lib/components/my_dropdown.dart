@@ -46,41 +46,59 @@ class MyDropdown extends StatelessWidget {
   }
 }
 
-class MyDropdownItem extends StatelessWidget {
+class MyDropdownItem extends StatefulWidget {
   const MyDropdownItem({
     Key? key,
     required this.text,
-    required this.onHover,
     required this.onTap,
     this.height,
     this.width,
     this.padding,
     this.color,
+    this.isHoveredColor,
   }) : super(key: key);
 
   final String text;
-  final void Function(bool) onHover;
   final VoidCallback onTap;
   final double? height;
   final double? width;
   final EdgeInsets? padding;
   final Color? color;
+  final Color? isHoveredColor;
+
+  @override
+  State<MyDropdownItem> createState() => _MyDropdownItemState();
+}
+
+class _MyDropdownItemState extends State<MyDropdownItem> {
+  late Color? currentColor;
+
+  @override
+  void initState() {
+    currentColor = widget.color;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onHover: onHover,
-      onTap: onTap,
+      onHover: (isHovered) {
+        setState(() {
+          currentColor =
+              isHovered ? widget.isHoveredColor ?? kPurpleColor : widget.color;
+        });
+      },
+      onTap: widget.onTap,
       child: Container(
-        height: height ?? 40,
+        height: widget.height ?? 40,
         width: 240,
-        padding: padding,
-        color: color,
+        padding: widget.padding,
+        color: currentColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              text,
+              widget.text,
               style: kBoldStyle.copyWith(
                 color: Colors.white,
                 fontSize: kRegularSize,

@@ -68,9 +68,12 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
               ),
             ),
             widget.showDropdown
-                ? SvgPicture.asset(
-                    'assets/dropdown.svg',
-                    color: kDarkGrayColor,
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: SvgPicture.asset(
+                      'assets/dropdown.svg',
+                      color: kDarkGrayColor,
+                    ),
                   )
                 : Container(),
           ],

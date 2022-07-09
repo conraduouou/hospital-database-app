@@ -17,26 +17,18 @@ class GearDropdownItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.read<AppBarProvider>();
 
-    return Selector<AppBarProvider, bool>(
-      selector: (ctx, provider) => provider.gearItems[index].isHovered,
-      builder: (ctx, isHovered, child) {
+    return Builder(
+      builder: (ctx) {
         if (kDebugMode) {
           print('gear item $index built');
         }
         return MyDropdownItem(
           text: provider.gearItems[index].content,
           height: 45,
-          color: isHovered ? kPurpleColor : null,
+          isHoveredColor: kPurpleColor,
           padding: index == 0
               ? const EdgeInsets.only(top: 10)
               : const EdgeInsets.only(bottom: 10),
-          onHover: (isHovered) {
-            provider.hoverMenuItem(
-              index,
-              isHovered: isHovered,
-              menuType: MenuType.gear,
-            );
-          },
           onTap: () {
             provider.selectMenuItem(
               index,

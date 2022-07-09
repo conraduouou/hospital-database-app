@@ -5,17 +5,19 @@ class ColumnField {
     required this.contents,
     this.columnSize,
     this.shouldShow = true,
+    this.isSelected = false,
   });
 
   String contents;
-  TableColumnWidth? columnSize;
+  FixedColumnWidth? columnSize;
   bool shouldShow;
+  bool isSelected;
 
   // constants
-  static const admissionIdWidth = FixedColumnWidth(155);
-  static const admissionDateWidth = FixedColumnWidth(185);
-  static const patientNameWidth = FixedColumnWidth(227);
-  static const illnessNameWidth = FixedColumnWidth(140);
+  static const admissionIdWidth = FixedColumnWidth(130);
+  static const admissionDateWidth = FixedColumnWidth(160);
+  static const patientNameWidth = FixedColumnWidth(230);
+  static const illnessNameWidth = FixedColumnWidth(150);
   static const doctorNameWidth = FixedColumnWidth(190);
-  static const roomNumberWidth = FixedColumnWidth(140);
+  static const roomNumberWidth = FixedColumnWidth(130);
 }

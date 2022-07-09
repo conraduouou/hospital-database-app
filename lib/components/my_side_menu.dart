@@ -12,6 +12,7 @@ class MySideMenu extends StatelessWidget {
     this.smallRectangleOnTap,
     this.bigRectangleColor,
     this.smallRectangleColor,
+    this.isOpened = false,
   }) : super(key: key);
 
   final double bigRectangleWidth;
@@ -23,57 +24,65 @@ class MySideMenu extends StatelessWidget {
   final Color? bigRectangleColor;
   final Color? smallRectangleColor;
 
+  final bool isOpened;
+
   /// Typically MySideMenuItem(s)
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Positioned(
-          left: bigRectangleWidth - smallRectangleWidth / 2,
-          top: bigRectangleHeight / 2 - smallRectangleHeight / 2,
-          child: InkWell(
-            onTap: smallRectangleOnTap,
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              height: smallRectangleHeight,
-              width: smallRectangleWidth,
-              decoration: BoxDecoration(
-                color: smallRectangleColor ?? kPurpleColor,
-                borderRadius: BorderRadius.circular(20),
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOutQuart,
+      left: isOpened ? -50 : -bigRectangleWidth,
+      top: 150,
+      height: bigRectangleHeight,
+      width: bigRectangleWidth + smallRectangleWidth / 2,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            left: bigRectangleWidth - smallRectangleWidth / 2,
+            top: bigRectangleHeight / 2 - smallRectangleHeight / 2,
+            child: InkWell(
+              onTap: smallRectangleOnTap,
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                height: smallRectangleHeight,
+                width: smallRectangleWidth,
+                decoration: BoxDecoration(
+                  color: smallRectangleColor ?? kPurpleColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ),
-        ),
-        Container(
-          height: bigRectangleHeight,
-          width: bigRectangleWidth,
-          decoration: BoxDecoration(
-            color: bigRectangleColor ?? kPurpleColor,
-            borderRadius: BorderRadius.circular(30),
+          Container(
+            height: bigRectangleHeight,
+            width: bigRectangleWidth,
+            decoration: BoxDecoration(
+              color: bigRectangleColor ?? kPurpleColor,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 35),
+                ...children,
+              ],
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 35),
-              ...children,
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class MySideMenuItem extends StatelessWidget {
+class MySideMenuItem extends StatefulWidget {
   const MySideMenuItem({
     Key? key,
-    required this.isHovered,
     required this.isSelected,
     required this.text,
-    required this.onHover,
     required this.onTap,
     this.width,
     this.height,
@@ -81,7 +90,6 @@ class MySideMenuItem extends StatelessWidget {
     this.color,
   }) : super(key: key);
 
-  final bool isHovered;
   final bool isSelected;
   final String text;
   final double? height;
@@ -89,27 +97,45 @@ class MySideMenuItem extends StatelessWidget {
   final Color? isHoveredColor;
   final Color? color;
 
-  final void Function(bool) onHover;
   final VoidCallback onTap;
+
+  @override
+  State<MySideMenuItem> createState() => _MySideMenuItemState();
+}
+
+class _MySideMenuItemState extends State<MySideMenuItem> {
+  late Color? currentColor;
+
+  @override
+  void initState() {
+    currentColor = widget.color;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onHover: onHover,
-      onTap: onTap,
+      onHover: (isHovered) {
+        setState(() {
+          currentColor = isHovered
+              ? widget.isHoveredColor ?? kDarkPurpleColor
+              : widget.color;
+        });
+      },
+      onTap: widget.onTap,
       child: Container(
-        width: width,
-        height: height,
-        color: isHovered ? isHoveredColor ?? kDarkPurpleColor : color,
+        width: widget.width,
+        height: widget.height,
+        color: currentColor,
         child: Row(
           children: [
             const SizedBox(width: 70),
             Text(
-              text,
+              widget.text,
               style: kXBoldStyle.copyWith(
                 color: Colors.white,
                 fontSize: kLargeSize - 4,
-                decoration: isSelected ? TextDecoration.underline : null,
+                decoration: widget.isSelected ? TextDecoration.underline : null,
               ),
             ),
           ],

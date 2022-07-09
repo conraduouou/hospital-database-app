@@ -18,9 +18,8 @@ class AddDropdownItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.read<AppBarProvider>();
 
-    return Selector<AppBarProvider, bool>(
-      selector: (ctx, provider) => provider.addItems[index].isHovered,
-      builder: (ctx, isHovered, child) {
+    return Builder(
+      builder: (ctx) {
         if (kDebugMode) {
           print('add item $index');
         }
@@ -36,14 +35,7 @@ class AddDropdownItem extends StatelessWidget {
                   : index == provider.addItems.length - 1
                       ? const EdgeInsets.only(bottom: 10)
                       : null,
-              color: isHovered || isSelected ? kPurpleColor : null,
-              onHover: (isHovered) {
-                provider.hoverMenuItem(
-                  index,
-                  isHovered: isHovered,
-                  menuType: MenuType.add,
-                );
-              },
+              isHoveredColor: kPurpleColor,
               onTap: !isSelected
                   ? () {
                       provider.isHome = false;

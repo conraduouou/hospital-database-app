@@ -24,7 +24,7 @@ class ProcedureGrid extends StatelessWidget {
           for (int i = 0; i <= procedures.length; i++) {
             list.add(
               ProcedureGridBlock(
-                showFirst: i == 0,
+                showFirst: i != procedures.length,
                 showClose: i != 0,
                 heading: 'Procedure ${i + 1}',
                 id: i < procedures.length

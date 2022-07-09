@@ -84,20 +84,6 @@ class AppBarProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void hoverMenuItem(int index, {bool? isHovered, required MenuType menuType}) {
-    final listToUse = menuType == MenuType.add ? addItems : gearItems;
-
-    for (final menuItem in listToUse) {
-      if (menuItem.isHovered) {
-        menuItem.toggleHovered();
-        break;
-      }
-    }
-
-    listToUse[index].isHovered = isHovered ?? !listToUse[index].isHovered;
-    notifyListeners();
-  }
-
   void unshowOptions() {
     if (_shouldShowAddOptions || _shouldShowGearOptions) {
       _shouldShowAddOptions = false;
