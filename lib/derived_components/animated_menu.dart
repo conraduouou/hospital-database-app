@@ -41,9 +41,9 @@ class AnimatedMenu extends StatelessWidget {
           smallRectangleOnTap: () {
             appBarProvider.unshowOptions();
             if (provider.isOpened) {
-              provider.showColumns([3, 4]);
+              provider.showColumns();
             } else {
-              provider.hideColumns([3, 4]);
+              provider.hideColumns();
             }
             provider.toggleOpened();
           },

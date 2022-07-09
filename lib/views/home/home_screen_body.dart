@@ -108,6 +108,7 @@ class HomeScreenBody extends StatelessWidget {
                                   .isSelected,
                               builder: (ctx, isSelected, child) {
                                 return MyTableCell(
+                                  padding: EdgeInsets.zero,
                                   width: headers[i].columnSize!.value,
                                   content: headers[i].contents,
                                   hoverColor: kOffWhiteColor,

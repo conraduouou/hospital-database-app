@@ -17,76 +17,141 @@ class ColumnField {
   final bool isRemovable;
 
   // admission fields
-  static const admissionIdWidth = FixedColumnWidth(130);
-  static const admissionDateWidth = FixedColumnWidth(160);
-  static const illnessNameWidth = FixedColumnWidth(150);
+  static const admissionIdWidth = FixedColumnWidth(160);
+  static const admissionDateWidth = FixedColumnWidth(180);
+  static const illnessNameWidth = FixedColumnWidth(120);
 
   // patient fields
-  static const patientIdWidth = FixedColumnWidth(100);
-  static const patientNameWidth = FixedColumnWidth(230);
+  static const patientIdWidth = FixedColumnWidth(130);
+  static const patientNameWidth = FixedColumnWidth(200);
   static const patientAgeWidth = FixedColumnWidth(80);
   static const patientGenderWidth = FixedColumnWidth(110);
-  static const patientAddressWidth = FixedColumnWidth(380);
+  static const patientAddressWidth = FixedColumnWidth(300);
 
   // doctor fields
-  static const doctorIdWidth = FixedColumnWidth(100);
-  static const doctorNameWidth = FixedColumnWidth(190);
-  static const doctorDepartmentWidth = FixedColumnWidth(230);
+  static const doctorIdWidth = FixedColumnWidth(160);
+  static const doctorNameWidth = FixedColumnWidth(200);
+  static const doctorDepartmentWidth = FixedColumnWidth(190);
   static const doctorWorkedOnWidth = FixedColumnWidth(250);
-  static const doctorHandlingWidth = FixedColumnWidth(230);
+  static const doctorHandlingWidth = FixedColumnWidth(210);
 
   // room fields
-  static const roomNumberWidth = FixedColumnWidth(130);
-  static const roomTypeWidth = FixedColumnWidth(250);
-  static const roomCostWidth = FixedColumnWidth(120);
-  static const roomCapacityWidth = FixedColumnWidth(170);
-  static const roomOccupantsWidth = FixedColumnWidth(120);
+  static const roomNumberWidth = FixedColumnWidth(170);
+  static const roomTypeWidth = FixedColumnWidth(240);
+  static const roomCostWidth = FixedColumnWidth(110);
+  static const roomCapacityWidth = FixedColumnWidth(175);
+  static const roomOccupantsWidth = FixedColumnWidth(130);
 
   // procedure fields
-  static const procedureIdWidth = FixedColumnWidth(130);
-  static const procedureNameWidth = FixedColumnWidth(230);
-  static const procedureCostWidth = FixedColumnWidth(180);
-  static const procedureLastDoneWidth = FixedColumnWidth(130);
-  static const procedureTimesWidth = FixedColumnWidth(170);
+  static const procedureIdWidth = FixedColumnWidth(165);
+  static const procedureNameWidth = FixedColumnWidth(180);
+  static const procedureCostWidth = FixedColumnWidth(140);
+  static const procedureLastDoneWidth = FixedColumnWidth(140);
+  static const procedureTimesWidth = FixedColumnWidth(140);
 
-  static const admissionHeaders = <String, FixedColumnWidth>{
-    'Admission ID': admissionIdWidth,
-    'Admission date': admissionDateWidth,
-    'Patient name': patientNameWidth,
-    'Illness': illnessNameWidth,
-    'Assigned Doctor': doctorNameWidth,
-    'Room number': roomNumberWidth,
+  static const admissionHeaders = <String, Map<int, dynamic>>{
+    'Admission ID': {0: admissionIdWidth, 1: false},
+    'Admission date': {0: admissionDateWidth, 1: false},
+    'Patient name': {0: patientNameWidth, 1: false},
+    'Illness': {0: illnessNameWidth, 1: true},
+    'Assigned Doctor': {0: doctorNameWidth, 1: true},
+    'Room number': {0: roomNumberWidth, 1: false},
   };
 
-  static const patientHeaders = <String, FixedColumnWidth>{
-    'Patient ID': patientIdWidth,
-    'Name': patientNameWidth,
-    'Age': patientAgeWidth,
-    'Gender': patientGenderWidth,
-    'Address': patientAddressWidth,
+  static const admissionSample = <String>[
+    'AID-0012',
+    '3/14/2022',
+    'John Lloyd Dela Cruz',
+    'Tuberculosis',
+    'Dr. Angel R. Sikat',
+    '301',
+  ];
+
+  static const patientHeaders = <String, Map<int, dynamic>>{
+    'Patient ID': {0: patientIdWidth, 1: false},
+    'Name': {0: patientNameWidth, 1: false},
+    'Age': {0: patientAgeWidth, 1: false},
+    'Gender': {0: patientGenderWidth, 1: false},
+    'Address': {0: patientAddressWidth, 1: false},
   };
 
-  static const roomHeaders = <String, FixedColumnWidth>{
-    'Room number': roomNumberWidth,
-    'Type': roomTypeWidth,
-    'Cost': roomCostWidth,
-    'Room capacity': roomCapacityWidth,
-    'Occupants': roomOccupantsWidth,
+  static const patientSample = <String>[
+    'PID-0001',
+    'John Lloyd Dela Cruz',
+    '27',
+    'M',
+    '55 Street, Mexico, Pampanga',
+  ];
+
+  static const roomHeaders = <String, Map<int, dynamic>>{
+    'Room number': {0: roomNumberWidth, 1: false},
+    'Type': {0: roomTypeWidth, 1: false},
+    'Cost': {0: roomCostWidth, 1: false},
+    'Room capacity': {0: roomCapacityWidth, 1: false},
+    'Occupants': {0: roomOccupantsWidth, 1: false},
   };
 
-  static const doctorHeaders = <String, FixedColumnWidth>{
-    'Doctor ID': doctorIdWidth,
-    'Name': doctorNameWidth,
-    'Department': doctorDepartmentWidth,
-    'Admissions worked on': doctorWorkedOnWidth,
-    'Currently handling': doctorHandlingWidth,
+  static const roomSample = <String>[
+    '301',
+    'Intensive Care Unit (ICU)',
+    '3500 php',
+    '4',
+    'Occupants',
+  ];
+
+  static const doctorHeaders = <String, Map<int, dynamic>>{
+    'Doctor ID': {0: doctorIdWidth, 1: false},
+    'Name': {0: doctorNameWidth, 1: false},
+    'Department': {0: doctorDepartmentWidth, 1: false},
+    'Admissions worked on': {0: doctorWorkedOnWidth, 1: true},
+    'Currently handling': {0: doctorHandlingWidth, 1: false},
   };
 
-  static const procedureHeaders = <String, FixedColumnWidth>{
-    'Procedure ID': procedureIdWidth,
-    'Name': procedureNameWidth,
-    'Cost': procedureCostWidth,
-    'Last done': procedureLastDoneWidth,
-    'Times done': procedureTimesWidth,
+  static const doctorSample = <String>[
+    'DID-0031',
+    'Dr. Angel R. Sikat',
+    'Pulmonology',
+    '4',
+    '3',
+  ];
+
+  static const procedureHeaders = <String, Map<int, dynamic>>{
+    'Procedure ID': {0: procedureIdWidth, 1: false},
+    'Name': {0: procedureNameWidth, 1: false},
+    'Cost': {0: procedureCostWidth, 1: false},
+    'Last done': {0: procedureLastDoneWidth, 1: false},
+    'Times done': {0: procedureTimesWidth, 1: false},
   };
+
+  static const procedureSample = <String>[
+    '0012',
+    'Antigen Testing',
+    '4000 php',
+    '3/15/2022',
+    '3',
+  ];
+
+  static const samples = <TableType, List<String>>{
+    TableType.admissions: admissionSample,
+    TableType.patients: patientSample,
+    TableType.rooms: roomSample,
+    TableType.doctors: doctorSample,
+    TableType.procedures: procedureSample,
+  };
+
+  static const headers = <TableType, Map<String, Map<int, dynamic>>>{
+    TableType.admissions: admissionHeaders,
+    TableType.patients: patientHeaders,
+    TableType.rooms: roomHeaders,
+    TableType.doctors: doctorHeaders,
+    TableType.procedures: procedureHeaders,
+  };
+}
+
+enum TableType {
+  admissions,
+  patients,
+  rooms,
+  doctors,
+  procedures,
 }
