@@ -80,6 +80,7 @@ class _MyTableCellState extends State<MyTableCell> {
         },
         child: Text(
           widget.content,
+          overflow: TextOverflow.ellipsis,
           style: kBoldStyle.copyWith(
             color: currentColor,
             fontSize: kRegularSize,
