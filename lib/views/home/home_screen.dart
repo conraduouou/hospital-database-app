@@ -5,7 +5,7 @@ import 'package:hospital_database_app/components/my_appbar.dart';
 import 'package:hospital_database_app/derived_components/appbar_options.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
 import 'package:hospital_database_app/providers/home_provider.dart';
-import 'package:hospital_database_app/views/home/admissions_body.dart';
+import 'package:hospital_database_app/views/home/home_screen_body.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -40,10 +40,16 @@ class HomeScreen extends StatelessWidget {
           ),
           body: Stack(
             clipBehavior: Clip.none,
-            children: const [
-              AdmissionsBody(),
-              AnimatedMenu(),
-              AppBarOptions(),
+            children: [
+              Selector<HomeProvider, String>(
+                  selector: (ctx, provider) => provider.heading,
+                  builder: (ctx, heading, child) {
+                    return HomeScreenBody(
+                      heading: heading,
+                    );
+                  }),
+              const AnimatedMenu(),
+              const AppBarOptions(),
             ],
           ),
         ),

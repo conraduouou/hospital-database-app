@@ -11,10 +11,13 @@ import 'package:hospital_database_app/models/core/column_field.dart';
 import 'package:hospital_database_app/providers/home_provider.dart';
 import 'package:provider/provider.dart';
 
-class AdmissionsBody extends StatelessWidget {
-  const AdmissionsBody({
+class HomeScreenBody extends StatelessWidget {
+  const HomeScreenBody({
     Key? key,
+    required this.heading,
   }) : super(key: key);
+
+  final String heading;
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +30,17 @@ class AdmissionsBody extends StatelessWidget {
     return Stack(
       children: [
         Selector<HomeProvider, bool>(
-          selector: (ctx, provider) => provider.headers[3].shouldShow,
-          builder: (ctx, shouldShow, child) {
+          selector: (ctx, provider) => provider.isOpened,
+          builder: (ctx, isOpened, child) {
             return AnimatedPositioned(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOutQuart,
-              left: shouldShow ? 95 : 300,
+              left: !isOpened ? 95 : 300,
               top: 90,
               child: Row(
                 children: [
                   Text(
-                    'Admissions',
+                    heading,
                     style: kXBoldStyle.copyWith(fontSize: 40),
                   ),
                   const SizedBox(width: 10),
@@ -58,26 +61,31 @@ class AdmissionsBody extends StatelessWidget {
             height: 40,
           ),
         ),
-        const Positioned(
-          right: 92,
-          top: 88,
-          child: MyDropdownButton(
-            text: 'Admission date',
-          ),
-        ),
+        Selector<HomeProvider, String>(
+            selector: (ctx, provider) => provider.sortText,
+            builder: (ctx, sortText, child) {
+              return Positioned(
+                right: 92,
+                top: 88,
+                child: MyDropdownButton(
+                  text: sortText.isEmpty ? 'Sort by' : sortText,
+                  textColor: sortText.isEmpty ? kDarkGrayColor : null,
+                ),
+              );
+            }),
         Selector<HomeProvider, bool>(
-          selector: (ctx, provider) => provider.headers[3].shouldShow,
-          builder: (ctx, shouldShow, child) {
+          selector: (ctx, provider) => provider.isOpened,
+          builder: (ctx, isOpened, child) {
             return AnimatedPositioned(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOutQuart,
-              left: shouldShow ? 90 : 300,
+              left: !isOpened ? 90 : 300,
               top: 170,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MyTableHeader(
-                    shouldShow: shouldShow,
+                    shouldShow: !isOpened,
                     children: [
                       ...(() {
                         // list of headers to render
@@ -118,7 +126,7 @@ class AdmissionsBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   MyTableBody(
-                    shouldShow: shouldShow,
+                    shouldShow: !isOpened,
                     rowCount: provider.bodyRows.length,
                     rows: [
                       // makes use of spread operator in Dart to lay out

@@ -71,6 +71,8 @@ class HomeProvider with ChangeNotifier {
   late final List<List<ColumnField>> bodyRows;
 
   // state management
+  String _sortText = '';
+  String _heading = 'Admissions';
   bool _isOpened = false;
   final menuItems = <AnimatedMenuItem>[
     AnimatedMenuItem(content: 'Admissions', isSelected: true),
@@ -81,6 +83,8 @@ class HomeProvider with ChangeNotifier {
   ];
 
   bool get isOpened => _isOpened;
+  String get sortText => _sortText;
+  String get heading => _heading;
 
   void toggleOpened() {
     _isOpened = !_isOpened;
@@ -95,6 +99,7 @@ class HomeProvider with ChangeNotifier {
       }
     }
 
+    _heading = menuItems[index].content;
     menuItems[index].toggleSelected();
     notifyListeners();
   }
@@ -133,6 +138,7 @@ class HomeProvider with ChangeNotifier {
         // }
 
         if (headers.indexOf(header) == index) {
+          _sortText = '';
           notifyListeners();
           return;
         }
@@ -140,6 +146,7 @@ class HomeProvider with ChangeNotifier {
       }
     }
 
+    _sortText = headers[index].contents;
     headers[index].isSelected = !headers[index].isSelected;
     notifyListeners();
 

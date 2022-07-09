@@ -4,6 +4,7 @@ class ColumnField {
   ColumnField({
     required this.contents,
     this.columnSize,
+    this.isRemovable = false,
     this.shouldShow = true,
     this.isSelected = false,
   });
@@ -12,6 +13,8 @@ class ColumnField {
   FixedColumnWidth? columnSize;
   bool shouldShow;
   bool isSelected;
+
+  final bool isRemovable;
 
   // constants
   static const admissionIdWidth = FixedColumnWidth(130);
