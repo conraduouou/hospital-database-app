@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_database_app/views/details/admission_details/admission_details_screen.dart';
 import 'package:hospital_database_app/views/home/home_screen.dart';
 import 'package:hospital_database_app/views/login_screen.dart';
 import 'package:hospital_database_app/views/new/new_admission.dart';
@@ -20,6 +21,13 @@ class RoutesHandler {
 
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AdmissionDetailsScreen.id:
+        // final data = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AdmissionDetailsScreen();
+          },
+        );
     }
 
     return null;

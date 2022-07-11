@@ -42,3 +42,17 @@ const kGrayBoldStyle = TextStyle(
   fontFamily: kRegularFont,
   fontWeight: FontWeight.w600,
 );
+
+// Enums
+enum TableType {
+  admissions,
+  patients,
+  rooms,
+  doctors,
+  procedures,
+}
+
+enum MenuType {
+  add,
+  gear,
+}

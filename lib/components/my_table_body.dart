@@ -8,6 +8,7 @@ class MyTableBody extends StatelessWidget {
     required this.rows,
     this.rowCount = 6,
     this.shouldShow = false,
+    this.isAnimated = true,
   }) : super(key: key);
 
   /// The rows to render. Typically contains `MyTableRow` widgets.
@@ -18,6 +19,7 @@ class MyTableBody extends StatelessWidget {
   final int rowCount;
 
   final bool shouldShow;
+  final bool isAnimated;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class MyTableBody extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOutQuart,
         height: 315,
-        width: shouldShow ? 1098 : 888,
+        width: isAnimated ? (shouldShow ? 1098 : 888) : null,
         decoration: BoxDecoration(
           color: kLightGrayColor,
           borderRadius: BorderRadius.circular(25),

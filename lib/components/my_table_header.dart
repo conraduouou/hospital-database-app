@@ -6,10 +6,12 @@ class MyTableHeader extends StatelessWidget {
     Key? key,
     required this.children,
     this.shouldShow = false,
+    this.isAnimated = true,
   }) : super(key: key);
 
   final List<Widget> children;
   final bool shouldShow;
+  final bool isAnimated;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class MyTableHeader extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOutQuart,
-        width: shouldShow ? 1098 : 888,
+        width: isAnimated ? (shouldShow ? 1098 : 888) : null,
         padding: const EdgeInsets.symmetric(
           horizontal: 30,
           vertical: 22,

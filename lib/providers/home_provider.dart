@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/animated_menu_item.dart';
 import 'package:hospital_database_app/models/core/column_field.dart';
 import 'package:recase/recase.dart';
@@ -63,6 +64,7 @@ class HomeProvider with ChangeNotifier {
   bool get isOpened => _isOpened;
   String get sortText => _sortText;
   String get heading => _heading.name.titleCase;
+  TableType get headingType => _heading;
 
   void toggleOpened() {
     _isOpened = !_isOpened;
@@ -152,10 +154,6 @@ class HomeProvider with ChangeNotifier {
       if (header.isSelected) {
         header.isSelected = false;
 
-        // if (kDebugMode) {
-        //   print('${header.contents}: ${header.isSelected}');
-        // }
-
         if (headers.indexOf(header) == index) {
           _sortText = '';
           notifyListeners();
@@ -168,9 +166,5 @@ class HomeProvider with ChangeNotifier {
     _sortText = headers[index].contents;
     headers[index].isSelected = !headers[index].isSelected;
     notifyListeners();
-
-    // if (kDebugMode) {
-    //   print('${headers[index].contents}: ${headers[index].isSelected}');
-    // }
   }
 }

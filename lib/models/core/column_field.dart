@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_database_app/constants.dart';
 
 class ColumnField {
   ColumnField({
@@ -48,6 +49,8 @@ class ColumnField {
   static const procedureCostWidth = FixedColumnWidth(140);
   static const procedureLastDoneWidth = FixedColumnWidth(140);
   static const procedureTimesWidth = FixedColumnWidth(140);
+  static const procedureLabNumberWidth = FixedColumnWidth(140);
+  static const procedureDateWidth = FixedColumnWidth(140);
 
   static const admissionHeaders = <String, Map<int, dynamic>>{
     'Admission ID': {0: admissionIdWidth, 1: false},
@@ -116,7 +119,7 @@ class ColumnField {
   ];
 
   static const procedureHeaders = <String, Map<int, dynamic>>{
-    'Procedure ID': {0: procedureIdWidth, 1: false},
+    'Procedure date': {0: procedureIdWidth, 1: false},
     'Name': {0: procedureNameWidth, 1: false},
     'Cost': {0: procedureCostWidth, 1: false},
     'Last done': {0: procedureLastDoneWidth, 1: false},
@@ -129,6 +132,22 @@ class ColumnField {
     '4000 php',
     '3/15/2022',
     '3',
+  ];
+
+  static const procedureInAdmissionHeaders = <String, Map<int, dynamic>>{
+    'Procedure ID': {0: procedureIdWidth, 1: false},
+    'Name': {0: procedureNameWidth, 1: false},
+    'Cost': {0: procedureCostWidth, 1: false},
+    'Lab number': {0: procedureLabNumberWidth, 1: false},
+    'Date': {0: procedureDateWidth, 1: false},
+  };
+
+  static const procedureInAdmissionSample = <String>[
+    '0012',
+    'Antigen Testing',
+    '4000 php',
+    '00154',
+    '3/15/2022',
   ];
 
   static const samples = <TableType, List<String>>{
@@ -146,12 +165,4 @@ class ColumnField {
     TableType.doctors: doctorHeaders,
     TableType.procedures: procedureHeaders,
   };
-}
-
-enum TableType {
-  admissions,
-  patients,
-  rooms,
-  doctors,
-  procedures,
 }

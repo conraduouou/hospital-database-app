@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 class ProvidedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ProvidedAppBar({
     Key? key,
+    this.isHome,
   }) : super(key: key);
+
+  final bool? isHome;
 
   @override
   // change height of app bar by adjusting the value
@@ -19,7 +22,7 @@ class ProvidedAppBar extends StatelessWidget implements PreferredSizeWidget {
     final provider = context.read<AppBarProvider>();
 
     return MyAppBar(
-      isHome: provider.isHome,
+      isHome: isHome ?? provider.isHome,
       leadingOnPressed: () {
         provider.deselectAddItems();
         provider.unshowOptions();
