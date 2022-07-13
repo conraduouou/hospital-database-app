@@ -5,6 +5,7 @@ import 'package:hospital_database_app/models/core/column_field.dart';
 import 'package:hospital_database_app/models/core/details.dart';
 import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
+import 'package:hospital_database_app/models/core/room_details.dart';
 
 class DetailsProvider with ChangeNotifier {
   DetailsProvider({
@@ -14,7 +15,7 @@ class DetailsProvider with ChangeNotifier {
     _getDetails = <TableType, VoidCallback>{
       TableType.admissions: _getAdmissionDetails,
       TableType.patients: _getPatientDetails,
-      // TableType.rooms: _getRoomDetails,
+      TableType.rooms: _getRoomDetails,
       TableType.procedures: _getProcedureDetails,
       // TableType.doctors: _getDoctorDetails,
     };
@@ -97,9 +98,9 @@ class DetailsProvider with ChangeNotifier {
     details = PatientDetails();
   }
 
-  // void _getRoomDetails() {
-  //   details = RoomDetails();
-  // }
+  void _getRoomDetails() {
+    details = RoomDetails();
+  }
 
   void _getProcedureDetails() {
     details = ProcedureDetails();

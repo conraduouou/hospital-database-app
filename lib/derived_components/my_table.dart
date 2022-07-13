@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_table_body.dart';
 import 'package:hospital_database_app/components/my_table_cell.dart';
@@ -31,14 +30,30 @@ class MyTable extends StatelessWidget {
   /// Must be of type `List<ColumnField>`, with `columnSize` of each
   /// corresponding to provided static values in the `ColumnField` class.
   ///
-  /// Must also be further filtered to show values that only have the `shouldShow`
-  /// parameter set to `true`. Like the code below:
+  /// This is expected to also be further filtered to show values that only have
+  /// the `shouldShow` parameter set to `true`. Like the code below:
   /// ```dart
   /// final headers = headers.where((h) => h.shouldShow).toList();
   /// ```
   final List<ColumnField> headers;
+
+  /// The provider that will be used for constructing a `Selector` wrapped around
+  /// the table cell widgets. This is necessary to rebuild cells that will be
+  /// selected and deselected upon having implemented the sort feature rather than
+  /// having to rebuild the whole header or table.
   final dynamic provider;
+
+  /// Determines whether the state of `AnimatedMenu` is opened or not. Defaults
+  /// to false.
+  ///
+  /// This is the basis for the `AnimatedContainer`s that wrap around the `MyTableBody`
+  /// and `MyTableHeader` widgets, and will be supplied new width values accordingly.
   final bool isOpened;
+
+  /// Determines whether this whole table should be animated. Defaults to true.
+  ///
+  /// If this parameter is false, the table would not animate regardless of the
+  /// `isOpened` parameter.
   final bool isAnimated;
 
   /// Determines which table/screen is being pointed to by the table created by
@@ -70,8 +85,12 @@ class MyTable extends StatelessWidget {
                 widgets.add(
                   _MyTableCellBuilder(
                     provider: provider,
-                    headers: headers,
-                    index: i,
+                    header: headers[i],
+                    onTap: provider is HomeProvider
+                        ? () {
+                            (provider as HomeProvider).selectHeader(i);
+                          }
+                        : null,
                   ),
                 );
               }
@@ -122,10 +141,6 @@ class MyTable extends StatelessWidget {
                       final appBarProvider = context.read<AppBarProvider>();
                       appBarProvider.isHome = false;
 
-                      if (kDebugMode) {
-                        print(RoutesHandler.detailsScreenIds[tableType]);
-                      }
-
                       Navigator.pushNamed(
                         context,
                         RoutesHandler.detailsScreenIds[tableType] ??
@@ -152,35 +167,20 @@ class _MyTableCellBuilder extends StatelessWidget {
   const _MyTableCellBuilder({
     Key? key,
     required this.provider,
-    required this.headers,
-    required this.index,
+    required this.header,
+    this.onTap,
   }) : super(key: key);
 
   final dynamic provider;
-  final List<ColumnField> headers;
-  final int index;
-
-  Widget tableCell({required bool isSelected}) {
-    return MyTableCell(
-      padding: EdgeInsets.zero,
-      width: headers[index].columnSize!.value,
-      content: headers[index].contents,
-      hoverColor: kOffWhiteColor,
-      isSelected: isSelected,
-      onTap: provider is HomeProvider
-          ? () {
-              provider.selectHeader(index);
-            }
-          : null,
-    );
-  }
+  final ColumnField header;
+  final VoidCallback? onTap;
 
   bool isSelectedFromHeader(dynamic provider) {
     final p = provider;
 
     // get list of headers
     final h = p.headers;
-    final headerAtIndex = h[p.headers.indexOf(headers[index])];
+    final headerAtIndex = h[p.headers.indexOf(header)];
 
     return headerAtIndex.isSelected;
   }
@@ -191,14 +191,26 @@ class _MyTableCellBuilder extends StatelessWidget {
     return provider is HomeProvider
         ? Selector<HomeProvider, bool>(
             selector: (ctx, homeProvider) => isSelectedFromHeader(homeProvider),
-            builder: (ctx, isSelected, child) =>
-                tableCell(isSelected: isSelected),
+            builder: (ctx, isSelected, child) => MyTableCell(
+              padding: EdgeInsets.zero,
+              width: header.columnSize!.value,
+              content: header.contents,
+              hoverColor: kOffWhiteColor,
+              isSelected: isSelected,
+              onTap: onTap,
+            ),
           )
         : Selector<DetailsProvider, bool>(
             selector: (ctx, detailsProvider) =>
                 isSelectedFromHeader(detailsProvider),
-            builder: (ctx, isSelected, child) =>
-                tableCell(isSelected: isSelected),
+            builder: (ctx, isSelected, child) => MyTableCell(
+              padding: EdgeInsets.zero,
+              width: header.columnSize!.value,
+              content: header.contents,
+              hoverColor: kOffWhiteColor,
+              isSelected: isSelected,
+              onTap: onTap,
+            ),
           );
   }
 }

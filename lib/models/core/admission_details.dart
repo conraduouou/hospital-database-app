@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 class AdmissionDetails implements Details {
   AdmissionDetails({
-    this.tableType = TableType.admissions,
     this.admissionId = 'AID-0012',
     this.admissionDate,
     this.dateDischarged,
@@ -53,9 +52,6 @@ class AdmissionDetails implements Details {
     admissionDate = DateTime(2022, 3, 14);
     dateDischarged = DateTime(2022, 4, 9);
   }
-
-  @override
-  final TableType tableType;
 
   // admission-specific details
   String admissionId;
