@@ -92,6 +92,14 @@ class ColumnField {
       admissionHeaders.entries.where((e) => e.key != 'Patient name'))
     ..update('Illness', (value) => {0: const FixedColumnWidth(140), 1: false});
 
+  static const admissionInDoctorHeaders = <String, Map<int, dynamic>>{
+    'Admission ID': {0: admissionIdWidth, 1: false},
+    'Admission Date': {0: admissionDateWidth, 1: false},
+    'Date Discharged': {0: admissionDateWidth, 1: false},
+    'Patient name': {0: patientNameWidth, 1: false},
+    'Room number': {0: roomNumberWidth, 1: false},
+  };
+
   static const roomHeaders = <String, Map<int, dynamic>>{
     'Room number': {0: roomNumberWidth, 1: false},
     'Type': {0: roomTypeWidth, 1: false},
@@ -160,6 +168,7 @@ class ColumnField {
     TableType.admissions: procedureInAdmissionHeaders,
     TableType.patients: admissionInPatientHeaders,
     TableType.rooms: patientHeaders,
+    TableType.doctors: admissionInDoctorHeaders,
   };
 
   static const headers = <TableType, Map<String, Map<int, dynamic>>>{

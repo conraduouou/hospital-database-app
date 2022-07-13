@@ -12,6 +12,7 @@ class ProcedureDetails implements Details {
     this.timesDone,
     this.labNumber,
     this.procedureDate,
+    this.admissions,
   });
 
   String? id;

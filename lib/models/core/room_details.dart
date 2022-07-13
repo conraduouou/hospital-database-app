@@ -9,6 +9,7 @@ class RoomDetails implements Details {
     this.roomCost = 3500.0,
     this.roomCapacity = 4,
     this.occupantCount = 1,
+    this.patients,
   }) {
     patients = <PatientDetails>[
       PatientDetails(

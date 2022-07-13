@@ -3,6 +3,7 @@ import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
 import 'package:hospital_database_app/models/core/column_field.dart';
 import 'package:hospital_database_app/models/core/details.dart';
+import 'package:hospital_database_app/models/core/doctor_details.dart';
 import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
 import 'package:hospital_database_app/models/core/room_details.dart';
@@ -17,7 +18,7 @@ class DetailsProvider with ChangeNotifier {
       TableType.patients: _getPatientDetails,
       TableType.rooms: _getRoomDetails,
       TableType.procedures: _getProcedureDetails,
-      // TableType.doctors: _getDoctorDetails,
+      TableType.doctors: _getDoctorDetails,
     };
 
     // call appropriate method for getting details according to tableType
@@ -106,7 +107,7 @@ class DetailsProvider with ChangeNotifier {
     details = ProcedureDetails();
   }
 
-  // void _getDoctorDetails() {
-  //   details = DoctorDetails();
-  // }
+  void _getDoctorDetails() {
+    details = DoctorDetails();
+  }
 }
