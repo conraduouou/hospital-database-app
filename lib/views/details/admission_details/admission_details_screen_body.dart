@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_details_block.dart';
+import 'package:hospital_database_app/components/my_error_widget.dart';
+import 'package:hospital_database_app/components/my_progress_indicator.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
@@ -14,44 +16,62 @@ class AdmissionDetailsScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<DetailsProvider>();
-    final details = provider.details as AdmissionDetails;
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        DetailsBody(
-          provider: provider,
-          extraDataHeading: 'Procedures',
-          extraDataTableType: TableType.procedures,
-          blockRows: [
-            [
-              MyDetailsBlock(
-                details: details.admission,
-                heading: 'Admission Details',
-                showEdit: true,
-              ),
-              MyDetailsBlock(
-                details: details.transaction,
-                heading: 'Transactions',
-              ),
-            ],
-            [
-              MyDetailsBlock(
-                details: details.patient,
-                heading: 'Patient',
-                lastIsFour: true,
-              ),
-              MyDetailsBlock(
-                details: details.doctor,
-                heading: 'Doctor',
-              ),
-            ],
-            [
-              MyDetailsBlock(
-                details: details.room,
-                heading: 'Room',
-              ),
-            ],
-          ],
+        Selector<DetailsProvider, bool>(
+          selector: (ctx, provider) => provider.inAsync,
+          builder: (ctx, inAsync, child) {
+            return AnimatedCrossFade(
+              duration: const Duration(milliseconds: 200),
+              crossFadeState: inAsync
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+              firstChild: const MyProgressIndicator(),
+              secondChild: provider.details == null
+                  ? const MyErrorWidget()
+                  : Builder(
+                      builder: (context) {
+                        final details = provider.details! as AdmissionDetails;
+                        return DetailsBody(
+                          provider: provider,
+                          extraDataHeading: 'Procedures',
+                          extraDataTableType: TableType.procedures,
+                          blockRows: [
+                            [
+                              MyDetailsBlock(
+                                details: details.admission,
+                                heading: 'Admission Details',
+                                showEdit: true,
+                              ),
+                              MyDetailsBlock(
+                                details: details.transaction,
+                                heading: 'Transactions',
+                              ),
+                            ],
+                            [
+                              MyDetailsBlock(
+                                details: details.patient,
+                                heading: 'Patient',
+                                lastIsFour: true,
+                              ),
+                              MyDetailsBlock(
+                                details: details.doctor,
+                                heading: 'Doctor',
+                              ),
+                            ],
+                            [
+                              MyDetailsBlock(
+                                details: details.room,
+                                heading: 'Room',
+                              ),
+                            ],
+                          ],
+                        );
+                      },
+                    ),
+            );
+          },
         ),
       ],
     );

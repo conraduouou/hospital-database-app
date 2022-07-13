@@ -14,7 +14,7 @@ class DoctorDetailsScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<DetailsProvider>();
-    final details = provider.details as DoctorDetails;
+    final details = provider.detailsController as DoctorDetails;
     return Stack(
       clipBehavior: Clip.none,
       children: [

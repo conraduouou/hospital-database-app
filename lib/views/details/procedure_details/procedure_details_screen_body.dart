@@ -14,7 +14,7 @@ class ProcedureDetailsScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<DetailsProvider>();
-    final details = provider.details as ProcedureDetails;
+    final details = provider.detailsController as ProcedureDetails;
     return Stack(
       clipBehavior: Clip.none,
       children: [

@@ -140,31 +140,6 @@ class AdmissionDetails implements Details {
 
   @override
   List<List<String>> getExtraData() {
-    // delete when real data is available
-    procedures = <ProcedureDetails>[
-      ProcedureDetails(
-        id: '0012',
-        name: 'Antigen Testing',
-        cost: 4000,
-        labNumber: '00154',
-        procedureDate: DateTime(2022, 3, 15),
-      ),
-      ProcedureDetails(
-        id: '0045',
-        name: 'X-ray',
-        cost: 2000,
-        labNumber: '00123',
-        procedureDate: DateTime(2022, 3, 15),
-      ),
-      ProcedureDetails(
-        id: '00453',
-        name: 'Antigen Testing',
-        cost: 4000,
-        labNumber: '00453',
-        procedureDate: DateTime(2022, 3, 15),
-      )
-    ];
-
     // return none if ever procedures isn't properly supplied
     if (procedures == null) {
       throw 'Procedures aren\'t properly supplied';

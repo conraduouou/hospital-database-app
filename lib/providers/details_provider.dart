@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
@@ -12,6 +14,39 @@ class DetailsProvider with ChangeNotifier {
   DetailsProvider({
     required this.tableType,
   }) {
+    detailsController = StreamController<Details>();
+    detailsStream.listen((acquiredDetails) {
+      // assign acquiredDetails to details
+      details = acquiredDetails;
+
+      if (details == null) {
+        toggleInAsync();
+        return;
+      }
+
+      // generate ColumnField objects from static data headersData
+      final headerData = ColumnField.detailsHeaders[tableType]!;
+      headers = List.generate(
+        headerData.length,
+        (index) {
+          final key = headerData.keys.elementAt(index);
+
+          return ColumnField(
+            contents: key,
+            columnSize: headerData[key]![0],
+          );
+        },
+      );
+
+      // generate rows consisting of ColumnFields according to the extraData
+      // parameter of the details object
+      bodyRows = _getRows(details!.getExtraData());
+
+      // close stream to prevent reloading of resources
+      detailsController.close();
+      toggleInAsync();
+    });
+
     // supply functions for getting different tables
     _getDetails = <TableType, VoidCallback>{
       TableType.admissions: _getAdmissionDetails,
@@ -23,55 +58,6 @@ class DetailsProvider with ChangeNotifier {
 
     // call appropriate method for getting details according to tableType
     _getDetails[tableType]!();
-
-    // generate ColumnField objects from static data headersData
-    final headerData = ColumnField.detailsHeaders[tableType]!;
-    headers = List.generate(
-      headerData.length,
-      (index) {
-        final key = headerData.keys.elementAt(index);
-
-        return ColumnField(
-          contents: key,
-          columnSize: headerData[key]![0],
-        );
-      },
-    );
-
-    // generate rows consisting of ColumnFields according to the extraData
-    // parameter of the details object
-    bodyRows = <List<ColumnField>>[
-      ...(() {
-        try {
-          final rows = <List<ColumnField>>[];
-          final extraData = details.getExtraData();
-
-          for (int i = 0; i < extraData.length; i++) {
-            rows.add(
-              (() {
-                final columnFields = <ColumnField>[];
-
-                for (int j = 0; j < extraData[i].length; j++) {
-                  columnFields.add(
-                    ColumnField(
-                      contents: extraData[i][j],
-                      columnSize: headers[j].columnSize,
-                      isRemovable: headers[j].isRemovable,
-                    ),
-                  );
-                }
-
-                return columnFields;
-              })(),
-            );
-          }
-
-          return rows;
-        } catch (e) {
-          return [];
-        }
-      })()
-    ];
   }
 
   // data to provide
@@ -86,28 +72,107 @@ class DetailsProvider with ChangeNotifier {
   final TableType tableType;
 
   /// The object that contains all the values for a necessary table, often extra.
-  late Details details;
+  Details? details;
+
+  /// The stream that will eventually create the `details` parameter.
+  late final StreamController<Details> detailsController;
+  Stream<Details> get detailsStream => detailsController.stream;
+  Sink<Details> get detailsSink => detailsController.sink;
 
   late final Map<TableType, VoidCallback> _getDetails;
 
+  /// A flag that determines whether the state is currently undergoing an async
+  /// operation.
+  bool inAsync = false;
+
+  /// Helper method that consolidates `extraData` as a `List` of `List<ColumnField>`s
+  /// from the `details` object.
+  List<List<ColumnField>> _getRows(List<List<String>> extraData) {
+    final rows = <List<ColumnField>>[];
+
+    for (int i = 0; i < extraData.length; i++) {
+      rows.add(
+        (() {
+          final columnFields = <ColumnField>[];
+
+          for (int j = 0; j < extraData[i].length; j++) {
+            columnFields.add(
+              ColumnField(
+                contents: extraData[i][j],
+                columnSize: headers[j].columnSize,
+                isRemovable: headers[j].isRemovable,
+              ),
+            );
+          }
+
+          return columnFields;
+        })(),
+      );
+    }
+
+    return rows;
+  }
+
   //TODO: implement getting of necessary data for the details screen.
-  void _getAdmissionDetails() {
-    details = AdmissionDetails();
+  void _getAdmissionDetails() async {
+    toggleInAsync();
+    await Future.delayed(const Duration(seconds: 2), () {
+      detailsSink.add(
+        AdmissionDetails(
+          procedures: <ProcedureDetails>[
+            ProcedureDetails(
+              id: '0012',
+              name: 'Antigen Testing',
+              cost: 4000,
+              labNumber: '00154',
+              procedureDate: DateTime(2022, 3, 15),
+            ),
+            ProcedureDetails(
+              id: '0045',
+              name: 'X-ray',
+              cost: 2000,
+              labNumber: '00123',
+              procedureDate: DateTime(2022, 3, 15),
+            ),
+            ProcedureDetails(
+              id: '00453',
+              name: 'Antigen Testing',
+              cost: 4000,
+              labNumber: '00453',
+              procedureDate: DateTime(2022, 3, 15),
+            )
+          ],
+        ),
+      );
+    });
   }
 
-  void _getPatientDetails() {
-    details = PatientDetails();
+  void _getPatientDetails() async {
+    await Future.delayed(const Duration(seconds: 5), () {
+      detailsSink.add(PatientDetails());
+    });
   }
 
-  void _getRoomDetails() {
-    details = RoomDetails();
+  void _getRoomDetails() async {
+    await Future.delayed(const Duration(seconds: 5), () {
+      detailsSink.add(RoomDetails());
+    });
   }
 
-  void _getProcedureDetails() {
-    details = ProcedureDetails();
+  void _getProcedureDetails() async {
+    await Future.delayed(const Duration(seconds: 5), () {
+      detailsSink.add(ProcedureDetails());
+    });
   }
 
-  void _getDoctorDetails() {
-    details = DoctorDetails();
+  void _getDoctorDetails() async {
+    await Future.delayed(const Duration(seconds: 5), () {
+      detailsSink.add(DoctorDetails());
+    });
+  }
+
+  void toggleInAsync() {
+    inAsync = !inAsync;
+    notifyListeners();
   }
 }

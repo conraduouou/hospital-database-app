@@ -14,7 +14,7 @@ class RoomDetailsScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<DetailsProvider>();
-    final details = provider.details as RoomDetails;
+    final details = provider.detailsController as RoomDetails;
     return Stack(
       clipBehavior: Clip.none,
       children: [
