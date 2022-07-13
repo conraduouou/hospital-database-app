@@ -47,17 +47,7 @@ class DetailsProvider with ChangeNotifier {
       toggleInAsync();
     });
 
-    // supply functions for getting different tables
-    _getDetails = <TableType, VoidCallback>{
-      TableType.admissions: _getAdmissionDetails,
-      TableType.patients: _getPatientDetails,
-      TableType.rooms: _getRoomDetails,
-      TableType.procedures: _getProcedureDetails,
-      TableType.doctors: _getDoctorDetails,
-    };
-
-    // call appropriate method for getting details according to tableType
-    _getDetails[tableType]!();
+    _getDetails(tableType);
   }
 
   // data to provide
@@ -78,8 +68,6 @@ class DetailsProvider with ChangeNotifier {
   late final StreamController<Details> detailsController;
   Stream<Details> get detailsStream => detailsController.stream;
   Sink<Details> get detailsSink => detailsController.sink;
-
-  late final Map<TableType, VoidCallback> _getDetails;
 
   /// A flag that determines whether the state is currently undergoing an async
   /// operation.
@@ -114,60 +102,78 @@ class DetailsProvider with ChangeNotifier {
   }
 
   //TODO: implement getting of necessary data for the details screen.
-  void _getAdmissionDetails() async {
+  void _getAdmissionDetails() {
+    detailsSink.add(
+      AdmissionDetails(
+        procedures: <ProcedureDetails>[
+          ProcedureDetails(
+            id: '0012',
+            name: 'Antigen Testing',
+            cost: 4000,
+            labNumber: '00154',
+            procedureDate: DateTime(2022, 3, 15),
+          ),
+          ProcedureDetails(
+            id: '0045',
+            name: 'X-ray',
+            cost: 2000,
+            labNumber: '00123',
+            procedureDate: DateTime(2022, 3, 15),
+          ),
+          ProcedureDetails(
+            id: '00453',
+            name: 'Antigen Testing',
+            cost: 4000,
+            labNumber: '00453',
+            procedureDate: DateTime(2022, 3, 15),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _getPatientDetails() {
+    detailsSink.add(PatientDetails());
+  }
+
+  void _getRoomDetails() {
+    detailsSink.add(RoomDetails());
+  }
+
+  void _getProcedureDetails() {
+    detailsSink.add(ProcedureDetails());
+  }
+
+  void _getDoctorDetails() {
+    detailsSink.add(
+      DoctorDetails(
+        admissions: <AdmissionDetails>[
+          AdmissionDetails(
+            admissionId: 'AID-0012',
+            admissionDate: DateTime(2022, 3, 14),
+            dateDischarged: DateTime(2022, 4, 9),
+            patientName: 'John Lloyd dela Cruz',
+            roomNumber: 301,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _getDetails(TableType tableType) async {
     toggleInAsync();
+// supply functions for getting different tables
+    final callbacks = <TableType, VoidCallback>{
+      TableType.admissions: _getAdmissionDetails,
+      TableType.patients: _getPatientDetails,
+      TableType.rooms: _getRoomDetails,
+      TableType.procedures: _getProcedureDetails,
+      TableType.doctors: _getDoctorDetails,
+    };
+
+    // call appropriate method for getting details according to tableType
     await Future.delayed(const Duration(seconds: 2), () {
-      detailsSink.add(
-        AdmissionDetails(
-          procedures: <ProcedureDetails>[
-            ProcedureDetails(
-              id: '0012',
-              name: 'Antigen Testing',
-              cost: 4000,
-              labNumber: '00154',
-              procedureDate: DateTime(2022, 3, 15),
-            ),
-            ProcedureDetails(
-              id: '0045',
-              name: 'X-ray',
-              cost: 2000,
-              labNumber: '00123',
-              procedureDate: DateTime(2022, 3, 15),
-            ),
-            ProcedureDetails(
-              id: '00453',
-              name: 'Antigen Testing',
-              cost: 4000,
-              labNumber: '00453',
-              procedureDate: DateTime(2022, 3, 15),
-            )
-          ],
-        ),
-      );
-    });
-  }
-
-  void _getPatientDetails() async {
-    await Future.delayed(const Duration(seconds: 5), () {
-      detailsSink.add(PatientDetails());
-    });
-  }
-
-  void _getRoomDetails() async {
-    await Future.delayed(const Duration(seconds: 5), () {
-      detailsSink.add(RoomDetails());
-    });
-  }
-
-  void _getProcedureDetails() async {
-    await Future.delayed(const Duration(seconds: 5), () {
-      detailsSink.add(ProcedureDetails());
-    });
-  }
-
-  void _getDoctorDetails() async {
-    await Future.delayed(const Duration(seconds: 5), () {
-      detailsSink.add(DoctorDetails());
+      callbacks[tableType]!();
     });
   }
 
