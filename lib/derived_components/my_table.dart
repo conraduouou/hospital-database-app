@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_table_body.dart';
 import 'package:hospital_database_app/components/my_table_cell.dart';
@@ -8,6 +9,7 @@ import 'package:hospital_database_app/models/core/column_field.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
 import 'package:hospital_database_app/providers/home_provider.dart';
+import 'package:hospital_database_app/routes.dart';
 import 'package:hospital_database_app/views/details/admission_details/admission_details_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +19,7 @@ class MyTable extends StatelessWidget {
     required this.bodyRows,
     required this.headers,
     required this.provider,
+    required this.tableType,
     this.isOpened = false,
     this.isAnimated = true,
   }) : super(key: key);
@@ -37,6 +40,15 @@ class MyTable extends StatelessWidget {
   final dynamic provider;
   final bool isOpened;
   final bool isAnimated;
+
+  /// Determines which table/screen is being pointed to by the table created by
+  /// this widget. That is, which screen to go when a record is pressed.
+  ///
+  /// If it's in the case of being in the `HomeScreen`, it would be
+  /// a no-brainer to label the Procedures table as having Procedure-type values--
+  /// but in the _`Details` screens, some are being pointed to a different table
+  /// altogether.
+  final TableType tableType;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +83,7 @@ class MyTable extends StatelessWidget {
         MyTableBody(
           isAnimated: isAnimated,
           shouldShow: !isOpened,
-          rowCount: provider.bodyRows.length,
+          rowCount: bodyRows.length,
           rows: [
             // makes use of spread operator in Dart to lay out
             // list of MyTableRows
@@ -85,7 +97,7 @@ class MyTable extends StatelessWidget {
               // loop through each row...
               for (int i = 0; i < length; i++) {
                 // determine which cells to show
-                final cellsToShow = i == 0
+                final cellsToShow = i < bodyRows.length
                     ? bodyRows[i].where((r) => r.shouldShow).toList()
                     : List<ColumnField>.generate(
                         headers.length,
@@ -110,11 +122,14 @@ class MyTable extends StatelessWidget {
                       final appBarProvider = context.read<AppBarProvider>();
                       appBarProvider.isHome = false;
 
-                      //TODO: Pass the id here of the selected record
-                      // in the table.
+                      if (kDebugMode) {
+                        print(RoutesHandler.detailsScreenIds[tableType]);
+                      }
+
                       Navigator.pushNamed(
                         context,
-                        AdmissionDetailsScreen.id,
+                        RoutesHandler.detailsScreenIds[tableType] ??
+                            AdmissionDetailsScreen.id,
                         arguments: 'id',
                       );
                     },
@@ -152,9 +167,11 @@ class _MyTableCellBuilder extends StatelessWidget {
       content: headers[index].contents,
       hoverColor: kOffWhiteColor,
       isSelected: isSelected,
-      onTap: () {
-        provider.selectHeader(index);
-      },
+      onTap: provider is HomeProvider
+          ? () {
+              provider.selectHeader(index);
+            }
+          : null,
     );
   }
 

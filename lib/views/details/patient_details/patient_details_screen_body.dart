@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_details_block.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/derived_components/my_table.dart';
-import 'package:hospital_database_app/models/core/admission_details.dart';
+import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
 import 'package:provider/provider.dart';
 
-class AdmissionDetailsScreenBody extends StatelessWidget {
-  const AdmissionDetailsScreenBody({
+class PatientDetailsScreenBody extends StatelessWidget {
+  const PatientDetailsScreenBody({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final provider = context.read<DetailsProvider>();
-    final details = provider.details as AdmissionDetails;
+    final details = provider.details as PatientDetails;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -29,44 +29,17 @@ class AdmissionDetailsScreenBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     MyDetailsBlock(
-                      details: details.admission,
-                      heading: 'Admission Details',
-                      showEdit: true,
-                    ),
-                    const SizedBox(
-                      width: 120,
-                    ),
-                    MyDetailsBlock(
-                      details: details.transaction,
-                      heading: 'Transactions',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 120),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    MyDetailsBlock(
                       details: details.patient,
-                      heading: 'Patient',
+                      heading: 'Patient Record',
+                      showEdit: true,
                       lastIsFour: true,
                     ),
                     const SizedBox(
                       width: 120,
                     ),
                     MyDetailsBlock(
-                      details: details.doctor,
-                      heading: 'Doctor',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 120),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    MyDetailsBlock(
-                      details: details.room,
-                      heading: 'Room',
+                      details: details.contactPerson,
+                      heading: 'Contact Person',
                     ),
                   ],
                 ),
@@ -75,7 +48,7 @@ class AdmissionDetailsScreenBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Procedures',
+                      'Admissions',
                       style: kBoldStyle.copyWith(fontSize: kXLargeSize),
                     ),
                     const SizedBox(height: 30),
@@ -89,7 +62,7 @@ class AdmissionDetailsScreenBody extends StatelessWidget {
                             bodyRows: provider.bodyRows,
                             headers: provider.headers,
                             provider: provider,
-                            tableType: TableType.procedures,
+                            tableType: TableType.admissions,
                           ),
                         );
                       },

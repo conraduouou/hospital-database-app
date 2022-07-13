@@ -82,6 +82,7 @@ class HomeScreenBody extends StatelessWidget {
                 bodyRows: provider.bodyRows,
                 provider: provider,
                 isOpened: isOpened,
+                tableType: provider.headingType,
               ),
             );
           },

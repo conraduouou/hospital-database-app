@@ -15,6 +15,8 @@ class ColumnField {
   bool shouldShow;
   bool isSelected;
 
+  /// Determines whether this specific column field can be triggered viewable
+  /// or not via the `shouldShow` property.
   final bool isRemovable;
 
   // admission fields
@@ -86,6 +88,10 @@ class ColumnField {
     '55 Street, Mexico, Pampanga',
   ];
 
+  static final admissionInPatientHeaders = Map.fromEntries(
+      admissionHeaders.entries.where((e) => e.key != 'Patient name'))
+    ..update('Illness', (value) => {0: const FixedColumnWidth(140), 1: false});
+
   static const roomHeaders = <String, Map<int, dynamic>>{
     'Room number': {0: roomNumberWidth, 1: false},
     'Type': {0: roomTypeWidth, 1: false},
@@ -150,12 +156,9 @@ class ColumnField {
     '3/15/2022',
   ];
 
-  static const samples = <TableType, List<String>>{
-    TableType.admissions: admissionSample,
-    TableType.patients: patientSample,
-    TableType.rooms: roomSample,
-    TableType.doctors: doctorSample,
-    TableType.procedures: procedureSample,
+  static final detailsHeaders = <TableType, Map<String, Map<int, dynamic>>>{
+    TableType.admissions: procedureInAdmissionHeaders,
+    TableType.patients: admissionInPatientHeaders,
   };
 
   static const headers = <TableType, Map<String, Map<int, dynamic>>>{
@@ -164,5 +167,13 @@ class ColumnField {
     TableType.rooms: roomHeaders,
     TableType.doctors: doctorHeaders,
     TableType.procedures: procedureHeaders,
+  };
+
+  static const samples = <TableType, List<String>>{
+    TableType.admissions: admissionSample,
+    TableType.patients: patientSample,
+    TableType.rooms: roomSample,
+    TableType.doctors: doctorSample,
+    TableType.procedures: procedureSample,
   };
 }

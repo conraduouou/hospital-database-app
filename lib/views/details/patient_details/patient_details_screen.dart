@@ -4,13 +4,13 @@ import 'package:hospital_database_app/derived_components/appbar_options.dart';
 import 'package:hospital_database_app/derived_components/provided_appbar.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
-import 'package:hospital_database_app/views/details/admission_details/admission_details_screen_body.dart';
+import 'package:hospital_database_app/views/details/patient_details/patient_details_screen_body.dart';
 import 'package:provider/provider.dart';
 
-class AdmissionDetailsScreen extends StatelessWidget {
-  const AdmissionDetailsScreen({Key? key}) : super(key: key);
+class PatientDetailsScreen extends StatelessWidget {
+  const PatientDetailsScreen({Key? key}) : super(key: key);
 
-  static const id = '/details/admission';
+  static const id = '/details/patient';
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AdmissionDetailsScreen extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (context) => DetailsProvider(
-        tableType: TableType.admissions,
+        tableType: TableType.patients,
       ),
       child: GestureDetector(
         onTap: appBarProvider.unshowOptions,
@@ -28,7 +28,7 @@ class AdmissionDetailsScreen extends StatelessWidget {
           body: Stack(
             clipBehavior: Clip.none,
             children: const [
-              AdmissionDetailsScreenBody(),
+              PatientDetailsScreenBody(),
               AppBarOptions(),
             ],
           ),

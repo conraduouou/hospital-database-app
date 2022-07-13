@@ -1,11 +1,14 @@
+import 'package:hospital_database_app/constants.dart';
+import 'package:hospital_database_app/models/core/details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
 import 'package:intl/intl.dart';
 
-class AdmissionDetails {
+class AdmissionDetails implements Details {
   AdmissionDetails({
+    this.tableType = TableType.admissions,
     this.admissionId = 'AID-0012',
-    // this.admissionDate,
-    // this.dateDischarged,
+    this.admissionDate,
+    this.dateDischarged,
     this.illness = 'Tuberculosis',
     this.stayDuration = 26,
     this.professionalFee = 50000,
@@ -22,20 +25,50 @@ class AdmissionDetails {
     this.roomType = 'Intensive Care Unit (ICU)',
     this.roomCost = 3500,
     this.procedures,
-  });
+  }) {
+    procedures = <ProcedureDetails>[
+      ProcedureDetails(
+        id: '0012',
+        name: 'Antigen Testing',
+        cost: 4000,
+        labNumber: '00154',
+        procedureDate: DateTime(2022, 3, 15),
+      ),
+      ProcedureDetails(
+        id: '0045',
+        name: 'X-ray',
+        cost: 2000,
+        labNumber: '00123',
+        procedureDate: DateTime(2022, 3, 15),
+      ),
+      ProcedureDetails(
+        id: '00453',
+        name: 'Antigen Testing',
+        cost: 4000,
+        labNumber: '00453',
+        procedureDate: DateTime(2022, 3, 15),
+      )
+    ];
+
+    admissionDate = DateTime(2022, 3, 14);
+    dateDischarged = DateTime(2022, 4, 9);
+  }
+
+  @override
+  final TableType tableType;
 
   // admission-specific details
   String admissionId;
-  DateTime admissionDate = DateTime(2022, 3, 14);
-  DateTime dateDischarged = DateTime(2022, 4, 9);
+  DateTime? admissionDate;
+  DateTime? dateDischarged;
   String illness;
   int stayDuration;
 
   // grouped admission-specific data
   Map<String, String> get admission => <String, String>{
         'Admission ID': admissionId,
-        'Admission date': DateFormat('M/d/y').format(admissionDate),
-        'Date discharged': DateFormat('M/d/y').format(dateDischarged),
+        'Admission date': DateFormat.yMd().format(admissionDate!),
+        'Date discharged': DateFormat.yMd().format(dateDischarged!),
         'Illness': illness,
         'Stay duration': stayDuration.toString(),
       };
@@ -91,30 +124,69 @@ class AdmissionDetails {
         'Cost': '${roomCost.toStringAsFixed(0)} php',
       };
 
-  List<ProcedureDetails>? procedures = <ProcedureDetails>[
-    ProcedureDetails(
-      id: '0012',
-      name: 'Antigen Testing',
-      cost: 4000,
-      labNumber: '00154',
-      procedureDate: DateTime(2022, 3, 15),
-    ),
-    ProcedureDetails(
-      id: '0045',
-      name: 'X-ray',
-      cost: 2000,
-      labNumber: '00123',
-      procedureDate: DateTime(2022, 3, 15),
-    ),
-    ProcedureDetails(
-      id: '00453',
-      name: 'Antigen Testing',
-      cost: 4000,
-      labNumber: '00453',
-      procedureDate: DateTime(2022, 3, 15),
-    )
-  ];
+  List<ProcedureDetails>? procedures;
+
+  String get admissionDateFormatted => DateFormat.yMd().format(admissionDate!);
+  String get dateDischargedFormatted =>
+      DateFormat.yMd().format(dateDischarged!);
 
   String get totalCost =>
       '${(professionalFee + roomFee + labFee).toStringAsFixed(0)} php';
+
+  @override
+  List<List<String>> get extraData {
+    // return none if ever procedures isn't properly supplied
+    if (procedures == null) {
+      return [];
+    }
+
+    final toReturn = <List<String>>[];
+
+    for (final procedure in procedures!) {
+      final procedureDetails = <String>[];
+
+      procedureDetails.add(procedure.id!);
+      procedureDetails.add(procedure.name!);
+      procedureDetails.add(procedure.costString);
+      procedureDetails.add(procedure.labNumber!);
+      procedureDetails.add(procedure.procedureDateFormatted);
+
+      toReturn.add(procedureDetails);
+    }
+
+    return toReturn;
+  }
+
+  @override
+  List<String> get bodyData {
+    if (tableType == TableType.admissions ||
+        tableType == TableType.procedures) {
+      return [
+        admissionId,
+        admissionDateFormatted,
+        patientName,
+        illness,
+        doctorName,
+        roomNumber.toString()
+      ];
+    } else if (tableType == TableType.patients) {
+      return [
+        admissionId,
+        admissionDateFormatted,
+        illness,
+        doctorName,
+        roomNumber.toString()
+      ];
+    } else if (tableType == TableType.doctors) {
+      return [
+        admissionId,
+        admissionDateFormatted,
+        dateDischargedFormatted,
+        patientName,
+        roomNumber.toString(),
+      ];
+    }
+
+    throw 'Unexpected table type supplied in AdmissionDetails class.';
+  }
 }
