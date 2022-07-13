@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_error_widget.dart';
 import 'package:hospital_database_app/components/my_progress_indicator.dart';
 
-class AnimatedDetailsBody extends StatelessWidget {
-  const AnimatedDetailsBody({
+class CrossFadedWrapper extends StatelessWidget {
+  const CrossFadedWrapper({
     Key? key,
     required this.inAsync,
     this.loadingWidget,

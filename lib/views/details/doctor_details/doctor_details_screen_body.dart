@@ -22,7 +22,7 @@ class DoctorDetailsScreenBody extends StatelessWidget {
         Selector<DetailsProvider, bool>(
           selector: (ctx, provider) => provider.inAsync,
           builder: (ctx, inAsync, child) {
-            return AnimatedDetailsBody(
+            return CrossFadedWrapper(
               inAsync: inAsync,
               actualOrErrorWidget: Builder(
                 builder: (context) {

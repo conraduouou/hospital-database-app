@@ -13,6 +13,7 @@ class PatientDetails implements Details {
     this.contactPersonName = 'Ana dela Cruz',
     this.contactPersonRelation = 'Mother',
     this.contactPersonNumber = '0912 345 2341',
+    this.admissions,
   });
 
   // patient-specific details
@@ -62,17 +63,6 @@ class PatientDetails implements Details {
 
   @override
   List<List<String>> getExtraData() {
-    // delete when real data is available
-    admissions = <AdmissionDetails>[
-      AdmissionDetails(
-        admissionId: 'AID-0012',
-        admissionDate: DateTime(2022, 3, 14),
-        illness: 'Tuberculosis',
-        doctorName: 'Dr. Angel R. Sikat',
-        roomNumber: 301,
-      ),
-    ];
-
     // return none if ever procedures isn't properly supplied
     if (admissions == null) {
       return [];

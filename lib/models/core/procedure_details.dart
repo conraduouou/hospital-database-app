@@ -64,18 +64,6 @@ class ProcedureDetails implements Details {
 
   @override
   List<List<String>> getExtraData() {
-    // delete when real data is available
-    admissions = <AdmissionDetails>[
-      AdmissionDetails(
-        admissionId: 'AID-0012',
-        admissionDate: DateTime(2022, 3, 14),
-        patientName: 'John Lloyd dela Cruz',
-        illness: 'Tuberculosis',
-        doctorName: 'Dr. Angel R. Sikat',
-        roomNumber: 301,
-      )
-    ];
-
     // return none if ever procedures isn't properly supplied
     if (admissions == null) {
       return [];

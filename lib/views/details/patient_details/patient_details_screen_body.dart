@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_details_block.dart';
+import 'package:hospital_database_app/components/my_error_widget.dart';
 import 'package:hospital_database_app/constants.dart';
+import 'package:hospital_database_app/derived_components/animated_details_body.dart';
 import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
 import 'package:hospital_database_app/derived_components/details_body.dart';
@@ -14,28 +16,44 @@ class PatientDetailsScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<DetailsProvider>();
-    final details = provider.detailsController as PatientDetails;
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        DetailsBody(
-          provider: provider,
-          extraDataHeading: 'Admissions',
-          extraDataTableType: TableType.admissions,
-          blockRows: [
-            [
-              MyDetailsBlock(
-                details: details.patient,
-                heading: 'Patient Record',
-                showEdit: true,
-                lastIsFour: true,
+        Selector<DetailsProvider, bool>(
+          selector: (ctx, provider) => provider.inAsync,
+          builder: (ctx, inAsync, child) {
+            return CrossFadedWrapper(
+              inAsync: inAsync,
+              actualOrErrorWidget: Builder(
+                builder: (context) {
+                  if (provider.details == null) {
+                    return const MyErrorWidget();
+                  } else {
+                    final details = provider.details! as PatientDetails;
+                    return DetailsBody(
+                      provider: provider,
+                      extraDataHeading: 'Admissions',
+                      extraDataTableType: TableType.admissions,
+                      blockRows: [
+                        [
+                          MyDetailsBlock(
+                            details: details.patient,
+                            heading: 'Patient Record',
+                            showEdit: true,
+                            lastIsFour: true,
+                          ),
+                          MyDetailsBlock(
+                            details: details.contactPerson,
+                            heading: 'Contact Person',
+                          ),
+                        ],
+                      ],
+                    );
+                  }
+                },
               ),
-              MyDetailsBlock(
-                details: details.contactPerson,
-                heading: 'Contact Person',
-              ),
-            ],
-          ],
+            );
+          },
         ),
       ],
     );
