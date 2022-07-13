@@ -3,6 +3,7 @@ import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/views/details/admission_details/admission_details_screen.dart';
 import 'package:hospital_database_app/views/details/doctor_details/doctor_details_screen.dart';
 import 'package:hospital_database_app/views/details/patient_details/patient_details_screen.dart';
+import 'package:hospital_database_app/views/details/procedure_details/procedure_details_screen.dart';
 import 'package:hospital_database_app/views/details/room_details/room_details_screen.dart';
 import 'package:hospital_database_app/views/home/home_screen.dart';
 import 'package:hospital_database_app/views/login_screen.dart';
@@ -28,6 +29,7 @@ class RoutesHandler {
     TableType.patients: PatientDetailsScreen.id,
     TableType.rooms: RoomDetailsScreen.id,
     TableType.doctors: DoctorDetailsScreen.id,
+    TableType.procedures: ProcedureDetailsScreen.id,
   };
 
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -58,6 +60,13 @@ class RoutesHandler {
         return MaterialPageRoute(
           builder: (context) {
             return const DoctorDetailsScreen();
+          },
+        );
+      case ProcedureDetailsScreen.id:
+        // final data = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (context) {
+            return const ProcedureDetailsScreen();
           },
         );
     }

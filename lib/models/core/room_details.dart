@@ -10,17 +10,7 @@ class RoomDetails implements Details {
     this.roomCapacity = 4,
     this.occupantCount = 1,
     this.patients,
-  }) {
-    patients = <PatientDetails>[
-      PatientDetails(
-        id: 'PID-0001',
-        name: 'John Lloyd Dela Cruz',
-        age: 27,
-        gender: 'M',
-        address: '55 Street, Mexico, Pampanga',
-      ),
-    ];
-  }
+  });
 
   // room-specific data
   int roomNumber;
@@ -55,6 +45,17 @@ class RoomDetails implements Details {
 
   @override
   List<List<String>> getExtraData() {
+    // delete when real data is available
+    patients = <PatientDetails>[
+      PatientDetails(
+        id: 'PID-0001',
+        name: 'John Lloyd Dela Cruz',
+        age: 27,
+        gender: 'M',
+        address: '55 Street, Mexico, Pampanga',
+      ),
+    ];
+
     if (patients == null) {
       throw 'Patients aren\'t supplied correctly';
     }

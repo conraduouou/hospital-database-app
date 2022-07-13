@@ -5,15 +5,18 @@ import 'package:intl/intl.dart';
 
 class ProcedureDetails implements Details {
   ProcedureDetails({
-    this.id,
-    this.name,
-    this.cost,
+    this.id = '301',
+    this.name = 'Antigen Testing',
+    this.cost = 4000.0,
     this.lastDone,
-    this.timesDone,
-    this.labNumber,
+    this.timesDone = 4,
+    this.labNumber = '00154',
     this.procedureDate,
     this.admissions,
-  });
+  }) {
+    lastDone = DateTime(2022, 3, 15);
+    procedureDate = DateTime(2022, 3, 15);
+  }
 
   String? id;
   String? name;
@@ -29,6 +32,12 @@ class ProcedureDetails implements Details {
   String get costString => '${cost!.toStringAsFixed(0)} php';
   String get lastDoneFormatted => DateFormat.yMd().format(lastDone!);
   String get procedureDateFormatted => DateFormat.yMd().format(procedureDate!);
+
+  Map<String, String> get procedure => {
+        'Procedure ID': id!,
+        'Name': name!,
+        'Cost': costString,
+      };
 
   @override
   List<String> getBodyData(TableType tableType) {
@@ -55,6 +64,18 @@ class ProcedureDetails implements Details {
 
   @override
   List<List<String>> getExtraData() {
+    // delete when real data is available
+    admissions = <AdmissionDetails>[
+      AdmissionDetails(
+        admissionId: 'AID-0012',
+        admissionDate: DateTime(2022, 3, 14),
+        patientName: 'John Lloyd dela Cruz',
+        illness: 'Tuberculosis',
+        doctorName: 'Dr. Angel R. Sikat',
+        roomNumber: 301,
+      )
+    ];
+
     // return none if ever procedures isn't properly supplied
     if (admissions == null) {
       return [];

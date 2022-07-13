@@ -169,6 +169,7 @@ class ColumnField {
     TableType.patients: admissionInPatientHeaders,
     TableType.rooms: patientHeaders,
     TableType.doctors: admissionInDoctorHeaders,
+    TableType.procedures: admissionHeaders,
   };
 
   static const headers = <TableType, Map<String, Map<int, dynamic>>>{

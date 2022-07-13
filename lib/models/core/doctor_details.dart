@@ -11,17 +11,7 @@ class DoctorDetails implements Details {
     this.admissionCount = 4,
     this.handlingCount = 3,
     this.admissions,
-  }) {
-    admissions = <AdmissionDetails>[
-      AdmissionDetails(
-        admissionId: 'AID-0012',
-        admissionDate: DateTime(2022, 3, 14),
-        dateDischarged: DateTime(2022, 4, 9),
-        patientName: 'John Lloyd dela Cruz',
-        roomNumber: 301,
-      ),
-    ];
-  }
+  });
 
   String id;
   String name;
@@ -52,6 +42,17 @@ class DoctorDetails implements Details {
 
   @override
   List<List<String>> getExtraData() {
+    // delete when real data is available
+    admissions = <AdmissionDetails>[
+      AdmissionDetails(
+        admissionId: 'AID-0012',
+        admissionDate: DateTime(2022, 3, 14),
+        dateDischarged: DateTime(2022, 4, 9),
+        patientName: 'John Lloyd dela Cruz',
+        roomNumber: 301,
+      ),
+    ];
+
     // return none if ever procedures isn't properly supplied
     if (admissions == null) {
       return [];
