@@ -2,11 +2,11 @@ import 'package:hospital_database_app/constants.dart';
 
 /// Made to be implemented by any _`Details` class.
 abstract class Details {
-  Details({
-    required this.tableType,
-    required this.extraData,
-    required this.bodyData,
-  });
+  // Details({
+  //   required this.tableType,
+  //   required this.extraData,
+  //   required this.bodyData,
+  // });
 
   /// Specifies which context this class is used, namely, the table. For
   /// example, a `ProcedureDetails` class can be given the value
@@ -17,7 +17,7 @@ abstract class Details {
   /// the same type of the implementation of this class (that is,
   /// `AdmissionDetails`, `PatientDetails`, etc.), it must mean that that class
   /// is being used in the `HomeScreen`.
-  final TableType tableType;
+  // final TableType tableType;
 
   /// This is only supplied whenever the implementation of this class is
   /// not of the same type as the supplied `tableType` parameter.
@@ -27,7 +27,7 @@ abstract class Details {
   /// procedures done during that single admission; therefore, the
   /// `AdmissionDetails.bodyData` contains a `List` of `ProcedureDetails`, with
   /// each containing needed data for a single record.
-  final List<List<String>> extraData;
+  List<List<String>> getExtraData();
 
   /// This returns the data with respect to the supplied `TableType`, that is,
   /// depending on the screen.
@@ -43,5 +43,5 @@ abstract class Details {
   /// The `AdmissionDetails` class would be the one most likely to use this the
   /// most, since it has different variations of data to view in various
   /// screens.
-  final List<String> bodyData;
+  List<String> getBodyData(TableType tableType);
 }

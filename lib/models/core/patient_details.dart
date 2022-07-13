@@ -4,7 +4,6 @@ import 'package:hospital_database_app/models/core/details.dart';
 
 class PatientDetails implements Details {
   PatientDetails({
-    this.tableType = TableType.patients,
     this.id = 'PID-0031',
     this.name = 'John Lloyd dela Cruz',
     this.address = '55 Street, Mexico, Pampanga',
@@ -25,9 +24,6 @@ class PatientDetails implements Details {
       ),
     ];
   }
-
-  @override
-  final TableType tableType;
 
   // patient-specific details
   String id;
@@ -60,7 +56,7 @@ class PatientDetails implements Details {
       };
 
   @override
-  List<String> get bodyData {
+  List<String> getBodyData(TableType tableType) {
     if (tableType == TableType.rooms || tableType == TableType.patients) {
       return [
         id,
@@ -75,7 +71,7 @@ class PatientDetails implements Details {
   }
 
   @override
-  List<List<String>> get extraData {
+  List<List<String>> getExtraData() {
     // return none if ever procedures isn't properly supplied
     if (admissions == null) {
       return [];

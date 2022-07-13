@@ -134,31 +134,7 @@ class AdmissionDetails implements Details {
       '${(professionalFee + roomFee + labFee).toStringAsFixed(0)} php';
 
   @override
-  List<List<String>> get extraData {
-    // return none if ever procedures isn't properly supplied
-    if (procedures == null) {
-      throw 'Procedures aren\'t properly supplied';
-    }
-
-    final toReturn = <List<String>>[];
-
-    for (final procedure in procedures!) {
-      final procedureDetails = <String>[];
-
-      procedureDetails.add(procedure.id!);
-      procedureDetails.add(procedure.name!);
-      procedureDetails.add(procedure.costString);
-      procedureDetails.add(procedure.labNumber!);
-      procedureDetails.add(procedure.procedureDateFormatted);
-
-      toReturn.add(procedureDetails);
-    }
-
-    return toReturn;
-  }
-
-  @override
-  List<String> get bodyData {
+  List<String> getBodyData(TableType tableType) {
     if (tableType == TableType.admissions ||
         tableType == TableType.procedures) {
       return [
@@ -188,5 +164,29 @@ class AdmissionDetails implements Details {
     }
 
     throw 'Unexpected table type supplied in AdmissionDetails class.';
+  }
+
+  @override
+  List<List<String>> getExtraData() {
+    // return none if ever procedures isn't properly supplied
+    if (procedures == null) {
+      throw 'Procedures aren\'t properly supplied';
+    }
+
+    final toReturn = <List<String>>[];
+
+    for (final procedure in procedures!) {
+      final procedureDetails = <String>[];
+
+      procedureDetails.add(procedure.id!);
+      procedureDetails.add(procedure.name!);
+      procedureDetails.add(procedure.costString);
+      procedureDetails.add(procedure.labNumber!);
+      procedureDetails.add(procedure.procedureDateFormatted);
+
+      toReturn.add(procedureDetails);
+    }
+
+    return toReturn;
   }
 }

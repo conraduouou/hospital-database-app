@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 class ProcedureDetails implements Details {
   ProcedureDetails({
-    this.tableType = TableType.procedures,
     this.id,
     this.name,
     this.cost,
@@ -14,9 +13,6 @@ class ProcedureDetails implements Details {
     this.labNumber,
     this.procedureDate,
   });
-
-  @override
-  TableType tableType;
 
   String? id;
   String? name;
@@ -34,7 +30,7 @@ class ProcedureDetails implements Details {
   String get procedureDateFormatted => DateFormat.yMd().format(procedureDate!);
 
   @override
-  List<String> get bodyData {
+  List<String> getBodyData(TableType tableType) {
     if (tableType == TableType.admissions) {
       return [
         id!,
@@ -57,7 +53,7 @@ class ProcedureDetails implements Details {
   }
 
   @override
-  List<List<String>> get extraData {
+  List<List<String>> getExtraData() {
     // return none if ever procedures isn't properly supplied
     if (admissions == null) {
       return [];

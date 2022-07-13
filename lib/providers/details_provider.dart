@@ -42,7 +42,7 @@ class DetailsProvider with ChangeNotifier {
       ...(() {
         try {
           final rows = <List<ColumnField>>[];
-          final extraData = details.extraData;
+          final extraData = details.getExtraData();
 
           for (int i = 0; i < extraData.length; i++) {
             rows.add(
