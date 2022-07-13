@@ -11,17 +11,19 @@ class DetailsProvider with ChangeNotifier {
     required this.tableType,
   }) {
     // supply functions for getting different tables
-    getDetails = <TableType, VoidCallback>{
-      TableType.admissions: getAdmissionDetails,
-      TableType.patients: getPatientDetails,
-      // TableType.rooms: getRoomDetails,
-      TableType.procedures: getProcedureDetails,
-      // TableType.doctors: getDoctorDetails,
+    _getDetails = <TableType, VoidCallback>{
+      TableType.admissions: _getAdmissionDetails,
+      TableType.patients: _getPatientDetails,
+      // TableType.rooms: _getRoomDetails,
+      TableType.procedures: _getProcedureDetails,
+      // TableType.doctors: _getDoctorDetails,
     };
 
-    getDetails[tableType]!();
-    final headerData = ColumnField.detailsHeaders[tableType]!;
+    // call appropriate method for getting details according to tableType
+    _getDetails[tableType]!();
 
+    // generate ColumnField objects from static data headersData
+    final headerData = ColumnField.detailsHeaders[tableType]!;
     headers = List.generate(
       headerData.length,
       (index) {
@@ -30,41 +32,42 @@ class DetailsProvider with ChangeNotifier {
         return ColumnField(
           contents: key,
           columnSize: headerData[key]![0],
-          isRemovable: headerData[key]![1],
         );
       },
     );
 
+    // generate rows consisting of ColumnFields according to the extraData
+    // parameter of the details object
     bodyRows = <List<ColumnField>>[
       ...(() {
-        final rows = <List<ColumnField>>[];
-        final bodyData = details.extraData;
+        try {
+          final rows = <List<ColumnField>>[];
+          final extraData = details.extraData;
 
-        if (kDebugMode) {
-          print(bodyData.length);
+          for (int i = 0; i < extraData.length; i++) {
+            rows.add(
+              (() {
+                final columnFields = <ColumnField>[];
+
+                for (int j = 0; j < extraData[i].length; j++) {
+                  columnFields.add(
+                    ColumnField(
+                      contents: extraData[i][j],
+                      columnSize: headers[j].columnSize,
+                      isRemovable: headers[j].isRemovable,
+                    ),
+                  );
+                }
+
+                return columnFields;
+              })(),
+            );
+          }
+
+          return rows;
+        } catch (e) {
+          return [];
         }
-
-        for (int i = 0; i < bodyData.length; i++) {
-          rows.add(
-            (() {
-              final columnFields = <ColumnField>[];
-
-              for (int j = 0; j < bodyData[i].length; j++) {
-                columnFields.add(
-                  ColumnField(
-                    contents: bodyData[i][j],
-                    columnSize: headers[j].columnSize,
-                    isRemovable: headers[j].isRemovable,
-                  ),
-                );
-              }
-
-              return columnFields;
-            })(),
-          );
-        }
-
-        return rows;
       })()
     ];
   }
@@ -83,26 +86,26 @@ class DetailsProvider with ChangeNotifier {
   /// The object that contains all the values for a necessary table, often extra.
   late Details details;
 
-  late final Map<TableType, VoidCallback> getDetails;
+  late final Map<TableType, VoidCallback> _getDetails;
 
   //TODO: implement getting of necessary data for the details screen.
-  void getAdmissionDetails() {
+  void _getAdmissionDetails() {
     details = AdmissionDetails();
   }
 
-  void getPatientDetails() {
+  void _getPatientDetails() {
     details = PatientDetails();
   }
 
-  // void getRoomDetails() {
+  // void _getRoomDetails() {
   //   details = RoomDetails();
   // }
 
-  void getProcedureDetails() {
+  void _getProcedureDetails() {
     details = ProcedureDetails();
   }
 
-  // void getDoctorDetails() {
+  // void _getDoctorDetails() {
   //   details = DoctorDetails();
   // }
 }

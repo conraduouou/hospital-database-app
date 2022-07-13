@@ -137,7 +137,7 @@ class AdmissionDetails implements Details {
   List<List<String>> get extraData {
     // return none if ever procedures isn't properly supplied
     if (procedures == null) {
-      return [];
+      throw 'Procedures aren\'t properly supplied';
     }
 
     final toReturn = <List<String>>[];
