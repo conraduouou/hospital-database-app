@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_database_app/models/helpers/sql_api_helper.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
 import 'package:hospital_database_app/routes.dart';
 import 'package:hospital_database_app/views/login_screen.dart';
@@ -11,8 +12,11 @@ class HospitalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AppBarProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppBarProvider()),
+        Provider(create: (context) => SQLApiHelper()),
+      ],
       child: TooltipVisibility(
         visible: false,
         child: MaterialApp(

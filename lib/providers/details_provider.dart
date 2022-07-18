@@ -133,68 +133,68 @@ class DetailsProvider with ChangeNotifier {
   }
 
   void _getPatientDetails() {
-    detailsSink.add(
-      PatientDetails(
-        admissions: <AdmissionDetails>[
-          AdmissionDetails(
-            admissionId: 'AID-0012',
-            admissionDate: DateTime(2022, 3, 14),
-            illness: 'Tuberculosis',
-            doctorName: 'Dr. Angel R. Sikat',
-            roomNumber: 301,
-          ),
-        ],
-      ),
-    );
+    // detailsSink.add(
+    //   PatientDetails(
+    //     admissions: <AdmissionDetails>[
+    //       AdmissionDetails(
+    //         admissionId: 'AID-0012',
+    //         admissionDate: DateTime(2022, 3, 14),
+    //         illness: 'Tuberculosis',
+    //         doctorName: 'Dr. Angel R. Sikat',
+    //         roomNumber: 301,
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   void _getRoomDetails() {
-    detailsSink.add(
-      RoomDetails(
-        patients: <PatientDetails>[
-          PatientDetails(
-            id: 'PID-0001',
-            name: 'John Lloyd Dela Cruz',
-            age: 27,
-            gender: 'M',
-            address: '55 Street, Mexico, Pampanga',
-          ),
-        ],
-      ),
-    );
+    // detailsSink.add(
+    //   RoomDetails(
+    //     patients: <PatientDetails>[
+    //       PatientDetails(
+    //         id: 'PID-0001',
+    //         name: 'John Lloyd Dela Cruz',
+    //         age: 27,
+    //         gender: 'M',
+    //         address: '55 Street, Mexico, Pampanga',
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   void _getProcedureDetails() {
-    detailsSink.add(
-      ProcedureDetails(
-        admissions: <AdmissionDetails>[
-          AdmissionDetails(
-            admissionId: 'AID-0012',
-            admissionDate: DateTime(2022, 3, 14),
-            patientName: 'John Lloyd dela Cruz',
-            illness: 'Tuberculosis',
-            doctorName: 'Dr. Angel R. Sikat',
-            roomNumber: 301,
-          )
-        ],
-      ),
-    );
+    // detailsSink.add(
+    //   ProcedureDetails(
+    //     admissions: <AdmissionDetails>[
+    //       AdmissionDetails(
+    //         admissionId: 'AID-0012',
+    //         admissionDate: DateTime(2022, 3, 14),
+    //         patientName: 'John Lloyd dela Cruz',
+    //         illness: 'Tuberculosis',
+    //         doctorName: 'Dr. Angel R. Sikat',
+    //         roomNumber: 301,
+    //       )
+    //     ],
+    //   ),
+    // );
   }
 
   void _getDoctorDetails() {
-    detailsSink.add(
-      DoctorDetails(
-        admissions: <AdmissionDetails>[
-          AdmissionDetails(
-            admissionId: 'AID-0012',
-            admissionDate: DateTime(2022, 3, 14),
-            dateDischarged: DateTime(2022, 4, 9),
-            patientName: 'John Lloyd dela Cruz',
-            roomNumber: 301,
-          ),
-        ],
-      ),
-    );
+    // detailsSink.add(
+    //   DoctorDetails(
+    //     admissions: <AdmissionDetails>[
+    //       AdmissionDetails(
+    //         admissionId: 'AID-0012',
+    //         admissionDate: DateTime(2022, 3, 14),
+    //         dateDischarged: DateTime(2022, 4, 9),
+    //         patientName: 'John Lloyd dela Cruz',
+    //         roomNumber: 301,
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   void _getDetails(TableType tableType) async {

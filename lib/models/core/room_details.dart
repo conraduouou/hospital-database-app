@@ -4,42 +4,42 @@ import 'package:hospital_database_app/models/core/patient_details.dart';
 
 class RoomDetails implements Details {
   RoomDetails({
-    this.roomNumber = 301,
-    this.roomType = 'Intensive Care Unit (ICU)',
-    this.roomCost = 3500.0,
-    this.roomCapacity = 4,
-    this.occupantCount = 1,
+    this.number,
+    this.type,
+    this.cost,
+    this.capacity,
+    this.occupantCount,
     this.patients,
   });
 
   // room-specific data
-  int roomNumber;
-  String roomType;
-  double roomCost;
-  int roomCapacity;
-  int occupantCount;
+  int? number;
+  String? type;
+  double? cost;
+  int? capacity;
+  int? occupantCount;
 
   // for getExtraData
   List<PatientDetails>? patients;
 
-  String get roomCostString => '${roomCost.toStringAsFixed(0)} php';
+  String get roomCostString => '${cost!.toStringAsFixed(0)} php';
 
   Map<String, String> get room => {
-        'Room number': roomNumber.toString(),
-        'Type': roomType,
+        'Room number': number!.toString(),
+        'Type': type!,
         'Cost': roomCostString,
-        'Capacity': roomCapacity.toString(),
-        'Occupants': occupantCount.toString(),
+        'Capacity': capacity!.toString(),
+        'Occupants': occupantCount!.toString(),
       };
 
   @override
   List<String> getBodyData(TableType tableType) {
     return [
-      roomNumber.toString(),
-      roomType,
+      number!.toString(),
+      type!,
       roomCostString,
-      roomCapacity.toString(),
-      occupantCount.toString(),
+      capacity!.toString(),
+      occupantCount!.toString(),
     ];
   }
 
@@ -54,11 +54,11 @@ class RoomDetails implements Details {
     for (final patient in patients!) {
       final patientDetails = <String>[];
 
-      patientDetails.add(patient.id);
-      patientDetails.add(patient.name);
-      patientDetails.add(patient.age.toString());
-      patientDetails.add(patient.gender);
-      patientDetails.add(patient.address);
+      patientDetails.add(patient.id!);
+      patientDetails.add(patient.name!);
+      patientDetails.add(patient.age!.toString());
+      patientDetails.add(patient.gender!);
+      patientDetails.add(patient.address!);
 
       toReturn.add(patientDetails);
     }

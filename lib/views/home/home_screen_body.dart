@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/components/my_dropdown_button.dart';
 import 'package:hospital_database_app/constants.dart';
+import 'package:hospital_database_app/derived_components/cross_faded_wrapper.dart';
 import 'package:hospital_database_app/derived_components/my_table.dart';
 import 'package:hospital_database_app/providers/home_provider.dart';
 import 'package:provider/provider.dart';
@@ -58,32 +59,44 @@ class HomeScreenBody extends StatelessWidget {
           ),
         ),
         Selector<HomeProvider, String>(
-            selector: (ctx, provider) => provider.sortText,
-            builder: (ctx, sortText, child) {
-              return Positioned(
-                right: 92,
-                top: 88,
-                child: MyDropdownButton(
-                  text: sortText.isEmpty ? 'Sort by' : sortText,
-                  textColor: sortText.isEmpty ? kDarkGrayColor : null,
-                ),
-              );
-            }),
+          selector: (ctx, provider) => provider.sortText,
+          builder: (ctx, sortText, child) {
+            return Positioned(
+              right: 92,
+              top: 88,
+              child: MyDropdownButton(
+                text: sortText.isEmpty ? 'Sort by' : sortText,
+                textColor: sortText.isEmpty ? kDarkGrayColor : null,
+              ),
+            );
+          },
+        ),
         Selector<HomeProvider, bool>(
           selector: (ctx, provider) => provider.isOpened,
           builder: (ctx, isOpened, child) {
-            return AnimatedPositioned(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOutQuart,
-              left: !isOpened ? 90 : 300,
-              top: 170,
-              child: MyTable(
-                headers: provider.headers.where((h) => h.shouldShow).toList(),
-                bodyRows: provider.bodyRows,
-                provider: provider,
-                isOpened: isOpened,
-                tableType: provider.headingType,
-              ),
+            return Selector<HomeProvider, bool>(
+              selector: (ctx2, provider) => provider.inAsync,
+              builder: (ctx2, inAsync, child) {
+                return AnimatedPositioned(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOutQuart,
+                  left: !isOpened ? 90 : 300,
+                  top: 170,
+                  width: isOpened ? 888 : 1098,
+                  height: 396,
+                  child: CrossFadedWrapper(
+                    inAsync: inAsync,
+                    child: MyTable(
+                      headers:
+                          provider.headers.where((h) => h.shouldShow).toList(),
+                      bodyRows: provider.bodyRows,
+                      provider: provider,
+                      isOpened: isOpened,
+                      tableType: provider.headingType,
+                    ),
+                  ),
+                );
+              },
             );
           },
         ),

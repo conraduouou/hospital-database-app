@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_details_block.dart';
 import 'package:hospital_database_app/components/my_error_widget.dart';
 import 'package:hospital_database_app/constants.dart';
-import 'package:hospital_database_app/derived_components/animated_details_body.dart';
+import 'package:hospital_database_app/derived_components/cross_faded_wrapper.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
 import 'package:hospital_database_app/derived_components/details_body.dart';
@@ -24,7 +24,7 @@ class AdmissionDetailsScreenBody extends StatelessWidget {
           builder: (ctx, inAsync, child) {
             return CrossFadedWrapper(
               inAsync: inAsync,
-              actualOrErrorWidget: Builder(
+              child: Builder(
                 builder: (context) {
                   if (provider.details == null) {
                     return const MyErrorWidget();
@@ -37,7 +37,7 @@ class AdmissionDetailsScreenBody extends StatelessWidget {
                       blockRows: [
                         [
                           MyDetailsBlock(
-                            details: details.admission,
+                            details: details.admissionDetails,
                             heading: 'Admission Details',
                             showEdit: true,
                           ),
@@ -48,18 +48,18 @@ class AdmissionDetailsScreenBody extends StatelessWidget {
                         ],
                         [
                           MyDetailsBlock(
-                            details: details.patient,
+                            details: details.patientDetails,
                             heading: 'Patient',
                             lastIsFour: true,
                           ),
                           MyDetailsBlock(
-                            details: details.doctor,
+                            details: details.doctorDetails,
                             heading: 'Doctor',
                           ),
                         ],
                         [
                           MyDetailsBlock(
-                            details: details.room,
+                            details: details.roomDetails,
                             heading: 'Room',
                           ),
                         ],

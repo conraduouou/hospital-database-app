@@ -7,12 +7,12 @@ class CrossFadedWrapper extends StatelessWidget {
     Key? key,
     required this.inAsync,
     this.loadingWidget,
-    this.actualOrErrorWidget,
+    this.child,
   }) : super(key: key);
 
   final bool inAsync;
   final Widget? loadingWidget;
-  final Widget? actualOrErrorWidget;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class CrossFadedWrapper extends StatelessWidget {
       },
       duration: const Duration(milliseconds: 200),
       firstChild: loadingWidget ?? const MyProgressIndicator(),
-      secondChild: actualOrErrorWidget ?? const MyErrorWidget(),
+      secondChild: child ?? const MyErrorWidget(),
     );
   }
 }

@@ -4,39 +4,39 @@ import 'package:hospital_database_app/models/core/details.dart';
 
 class DoctorDetails implements Details {
   DoctorDetails({
-    this.id = 'DID-0031',
-    this.name = 'Dr. Angel R. Sikat',
-    this.pcf = 40,
-    this.department = 'Pulmonology',
-    this.admissionCount = 4,
-    this.handlingCount = 3,
+    this.id,
+    this.name,
+    this.pcf,
+    this.department,
+    this.admissionCount,
+    this.handlingCount,
     this.admissions,
   });
 
-  String id;
-  String name;
-  int pcf;
-  String department;
-  int admissionCount;
-  int handlingCount;
+  String? id;
+  String? name;
+  int? pcf;
+  String? department;
+  int? admissionCount;
+  int? handlingCount;
 
   List<AdmissionDetails>? admissions;
 
   Map<String, String> get doctor => {
-        'Doctor ID': id,
-        'Name': name,
-        'PCF (Peso conversion factor)': pcf.toString(),
-        'Department': department,
+        'Doctor ID': id!,
+        'Name': name!,
+        'PCF (Peso conversion factor)': pcf!.toString(),
+        'Department': department!,
       };
 
   @override
   List<String> getBodyData(TableType tableType) {
     return [
-      id,
-      name,
-      department,
-      admissionCount.toString(),
-      handlingCount.toString(),
+      id!,
+      name!,
+      department!,
+      admissionCount!.toString(),
+      handlingCount!.toString(),
     ];
   }
 
@@ -52,11 +52,11 @@ class DoctorDetails implements Details {
     for (final admission in admissions!) {
       final admissionDetails = <String>[];
 
-      admissionDetails.add(admission.admissionId);
+      admissionDetails.add(admission.id!);
       admissionDetails.add(admission.admissionDateFormatted);
       admissionDetails.add(admission.dateDischargedFormatted);
-      admissionDetails.add(admission.patientName);
-      admissionDetails.add(admission.roomNumber.toString());
+      admissionDetails.add(admission.patient!.name!);
+      admissionDetails.add(admission.room!.number.toString());
 
       toReturn.add(admissionDetails);
     }

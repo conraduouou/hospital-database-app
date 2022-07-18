@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hospital_database_app/components/my_details_block.dart';
 import 'package:hospital_database_app/components/my_error_widget.dart';
 import 'package:hospital_database_app/constants.dart';
-import 'package:hospital_database_app/derived_components/animated_details_body.dart';
+import 'package:hospital_database_app/derived_components/cross_faded_wrapper.dart';
 import 'package:hospital_database_app/models/core/doctor_details.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
 import 'package:hospital_database_app/derived_components/details_body.dart';
@@ -24,7 +24,7 @@ class DoctorDetailsScreenBody extends StatelessWidget {
           builder: (ctx, inAsync, child) {
             return CrossFadedWrapper(
               inAsync: inAsync,
-              actualOrErrorWidget: Builder(
+              child: Builder(
                 builder: (context) {
                   if (provider.details == null) {
                     return const MyErrorWidget();

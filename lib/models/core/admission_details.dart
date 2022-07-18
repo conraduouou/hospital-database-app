@@ -1,99 +1,88 @@
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/details.dart';
+import 'package:hospital_database_app/models/core/doctor_details.dart';
+import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
+import 'package:hospital_database_app/models/core/room_details.dart';
 import 'package:intl/intl.dart';
 
 class AdmissionDetails implements Details {
   AdmissionDetails({
-    this.admissionId = 'AID-0012',
+    this.id,
     this.admissionDate,
     this.dateDischarged,
-    this.illness = 'Tuberculosis',
-    this.stayDuration = 26,
-    this.professionalFee = 50000,
-    this.roomFee = 100000,
-    this.labFee = 7000,
-    this.patientId = 'PID-0001',
-    this.patientName = 'John Lloyd Dela Cruz',
-    this.patientAge = 27,
-    this.patientGender = 'M',
-    this.doctorId = 'DID-0031',
-    this.doctorName = 'Dr. Angel R. Sikat',
-    this.doctorDepartment = 'Pulmonology',
-    this.roomNumber = 301,
-    this.roomType = 'Intensive Care Unit (ICU)',
-    this.roomCost = 3500,
+    this.illness,
+    this.stayDuration,
+    this.professionalFee,
+    this.roomFee,
+    this.labFee,
+    this.patient,
+    this.doctor,
+    this.room,
     this.procedures,
-  }) {
-    admissionDate = DateTime(2022, 3, 14);
-    dateDischarged = DateTime(2022, 4, 9);
-  }
+  });
 
   // admission-specific details
-  String admissionId;
+  String? id;
   DateTime? admissionDate;
   DateTime? dateDischarged;
-  String illness;
-  int stayDuration;
+  String? illness;
+  int? stayDuration;
 
   // grouped admission-specific data
-  Map<String, String> get admission => <String, String>{
-        'Admission ID': admissionId,
+  Map<String, String> get admissionDetails => <String, String>{
+        'Admission ID': id!,
         'Admission date': DateFormat.yMd().format(admissionDate!),
         'Date discharged': DateFormat.yMd().format(dateDischarged!),
-        'Illness': illness,
-        'Stay duration': stayDuration.toString(),
+        'Illness': illness!,
+        'Stay duration': stayDuration!.toString(),
       };
 
   // transaction-specific data
-  double professionalFee;
-  double roomFee;
-  double labFee;
+  double? professionalFee;
+  double? roomFee;
+  double? labFee;
 
   // grouped transaction-specific data
   Map<String, String> get transaction => <String, String>{
-        'Professional fee': '${professionalFee.toStringAsFixed(0)} php',
-        'Room fee': '${roomFee.toStringAsFixed(0)} php',
-        'Lab fee': '${labFee.toStringAsFixed(0)} php',
+        'Professional fee': professionalFee == null
+            ? 'N/A'
+            : '${professionalFee!.toStringAsFixed(0)} php',
+        'Room fee':
+            roomFee == null ? 'N/A' : '${roomFee!.toStringAsFixed(0)} php',
+        'Lab fee': labFee == null ? 'N/A' : '${labFee!.toStringAsFixed(0)} php',
         'Total cost': totalCost,
       };
 
   // patient-specific data
-  String patientId;
-  String patientName;
-  int patientAge;
-  String patientGender;
+  PatientDetails? patient;
 
   // grouped patient-specific data
-  Map<String, String> get patient => <String, String>{
-        'Patient ID': patientId,
-        'Name': patientName,
-        'Age': patientAge.toString(),
-        'Gender': patientGender,
+  Map<String, String> get patientDetails => <String, String>{
+        'Patient ID': patient!.id!,
+        'Name': patient!.name!,
+        'Age': patient!.age.toString(),
+        'Gender': patient!.gender!,
       };
 
   // doctor-specific data
-  String doctorId;
-  String doctorName;
-  String doctorDepartment;
+  DoctorDetails? doctor;
 
   // grouped doctor-specific data
-  Map<String, String> get doctor => <String, String>{
-        'Doctor ID': doctorId,
-        'Name': doctorName,
-        'Department': doctorDepartment,
+  Map<String, String> get doctorDetails => <String, String>{
+        'Doctor ID': doctor!.id!,
+        'Name': doctor!.name!,
+        'Department': doctor!.department!,
       };
 
   // room-specific data
-  int roomNumber;
-  String roomType;
-  double roomCost;
+  RoomDetails? room;
 
   // grouped room-specific data
-  Map<String, String> get room => <String, String>{
-        'Room number': roomNumber.toString(),
-        'Type': roomType,
-        'Cost': '${roomCost.toStringAsFixed(0)} php',
+  Map<String, String> get roomDetails => <String, String>{
+        'Room number': room!.number.toString(),
+        'Type': room!.type!,
+        'Cost': '${room!.cost!.toStringAsFixed(0)} php',
       };
 
   List<ProcedureDetails>? procedures;
@@ -103,35 +92,35 @@ class AdmissionDetails implements Details {
       DateFormat.yMd().format(dateDischarged!);
 
   String get totalCost =>
-      '${(professionalFee + roomFee + labFee).toStringAsFixed(0)} php';
+      '${((professionalFee ?? 0) + (roomFee ?? 0) + (labFee ?? 0)).toStringAsFixed(0)} php';
 
   @override
   List<String> getBodyData(TableType tableType) {
     if (tableType == TableType.admissions ||
         tableType == TableType.procedures) {
       return [
-        admissionId,
+        id!,
         admissionDateFormatted,
-        patientName,
-        illness,
-        doctorName,
-        roomNumber.toString()
+        patient!.name!,
+        illness!,
+        doctor!.name!,
+        room!.number.toString()
       ];
     } else if (tableType == TableType.patients) {
       return [
-        admissionId,
+        id!,
         admissionDateFormatted,
-        illness,
-        doctorName,
-        roomNumber.toString()
+        illness!,
+        doctor!.name!,
+        room!.number.toString()
       ];
     } else if (tableType == TableType.doctors) {
       return [
-        admissionId,
+        id!,
         admissionDateFormatted,
         dateDischargedFormatted,
-        patientName,
-        roomNumber.toString(),
+        patient!.name!,
+        room!.number.toString(),
       ];
     }
 

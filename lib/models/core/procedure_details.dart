@@ -5,18 +5,15 @@ import 'package:intl/intl.dart';
 
 class ProcedureDetails implements Details {
   ProcedureDetails({
-    this.id = '301',
-    this.name = 'Antigen Testing',
-    this.cost = 4000.0,
+    this.id,
+    this.name,
+    this.cost,
     this.lastDone,
-    this.timesDone = 4,
-    this.labNumber = '00154',
+    this.timesDone,
+    this.labNumber,
     this.procedureDate,
     this.admissions,
-  }) {
-    lastDone = DateTime(2022, 3, 15);
-    procedureDate = DateTime(2022, 3, 15);
-  }
+  });
 
   String? id;
   String? name;
@@ -30,7 +27,8 @@ class ProcedureDetails implements Details {
   List<AdmissionDetails>? admissions;
 
   String get costString => '${cost!.toStringAsFixed(0)} php';
-  String get lastDoneFormatted => DateFormat.yMd().format(lastDone!);
+  String get lastDoneFormatted =>
+      lastDone == null ? 'N/A' : DateFormat.yMd().format(lastDone!);
   String get procedureDateFormatted => DateFormat.yMd().format(procedureDate!);
 
   Map<String, String> get procedure => {
@@ -74,12 +72,12 @@ class ProcedureDetails implements Details {
     for (final admission in admissions!) {
       final admissionDetails = <String>[];
 
-      admissionDetails.add(admission.admissionId);
+      admissionDetails.add(admission.id!);
       admissionDetails.add(admission.admissionDateFormatted);
-      admissionDetails.add(admission.patientName);
-      admissionDetails.add(admission.illness);
-      admissionDetails.add(admission.doctorName);
-      admissionDetails.add(admission.roomNumber.toString());
+      admissionDetails.add(admission.patient!.name!);
+      admissionDetails.add(admission.illness!);
+      admissionDetails.add(admission.doctor!.name!);
+      admissionDetails.add(admission.room!.number!.toString());
 
       toReturn.add(admissionDetails);
     }

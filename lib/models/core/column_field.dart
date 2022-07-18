@@ -39,7 +39,7 @@ class ColumnField {
   static const doctorHandlingWidth = FixedColumnWidth(210);
 
   // room fields
-  static const roomNumberWidth = FixedColumnWidth(170);
+  static const roomNumberWidth = FixedColumnWidth(150);
   static const roomTypeWidth = FixedColumnWidth(240);
   static const roomCostWidth = FixedColumnWidth(110);
   static const roomCapacityWidth = FixedColumnWidth(175);
