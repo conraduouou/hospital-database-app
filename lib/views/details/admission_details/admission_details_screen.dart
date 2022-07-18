@@ -8,9 +8,13 @@ import 'package:hospital_database_app/views/details/admission_details/admission_
 import 'package:provider/provider.dart';
 
 class AdmissionDetailsScreen extends StatelessWidget {
-  const AdmissionDetailsScreen({Key? key}) : super(key: key);
+  const AdmissionDetailsScreen({
+    Key? key,
+    required this.admissionId,
+  }) : super(key: key);
 
   static const id = '/details/admission';
+  final String admissionId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,7 @@ class AdmissionDetailsScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => DetailsProvider(
         tableType: TableType.admissions,
+        id: admissionId,
       ),
       child: GestureDetector(
         onTap: appBarProvider.unshowOptions,

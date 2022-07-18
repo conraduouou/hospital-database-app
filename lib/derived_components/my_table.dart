@@ -145,7 +145,8 @@ class MyTable extends StatelessWidget {
                         context,
                         RoutesHandler.detailsScreenIds[tableType] ??
                             AdmissionDetailsScreen.id,
-                        arguments: 'id',
+                        // explicitly set to 0 since the id is the first column in the home screen. might make this better implemented in the future.
+                        arguments: cellsToShow[0].contents,
                       );
                     },
                   ),

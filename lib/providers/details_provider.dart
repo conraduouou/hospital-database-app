@@ -13,40 +13,8 @@ import 'package:hospital_database_app/models/core/room_details.dart';
 class DetailsProvider with ChangeNotifier {
   DetailsProvider({
     required this.tableType,
+    required this.id,
   }) {
-    detailsController = StreamController<Details>();
-    detailsStream.listen((acquiredDetails) {
-      // assign acquiredDetails to details
-      details = acquiredDetails;
-
-      if (details == null) {
-        toggleInAsync();
-        return;
-      }
-
-      // generate ColumnField objects from static data headersData
-      final headerData = ColumnField.detailsHeaders[tableType]!;
-      headers = List.generate(
-        headerData.length,
-        (index) {
-          final key = headerData.keys.elementAt(index);
-
-          return ColumnField(
-            contents: key,
-            columnSize: headerData[key]![0],
-          );
-        },
-      );
-
-      // generate rows consisting of ColumnFields according to the extraData
-      // parameter of the details object
-      bodyRows = _getRows(details!.getExtraData());
-
-      // close stream to prevent reloading of resources
-      detailsController.close();
-      toggleInAsync();
-    });
-
     _getDetails(tableType);
   }
 
@@ -61,13 +29,11 @@ class DetailsProvider with ChangeNotifier {
   /// not `TableType.admissions`).
   final TableType tableType;
 
+  /// provide comment
+  final String id;
+
   /// The object that contains all the values for a necessary table, often extra.
   Details? details;
-
-  /// The stream that will eventually create the `details` parameter.
-  late final StreamController<Details> detailsController;
-  Stream<Details> get detailsStream => detailsController.stream;
-  Sink<Details> get detailsSink => detailsController.sink;
 
   /// A flag that determines whether the state is currently undergoing an async
   /// operation.
@@ -103,32 +69,30 @@ class DetailsProvider with ChangeNotifier {
 
   //TODO: implement getting of necessary data for the details screen.
   void _getAdmissionDetails() {
-    detailsSink.add(
-      AdmissionDetails(
-        procedures: <ProcedureDetails>[
-          ProcedureDetails(
-            id: '0012',
-            name: 'Antigen Testing',
-            cost: 4000,
-            labNumber: '00154',
-            procedureDate: DateTime(2022, 3, 15),
-          ),
-          ProcedureDetails(
-            id: '0045',
-            name: 'X-ray',
-            cost: 2000,
-            labNumber: '00123',
-            procedureDate: DateTime(2022, 3, 15),
-          ),
-          ProcedureDetails(
-            id: '00453',
-            name: 'Antigen Testing',
-            cost: 4000,
-            labNumber: '00453',
-            procedureDate: DateTime(2022, 3, 15),
-          )
-        ],
-      ),
+    details = AdmissionDetails(
+      procedures: <ProcedureDetails>[
+        ProcedureDetails(
+          id: '0012',
+          name: 'Antigen Testing',
+          cost: 4000,
+          labNumber: '00154',
+          procedureDate: DateTime(2022, 3, 15),
+        ),
+        ProcedureDetails(
+          id: '0045',
+          name: 'X-ray',
+          cost: 2000,
+          labNumber: '00123',
+          procedureDate: DateTime(2022, 3, 15),
+        ),
+        ProcedureDetails(
+          id: '00453',
+          name: 'Antigen Testing',
+          cost: 4000,
+          labNumber: '00453',
+          procedureDate: DateTime(2022, 3, 15),
+        )
+      ],
     );
   }
 
@@ -214,6 +178,32 @@ class DetailsProvider with ChangeNotifier {
     await Future.delayed(const Duration(seconds: 2), () {
       callbacks[tableType]!();
     });
+
+    // return prematurely if details is null
+    if (details == null) {
+      toggleInAsync();
+      return;
+    }
+
+    // generate ColumnField objects from static data headersData
+    final headerData = ColumnField.detailsHeaders[tableType]!;
+    headers = List.generate(
+      headerData.length,
+      (index) {
+        final key = headerData.keys.elementAt(index);
+
+        return ColumnField(
+          contents: key,
+          columnSize: headerData[key]![0],
+        );
+      },
+    );
+
+    // generate rows consisting of ColumnFields according to the extraData
+    // parameter of the details object
+    bodyRows = _getRows(details!.getExtraData());
+
+    toggleInAsync();
   }
 
   void toggleInAsync() {

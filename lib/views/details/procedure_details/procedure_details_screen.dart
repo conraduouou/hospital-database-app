@@ -19,6 +19,7 @@ class ProcedureDetailsScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => DetailsProvider(
         tableType: TableType.procedures,
+        id: '',
       ),
       child: GestureDetector(
         onTap: appBarProvider.unshowOptions,

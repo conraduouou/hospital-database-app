@@ -35,10 +35,21 @@ class RoutesHandler {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AdmissionDetailsScreen.id:
-        // final data = settings.arguments as String;
-        return MaterialPageRoute(
-          builder: (context) {
-            return const AdmissionDetailsScreen();
+        final admissionId = settings.arguments as String;
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              AdmissionDetailsScreen(admissionId: admissionId),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            final tween = Tween(begin: 0.0, end: 1.0);
+            final curvedAnimation = CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeIn,
+            );
+
+            return FadeTransition(
+              opacity: tween.animate(curvedAnimation),
+              child: child,
+            );
           },
         );
       case PatientDetailsScreen.id:

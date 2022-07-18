@@ -19,6 +19,7 @@ class RoomDetailsScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => DetailsProvider(
         tableType: TableType.rooms,
+        id: '',
       ),
       child: GestureDetector(
         onTap: appBarProvider.unshowOptions,

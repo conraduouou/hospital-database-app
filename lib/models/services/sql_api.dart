@@ -89,4 +89,80 @@ class SQLApi {
 
     return results;
   }
+
+  Future<Results> getAdmissionDetailsById(String id) async {
+    final sql =
+        'select admission_id, admission_date, date_discharged, patient_illness, stay_duration, professional_fee, room_fee, lab_fee, total_cost, '
+        'P.patient_id, patient_name, patient_age, patient_gender, D.doctor_id, doctor_name, doctor_department, '
+        'R.room_number, room_type, room_cost '
+        'from admissions as A, patients as P, rooms as R, doctors as D '
+        'where admission_id = \'$id\' A.patient_id = P.patient_id AND A.room_number = R.room_number AND A.doctor_id = D.doctor_id';
+    final results = await connection.query(sql);
+
+    return results;
+  }
+
+  Future<Results> getProcedureByAdmissionId(String id) async {
+    final sql =
+        'select P.procedure_id, procedure_name, procedure_cost, lab_number, procedure_date '
+        'from procedures as P, procedure_done as PD '
+        'where admission_id = \'$id\' and P.procedure_id = PD.procedure_id';
+    final results = await connection.query(sql);
+
+    return results;
+  }
+
+  Future<Results> getPatientDetails(String id) async {
+    final sql = 'select * from patients where patient_id = \'$id\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getAdmissionsByPatientId(String id) async {
+    final sql =
+        'select admission_id, ad mission_date, patient_illness, D.doctor_id, doctor_name, room_number '
+        'from admissions as A, doctors as D '
+        'where patient_id = \'$id\' and D.doctor_id = A.doctor_id';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getRoomById(String id) async {
+    final sql = 'select * from rooms where room_number = \'$id\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getPatientsByRoomNumber(String id) async {
+    final sql =
+        'select P.patient_id, patient_name, patient_age, patient_gender, patient_address, date_discharged '
+        'from patients as P, admissions as A '
+        'where A.patient_id = P.patient_id and A.room_number = \'$id\' and date_discharged is null';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getAdmissionsByProcedureId(String id) async {
+    final sql =
+        'select A.admission_id, admission_date, patient_name, patient_illness, doctor_name, room_number '
+        'from admissions as A, procedure_done as PD, patients as P, doctors as D '
+        'where A.admission_id = PD.admission_id and PD.procedure_id = \'$id\' and P.patient_id = A.patient_id and D.doctor_id = A.doctor_id;';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getDoctorDetailsById(String id) async {
+    final sql = 'select * from doctors where doctor_id = \'$id\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getAdmissionsByDoctorId(String id) async {
+    final sql =
+        'select admission_id, admission_date, date_discharged,, P.patient_id, P.patient_name, room_number '
+        'from admissions as A, patients as P'
+        'where A.doctor_id = \'$id\' and A.patient_id = P.patient_id';
+    final results = await connection.query(sql);
+    return results;
+  }
 }

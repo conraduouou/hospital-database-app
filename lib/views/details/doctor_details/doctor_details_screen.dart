@@ -19,6 +19,7 @@ class DoctorDetailsScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => DetailsProvider(
         tableType: TableType.doctors,
+        id: '',
       ),
       child: GestureDetector(
         onTap: appBarProvider.unshowOptions,
