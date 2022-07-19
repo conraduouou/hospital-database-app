@@ -135,7 +135,7 @@ class SQLApi {
 
   Future<Results> getPatientsByRoomNumber(String id) async {
     final sql =
-        'select P.patient_id, patient_name, patient_age, patient_gender, patient_address, date_discharged '
+        'select P.patient_id, patient_name, patient_age, patient_gender, patient_address'
         'from patients as P, admissions as A '
         'where A.patient_id = P.patient_id and A.room_number = \'$id\' and date_discharged is null';
     final results = await connection.query(sql);
@@ -159,7 +159,7 @@ class SQLApi {
 
   Future<Results> getAdmissionsByDoctorId(String id) async {
     final sql =
-        'select admission_id, admission_date, date_discharged,, P.patient_id, P.patient_name, room_number '
+        'select admission_id, admission_date, date_discharged, P.patient_name, room_number '
         'from admissions as A, patients as P'
         'where A.doctor_id = \'$id\' and A.patient_id = P.patient_id';
     final results = await connection.query(sql);
