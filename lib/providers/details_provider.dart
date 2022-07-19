@@ -105,22 +105,8 @@ class DetailsProvider with ChangeNotifier {
     // );
   }
 
-  void _getProcedureDetails() {
-    // detailsSink.add(
-    //   ProcedureDetails(
-    //     admissions: <AdmissionDetails>[
-    //       AdmissionDetails(
-    //         admissionId: 'AID-0012',
-    //         admissionDate: DateTime(2022, 3, 14),
-    //         patientName: 'John Lloyd dela Cruz',
-    //         illness: 'Tuberculosis',
-    //         doctorName: 'Dr. Angel R. Sikat',
-    //         roomNumber: 301,
-    //       )
-    //     ],
-    //   ),
-    // );
-  }
+  void _getProcedureDetails() async =>
+      details = await helper.getProcedureById(id);
 
   void _getDoctorDetails() async =>
       details = await helper.getDoctorDetailsById(id);

@@ -143,6 +143,16 @@ class SQLApi {
     return results;
   }
 
+  Future<Results> getProcedureById(String id) async {
+    final sql = 'select procedure_id, procedure_name, procedure_cost, ( '
+        'select count(*) from procedure_done where procedure_id = P.procedure_id '
+        ') as times_done '
+        'from procedures as P '
+        'where procedure_id = \'$id\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
   Future<Results> getAdmissionsByProcedureId(String id) async {
     final sql =
         'select A.admission_id, admission_date, patient_name, patient_illness, doctor_name, room_number '

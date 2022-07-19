@@ -254,6 +254,20 @@ class SQLApiHelper {
     return patients;
   }
 
+  Future<ProcedureDetails> getProcedureById(String id) async {
+    final results = await sqlApi.getProcedureById(id);
+    final admissions = await getAdmissionsByProcedureId(id);
+    final result = results.single;
+    final procedure = ProcedureDetails(
+      id: result['procedure_id'],
+      name: result['procedure_name'],
+      cost: result['procedure_cost'],
+      timesDone: result['times_done'],
+      admissions: admissions,
+    );
+    return procedure;
+  }
+
   Future<List<AdmissionDetails>> getAdmissionsByProcedureId(String id) async {
     final results = await sqlApi.getAdmissionsByProcedureId(id);
     final admissions = <AdmissionDetails>[];
