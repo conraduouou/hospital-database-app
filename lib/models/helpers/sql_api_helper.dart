@@ -132,6 +132,7 @@ class SQLApiHelper {
 
   Future<AdmissionDetails> getAdmissionDetailsById(String id) async {
     final results = await sqlApi.getAdmissionDetailsById(id);
+    final procedureResults = await sqlApi.getProceduresByAdmissionId(id);
     final result = results.single;
     final admission = AdmissionDetails(
       id: result['admission_id'],
@@ -158,6 +159,16 @@ class SQLApiHelper {
         type: result['room_type'],
         cost: result['room_cost'],
       ),
+      procedures: [
+        for (final row in procedureResults)
+          ProcedureDetails(
+            id: row['procedure_id'],
+            name: row['procedure_name'],
+            cost: row['procedure_cost'],
+            labNumber: row['lab_number'],
+            procedureDate: row['procedure_date'],
+          )
+      ],
     );
 
     return admission;

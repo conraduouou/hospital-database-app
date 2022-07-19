@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/derived_components/appbar_options.dart';
 import 'package:hospital_database_app/derived_components/provided_appbar.dart';
+import 'package:hospital_database_app/models/helpers/sql_api_helper.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
 import 'package:hospital_database_app/providers/details_provider.dart';
 import 'package:hospital_database_app/views/details/procedure_details/procedure_details_screen_body.dart';
@@ -15,11 +16,13 @@ class ProcedureDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appBarProvider = context.read<AppBarProvider>();
+    final helper = context.read<SQLApiHelper>();
 
     return ChangeNotifierProvider(
       create: (context) => DetailsProvider(
         tableType: TableType.procedures,
         id: '',
+        helper: helper,
       ),
       child: GestureDetector(
         onTap: appBarProvider.unshowOptions,

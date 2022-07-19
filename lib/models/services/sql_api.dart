@@ -91,12 +91,15 @@ class SQLApi {
   }
 
   Future<Results> getAdmissionDetailsById(String id) async {
+    if (kDebugMode) print(id);
+
     final sql =
-        'select admission_id, admission_date, date_discharged,s patient_illness, stay_duration, professional_fee, room_fee, lab_fee, '
+        'select admission_id, admission_date, date_discharged, patient_illness, '
+        'ifnull(stay_duration, datediff(now(), admission_date)) as stay_duration, professional_fee, room_fee, lab_fee, '
         'P.patient_id, patient_name, patient_age, patient_gender, D.doctor_id, doctor_name, doctor_department, '
         'R.room_number, room_type, room_cost '
         'from admissions as A, patients as P, rooms as R, doctors as D '
-        'where admission_id = \'$id\' A.patient_id = P.patient_id AND A.room_number = R.room_number AND A.doctor_id = D.doctor_id';
+        'where admission_id = \'$id\' and A.patient_id = P.patient_id and A.room_number = R.room_number and A.doctor_id = D.doctor_id';
     final results = await connection.query(sql);
 
     return results;

@@ -9,18 +9,32 @@ import 'package:hospital_database_app/models/core/doctor_details.dart';
 import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
 import 'package:hospital_database_app/models/core/room_details.dart';
+import 'package:hospital_database_app/models/helpers/sql_api_helper.dart';
 
 class DetailsProvider with ChangeNotifier {
   DetailsProvider({
     required this.tableType,
     required this.id,
+    required this.helper,
   }) {
+    // supply functions for getting different tables
+    _callbacks = {
+      TableType.admissions: _getAdmissionDetails,
+      TableType.patients: _getPatientDetails,
+      TableType.rooms: _getRoomDetails,
+      TableType.procedures: _getProcedureDetails,
+      TableType.doctors: _getDoctorDetails,
+    };
+
     _getDetails(tableType);
   }
 
   // data to provide
   late List<ColumnField> headers;
   late List<List<ColumnField>> bodyRows;
+
+  /// Utility parameter that assists in code
+  late final Map<TableType, VoidCallback> _callbacks;
 
   /// The type of table that's going to be displayed on the _ details screen.
   /// This is probably going to be easily confused with the actual table that's
@@ -31,6 +45,9 @@ class DetailsProvider with ChangeNotifier {
 
   /// provide comment
   final String id;
+
+  ///
+  final SQLApiHelper helper;
 
   /// The object that contains all the values for a necessary table, often extra.
   Details? details;
@@ -68,32 +85,8 @@ class DetailsProvider with ChangeNotifier {
   }
 
   //TODO: implement getting of necessary data for the details screen.
-  void _getAdmissionDetails() {
-    details = AdmissionDetails(
-      procedures: <ProcedureDetails>[
-        ProcedureDetails(
-          id: '0012',
-          name: 'Antigen Testing',
-          cost: 4000,
-          labNumber: '00154',
-          procedureDate: DateTime(2022, 3, 15),
-        ),
-        ProcedureDetails(
-          id: '0045',
-          name: 'X-ray',
-          cost: 2000,
-          labNumber: '00123',
-          procedureDate: DateTime(2022, 3, 15),
-        ),
-        ProcedureDetails(
-          id: '00453',
-          name: 'Antigen Testing',
-          cost: 4000,
-          labNumber: '00453',
-          procedureDate: DateTime(2022, 3, 15),
-        )
-      ],
-    );
+  void _getAdmissionDetails() async {
+    details = await helper.getAdmissionDetailsById(id);
   }
 
   void _getPatientDetails() {
@@ -165,19 +158,9 @@ class DetailsProvider with ChangeNotifier {
     // this gets toggled again in the `detailsStream` callback
     toggleInAsync();
 
-    // supply functions for getting different tables
-    final callbacks = <TableType, VoidCallback>{
-      TableType.admissions: _getAdmissionDetails,
-      TableType.patients: _getPatientDetails,
-      TableType.rooms: _getRoomDetails,
-      TableType.procedures: _getProcedureDetails,
-      TableType.doctors: _getDoctorDetails,
-    };
-
+    _callbacks[tableType]!();
     // call appropriate method for getting details according to tableType
-    await Future.delayed(const Duration(seconds: 2), () {
-      callbacks[tableType]!();
-    });
+    await Future.delayed(const Duration(seconds: 2), () {});
 
     // return prematurely if details is null
     if (details == null) {

@@ -33,7 +33,9 @@ class AdmissionDetails implements Details {
   Map<String, String> get admissionDetails => <String, String>{
         'Admission ID': id!,
         'Admission date': DateFormat.yMd().format(admissionDate!),
-        'Date discharged': DateFormat.yMd().format(dateDischarged!),
+        'Date discharged': dateDischarged == null
+            ? 'Still admitted'
+            : DateFormat.yMd().format(dateDischarged!),
         'Illness': illness!,
         'Stay duration': stayDuration!.toString(),
       };
