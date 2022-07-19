@@ -32,10 +32,8 @@ class AdmissionDetails implements Details {
   // grouped admission-specific data
   Map<String, String> get admissionDetails => <String, String>{
         'Admission ID': id!,
-        'Admission date': DateFormat.yMd().format(admissionDate!),
-        'Date discharged': dateDischarged == null
-            ? 'Still admitted'
-            : DateFormat.yMd().format(dateDischarged!),
+        'Admission date': admissionDateFormatted,
+        'Date discharged': dateDischargedFormatted,
         'Illness': illness!,
         'Stay duration': stayDuration!.toString(),
       };
@@ -90,8 +88,9 @@ class AdmissionDetails implements Details {
   List<ProcedureDetails>? procedures;
 
   String get admissionDateFormatted => DateFormat.yMd().format(admissionDate!);
-  String get dateDischargedFormatted =>
-      DateFormat.yMd().format(dateDischarged!);
+  String get dateDischargedFormatted => dateDischarged == null
+      ? 'Still admitted'
+      : DateFormat.yMd().format(dateDischarged!);
 
   String get totalCost =>
       '${((professionalFee ?? 0) + (roomFee ?? 0) + (labFee ?? 0)).toStringAsFixed(0)} php';

@@ -1,15 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:hospital_database_app/constants.dart';
-import 'package:hospital_database_app/models/core/admission_details.dart';
 import 'package:hospital_database_app/models/core/column_field.dart';
 import 'package:hospital_database_app/models/core/details.dart';
-import 'package:hospital_database_app/models/core/doctor_details.dart';
-import 'package:hospital_database_app/models/core/patient_details.dart';
-import 'package:hospital_database_app/models/core/procedure_details.dart';
-import 'package:hospital_database_app/models/core/room_details.dart';
 import 'package:hospital_database_app/models/helpers/sql_api_helper.dart';
 
 class DetailsProvider with ChangeNotifier {
@@ -128,21 +122,8 @@ class DetailsProvider with ChangeNotifier {
     // );
   }
 
-  void _getDoctorDetails() {
-    // detailsSink.add(
-    //   DoctorDetails(
-    //     admissions: <AdmissionDetails>[
-    //       AdmissionDetails(
-    //         admissionId: 'AID-0012',
-    //         admissionDate: DateTime(2022, 3, 14),
-    //         dateDischarged: DateTime(2022, 4, 9),
-    //         patientName: 'John Lloyd dela Cruz',
-    //         roomNumber: 301,
-    //       ),
-    //     ],
-    //   ),
-    // );
-  }
+  void _getDoctorDetails() async =>
+      details = await helper.getDoctorDetailsById(id);
 
   void _getDetails(TableType tableType) async {
     // this gets toggled again in the `detailsStream` callback

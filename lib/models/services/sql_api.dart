@@ -39,7 +39,7 @@ class SQLApi {
   // get admission records formatted for the home screen
   Future<Results> getAdmissionsForHome() async {
     const query =
-        'select admission_id, date_format(admission_date, \'%m/%d/%Y\') as admission_date, patient_name, patient_illness, doctor_name, room_number '
+        'select admission_id, admission_date, patient_name, patient_illness, doctor_name, room_number '
         'from admissions as A, patients as P, doctors as D '
         'where A.doctor_id = D.doctor_id AND A.patient_id = P.patient_id '
         'order by 1';
@@ -161,7 +161,7 @@ class SQLApi {
   Future<Results> getAdmissionsByDoctorId(String id) async {
     final sql =
         'select admission_id, admission_date, date_discharged, P.patient_name, room_number '
-        'from admissions as A, patients as P'
+        'from admissions as A, patients as P '
         'where A.doctor_id = \'$id\' and A.patient_id = P.patient_id';
     final results = await connection.query(sql);
     return results;

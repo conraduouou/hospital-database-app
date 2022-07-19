@@ -28,14 +28,10 @@ class SQLApiHelper {
     final admissions = <AdmissionDetails>[];
 
     for (final row in results) {
-      final dateString = row['admission_date'] as String;
-      final dateSplit =
-          dateString.split('/').map<int>((e) => int.parse(e)).toList();
-      final actualDate = DateTime(dateSplit[2], dateSplit[0], dateSplit[1]);
       admissions.add(
         AdmissionDetails(
           id: row['admission_id'],
-          admissionDate: actualDate,
+          admissionDate: row['admission_date'],
           patient: PatientDetails(
             id: row['patient_id'],
             name: row['patient_name'],
@@ -135,6 +131,7 @@ class SQLApiHelper {
     final results = await sqlApi.getAdmissionDetailsById(id);
     final procedures = await getProceduresByAdmissionId(id);
     final result = results.single;
+
     final admission = AdmissionDetails(
       id: result['admission_id'],
       admissionDate: result['admission_date'],
@@ -284,12 +281,14 @@ class SQLApiHelper {
 
   Future<DoctorDetails> getDoctorDetailsById(String id) async {
     final results = await sqlApi.getDoctorDetailsById(id);
+    final admissions = await getAdmissionsByDoctorId(id);
     final result = results.single;
     final doctor = DoctorDetails(
       id: result['doctor_id'],
       name: result['doctor_name'],
       department: result['doctor_department'],
       pcf: result['doctor_pcf'],
+      admissions: admissions,
     );
     return doctor;
   }
