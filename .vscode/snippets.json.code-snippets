@@ -39,5 +39,34 @@
 			"}"
 		],
 		"description": "Boilerplate code for getting via sql query with final sql variable"
+	},
+	"SQL Helper - List": {
+		"scope": "dart",
+		"prefix": ["sql-helper-list", "get-list-helper"],
+		"body": [
+			"Future<List<$2>> get$1($3) async {",
+			"\tfinal results = await sqlApi.get$4($5);",
+			"\tfinal $6 = <$7>[];",
+			"",
+			"\tfor (final row in results) {",
+			"\t\t$0",
+			"\t}",
+			"\treturn $8;",
+			"}"
+		],
+		"description": "Boilerplate code for getting results from database through SQL Helper class"
+	},
+	"SQL Helper - Single": {
+		"scope": "dart",
+		"prefix":["sql-helper-single", "get-single-helper"],
+		"body": [
+			"Future<$2> get$1($3) async {",
+			"\tfinal results = await sqlApi.get$4($5);",
+			"\tfinal result = results.single;",
+			"\tfinal $6 = $0",
+			"\treturn $7;",
+			"}"
+		]
 	}
+
 }
