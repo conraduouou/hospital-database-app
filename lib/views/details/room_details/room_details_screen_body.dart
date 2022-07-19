@@ -20,36 +20,37 @@ class RoomDetailsScreenBody extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Selector<DetailsProvider, bool>(
-            selector: (ctx, provider) => provider.inAsync,
-            builder: (ctx, inAsync, child) {
-              return CrossFadedWrapper(
-                inAsync: inAsync,
-                child: Builder(
-                  builder: (context) {
-                    if (provider.details == null) {
-                      return const MyErrorWidget();
-                    } else {
-                      final details = provider.details! as RoomDetails;
-                      return DetailsBody(
-                        provider: provider,
-                        extraDataHeading: 'Currently housed patients',
-                        extraDataTableType: TableType.patients,
-                        blockRows: [
-                          [
-                            MyDetailsBlock(
-                              details: details.room,
-                              heading: 'Room Details',
-                              showEdit: true,
-                              lastIsFour: true,
-                            )
-                          ],
+          selector: (ctx, provider) => provider.inAsync,
+          builder: (ctx, inAsync, child) {
+            return CrossFadedWrapper(
+              inAsync: inAsync,
+              child: Builder(
+                builder: (context) {
+                  if (provider.details == null) {
+                    return const MyErrorWidget();
+                  } else {
+                    final details = provider.details! as RoomDetails;
+                    return DetailsBody(
+                      provider: provider,
+                      extraDataHeading: 'Currently housed patients',
+                      extraDataTableType: TableType.patients,
+                      blockRows: [
+                        [
+                          MyDetailsBlock(
+                            details: details.room,
+                            heading: 'Room Details',
+                            showEdit: true,
+                            lastIsFour: true,
+                          )
                         ],
-                      );
-                    }
-                  },
-                ),
-              );
-            }),
+                      ],
+                    );
+                  }
+                },
+              ),
+            );
+          },
+        ),
       ],
     );
   }

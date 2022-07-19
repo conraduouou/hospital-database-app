@@ -29,7 +29,7 @@ class RoomDetails implements Details {
         'Type': type!,
         'Cost': roomCostString,
         'Capacity': capacity!.toString(),
-        'Occupants': occupantCount!.toString(),
+        // 'Occupants': occupantCount!.toString(),
       };
 
   @override

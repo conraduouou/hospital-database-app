@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
 import 'package:hospital_database_app/models/core/doctor_details.dart';
@@ -185,7 +184,6 @@ class SQLApiHelper {
     final results = await sqlApi.getPatientDetailsById(id);
     final admissions = await getAdmissionsByPatientId(id);
     final patientData = results.single;
-    if (kDebugMode) print(patientData);
     final patient = PatientDetails(
       id: patientData['patient_id'],
       name: patientData['patient_name'],
@@ -226,12 +224,14 @@ class SQLApiHelper {
 
   Future<RoomDetails> getRoomById(String id) async {
     final results = await sqlApi.getRoomById(id);
+    final patients = await getPatientsByRoomNumber(id);
     final result = results.single;
     final room = RoomDetails(
       number: result['room_number'],
       type: result['room_type'],
       cost: result['room_cost'],
       capacity: result['room_capacity'],
+      patients: patients,
     );
     return room;
   }

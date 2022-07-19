@@ -35,6 +35,7 @@ class ProcedureDetails implements Details {
         'Procedure ID': id!,
         'Name': name!,
         'Cost': costString,
+        'Times done': timesDone == null ? '0' : timesDone.toString(),
       };
 
   @override

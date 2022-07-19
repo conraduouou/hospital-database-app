@@ -20,7 +20,6 @@ class DetailsProvider with ChangeNotifier {
       TableType.procedures: _getProcedureDetails,
       TableType.doctors: _getDoctorDetails,
     };
-
     _getDetails(tableType);
   }
 
@@ -82,28 +81,13 @@ class DetailsProvider with ChangeNotifier {
     return rows;
   }
 
-  //TODO: implement getting of necessary data for the details screen.
   void _getAdmissionDetails() async =>
       details = await helper.getAdmissionDetailsById(id);
 
   void _getPatientDetails() async =>
       details = await helper.getPatientDetailsById(id);
 
-  void _getRoomDetails() {
-    // detailsSink.add(
-    //   RoomDetails(
-    //     patients: <PatientDetails>[
-    //       PatientDetails(
-    //         id: 'PID-0001',
-    //         name: 'John Lloyd Dela Cruz',
-    //         age: 27,
-    //         gender: 'M',
-    //         address: '55 Street, Mexico, Pampanga',
-    //       ),
-    //     ],
-    //   ),
-    // );
-  }
+  void _getRoomDetails() async => details = await helper.getRoomById(id);
 
   void _getProcedureDetails() async =>
       details = await helper.getProcedureById(id);

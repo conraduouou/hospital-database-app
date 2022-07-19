@@ -68,10 +68,10 @@ class RoutesHandler {
           ),
         );
       case RoomDetailsScreen.id:
-        final roomNumber = settings.arguments as int;
+        final roomNumber = int.tryParse(settings.arguments as String);
         return MaterialPageRoute(
           builder: (context) => RoomDetailsScreen(
-            roomNumber: roomNumber,
+            roomNumber: roomNumber!,
           ),
         );
       case DoctorDetailsScreen.id:
