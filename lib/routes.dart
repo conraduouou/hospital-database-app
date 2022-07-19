@@ -16,7 +16,6 @@ import 'package:hospital_database_app/views/new/new_room.dart';
 class RoutesHandler {
   final Map<String, WidgetBuilder> routes = {
     LoginScreen.id: (context) => const LoginScreen(),
-    HomeScreen.id: (context) => const HomeScreen(),
     NewAdmissionScreen.id: (context) => const NewAdmissionScreen(),
     NewPatientScreen.id: (context) => const NewPatientScreen(),
     NewRoomScreen.id: (context) => const NewRoomScreen(),
@@ -34,11 +33,11 @@ class RoutesHandler {
 
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AdmissionDetailsScreen.id:
-        final admissionId = settings.arguments as String;
+      case HomeScreen.id:
         return PageRouteBuilder(
+          settings: settings,
           pageBuilder: (context, animation, secondaryAnimation) =>
-              AdmissionDetailsScreen(admissionId: admissionId),
+              const HomeScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             final tween = Tween(begin: 0.0, end: 1.0);
             final curvedAnimation = CurvedAnimation(
@@ -52,33 +51,44 @@ class RoutesHandler {
             );
           },
         );
-      case PatientDetailsScreen.id:
-        // final data = settings.arguments as String;
+      case AdmissionDetailsScreen.id:
+        final admissionId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) {
-            return const PatientDetailsScreen();
-          },
+          settings: settings,
+          builder: (context) => AdmissionDetailsScreen(
+            admissionId: admissionId,
+          ),
+        );
+      case PatientDetailsScreen.id:
+        final patientId = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => PatientDetailsScreen(
+            patientId: patientId,
+          ),
         );
       case RoomDetailsScreen.id:
-        // final data = settings.arguments as String;
+        final roomNumber = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (context) {
-            return const RoomDetailsScreen();
-          },
+          builder: (context) => RoomDetailsScreen(
+            roomNumber: roomNumber,
+          ),
         );
       case DoctorDetailsScreen.id:
-        // final data = settings.arguments as String;
+        final doctorId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) {
-            return const DoctorDetailsScreen();
-          },
+          settings: settings,
+          builder: (context) => DoctorDetailsScreen(
+            doctorId: doctorId,
+          ),
         );
       case ProcedureDetailsScreen.id:
-        // final data = settings.arguments as String;
+        final procedureId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) {
-            return const ProcedureDetailsScreen();
-          },
+          settings: settings,
+          builder: (context) => ProcedureDetailsScreen(
+            procedureId: procedureId,
+          ),
         );
     }
 

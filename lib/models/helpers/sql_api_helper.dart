@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
 import 'package:hospital_database_app/models/core/doctor_details.dart';
@@ -132,7 +133,7 @@ class SQLApiHelper {
 
   Future<AdmissionDetails> getAdmissionDetailsById(String id) async {
     final results = await sqlApi.getAdmissionDetailsById(id);
-    final procedureResults = await sqlApi.getProceduresByAdmissionId(id);
+    final procedures = await getProceduresByAdmissionId(id);
     final result = results.single;
     final admission = AdmissionDetails(
       id: result['admission_id'],
@@ -159,16 +160,7 @@ class SQLApiHelper {
         type: result['room_type'],
         cost: result['room_cost'],
       ),
-      procedures: [
-        for (final row in procedureResults)
-          ProcedureDetails(
-            id: row['procedure_id'],
-            name: row['procedure_name'],
-            cost: row['procedure_cost'],
-            labNumber: row['lab_number'],
-            procedureDate: row['procedure_date'],
-          )
-      ],
+      procedures: procedures,
     );
 
     return admission;
@@ -194,17 +186,20 @@ class SQLApiHelper {
 
   Future<PatientDetails> getPatientDetailsById(String id) async {
     final results = await sqlApi.getPatientDetailsById(id);
+    final admissions = await getAdmissionsByPatientId(id);
     final patientData = results.single;
+    if (kDebugMode) print(patientData);
     final patient = PatientDetails(
       id: patientData['patient_id'],
       name: patientData['patient_name'],
       address: patientData['patient_address'],
-      contactNumber: patientData['patient_contact_number'],
+      contactNumber: patientData['patient_contact_no'],
       age: patientData['patient_age'],
       gender: patientData['patient_gender'],
       contactPersonName: patientData['contact_person'],
       contactPersonRelation: patientData['patient_contact_relation'],
-      contactPersonNumber: patientData['contact_person_number'],
+      contactPersonNumber: patientData['contact_person_no'],
+      admissions: admissions,
     );
     return patient;
   }
@@ -218,7 +213,7 @@ class SQLApiHelper {
         AdmissionDetails(
           id: row['admission_id'],
           admissionDate: row['admission_date'],
-          dateDischarged: row['patient_illness'],
+          illness: row['patient_illness'],
           doctor: DoctorDetails(
             id: row['doctor_id'],
             name: row['doctor_name'],

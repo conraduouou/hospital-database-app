@@ -91,8 +91,6 @@ class SQLApi {
   }
 
   Future<Results> getAdmissionDetailsById(String id) async {
-    if (kDebugMode) print(id);
-
     final sql =
         'select admission_id, admission_date, date_discharged, patient_illness, '
         'ifnull(stay_duration, datediff(now(), admission_date)) as stay_duration, professional_fee, room_fee, lab_fee, '

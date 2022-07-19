@@ -9,9 +9,13 @@ import 'package:hospital_database_app/views/details/doctor_details/doctor_detail
 import 'package:provider/provider.dart';
 
 class DoctorDetailsScreen extends StatelessWidget {
-  const DoctorDetailsScreen({Key? key}) : super(key: key);
+  const DoctorDetailsScreen({
+    Key? key,
+    required this.doctorId,
+  }) : super(key: key);
 
   static const id = '/details/doctor';
+  final String doctorId;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class DoctorDetailsScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => DetailsProvider(
         tableType: TableType.doctors,
-        id: '',
+        id: doctorId,
         helper: helper,
       ),
       child: GestureDetector(

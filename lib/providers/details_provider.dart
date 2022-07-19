@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
 import 'package:hospital_database_app/models/core/column_field.dart';
@@ -56,6 +57,9 @@ class DetailsProvider with ChangeNotifier {
   /// operation.
   bool inAsync = false;
 
+  ///
+  bool _isDisposed = false;
+
   /// Helper method that consolidates `extraData` as a `List` of `List<ColumnField>`s
   /// from the `details` object.
   List<List<ColumnField>> _getRows(List<List<String>> extraData) {
@@ -85,25 +89,11 @@ class DetailsProvider with ChangeNotifier {
   }
 
   //TODO: implement getting of necessary data for the details screen.
-  void _getAdmissionDetails() async {
-    details = await helper.getAdmissionDetailsById(id);
-  }
+  void _getAdmissionDetails() async =>
+      details = await helper.getAdmissionDetailsById(id);
 
-  void _getPatientDetails() {
-    // detailsSink.add(
-    //   PatientDetails(
-    //     admissions: <AdmissionDetails>[
-    //       AdmissionDetails(
-    //         admissionId: 'AID-0012',
-    //         admissionDate: DateTime(2022, 3, 14),
-    //         illness: 'Tuberculosis',
-    //         doctorName: 'Dr. Angel R. Sikat',
-    //         roomNumber: 301,
-    //       ),
-    //     ],
-    //   ),
-    // );
-  }
+  void _getPatientDetails() async =>
+      details = await helper.getPatientDetailsById(id);
 
   void _getRoomDetails() {
     // detailsSink.add(
@@ -192,5 +182,17 @@ class DetailsProvider with ChangeNotifier {
   void toggleInAsync() {
     inAsync = !inAsync;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
+  // don't call extra operations after dispose
+  @override
+  void notifyListeners() {
+    if (!_isDisposed) super.notifyListeners();
   }
 }
