@@ -7,12 +7,14 @@ class MyDetailsBlock extends StatelessWidget {
     Key? key,
     required this.details,
     required this.heading,
+    this.shouldOverflowAtIndex,
     this.showEdit = false,
     this.lastIsFour = false,
   }) : super(key: key);
 
   final Map<String, String> details;
   final String heading;
+  final int? shouldOverflowAtIndex;
   final bool showEdit;
   final bool lastIsFour;
 
@@ -52,6 +54,9 @@ class MyDetailsBlock extends StatelessWidget {
                           Text(
                             details.keys.toList()[i],
                             style: kBoldStyle.copyWith(
+                              overflow: shouldOverflowAtIndex == i
+                                  ? TextOverflow.ellipsis
+                                  : null,
                               fontSize: kLargeSize - 6,
                               color: kDarkGrayColor,
                             ),
@@ -59,12 +64,18 @@ class MyDetailsBlock extends StatelessWidget {
                           Text(
                             details.values.toList()[i],
                             style: kBoldStyle.copyWith(
+                              overflow: shouldOverflowAtIndex == i
+                                  ? TextOverflow.ellipsis
+                                  : null,
                               fontSize: kLargeSize - 6,
                             ),
                           ),
                           Text(
                             details.keys.toList()[i + 1],
                             style: kBoldStyle.copyWith(
+                              overflow: shouldOverflowAtIndex == i
+                                  ? TextOverflow.ellipsis
+                                  : null,
                               fontSize: kLargeSize - 6,
                               color: kDarkGrayColor,
                             ),
@@ -72,6 +83,9 @@ class MyDetailsBlock extends StatelessWidget {
                           Text(
                             details.values.toList()[i + 1],
                             style: kBoldStyle.copyWith(
+                              overflow: shouldOverflowAtIndex == i
+                                  ? TextOverflow.ellipsis
+                                  : null,
                               fontSize: kLargeSize - 6,
                             ),
                           )
@@ -83,14 +97,28 @@ class MyDetailsBlock extends StatelessWidget {
                           Text(
                             details.keys.toList()[i],
                             style: kBoldStyle.copyWith(
+                              overflow: shouldOverflowAtIndex == i
+                                  ? TextOverflow.ellipsis
+                                  : null,
                               fontSize: kLargeSize - 6,
                               color: kDarkGrayColor,
                             ),
                           ),
-                          Text(
-                            details.values.toList()[i],
-                            style: kBoldStyle.copyWith(
-                              fontSize: kLargeSize - 6,
+                          SizedBox(
+                            width: shouldOverflowAtIndex == i ? 350 : null,
+                            child: FittedBox(
+                              fit: shouldOverflowAtIndex == i
+                                  ? BoxFit.scaleDown
+                                  : BoxFit.contain,
+                              child: Text(
+                                details.values.toList()[i],
+                                style: kBoldStyle.copyWith(
+                                  overflow: shouldOverflowAtIndex == i
+                                      ? TextOverflow.ellipsis
+                                      : null,
+                                  fontSize: kLargeSize - 6,
+                                ),
+                              ),
                             ),
                           ),
                         ],

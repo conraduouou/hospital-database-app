@@ -37,6 +37,7 @@ class PatientDetailsScreenBody extends StatelessWidget {
                       blockRows: [
                         [
                           MyDetailsBlock(
+                            shouldOverflowAtIndex: 2,
                             details: details.patient,
                             heading: 'Patient Record',
                             showEdit: true,
