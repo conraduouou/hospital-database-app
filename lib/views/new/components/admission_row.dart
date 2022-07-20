@@ -40,11 +40,17 @@ class AdmissionRow extends StatelessWidget {
               text: '06/24/2022',
               width: kTextFieldWidth,
             ),
-            MyField(
-              hintText: 'Illness',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.illness);
+            Selector<NewDetailsProvider, String?>(
+              selector: (c, p) => p.admission.illness,
+              builder: (ctx, illness, child) {
+                return MyField(
+                  initialText: illness,
+                  hintText: 'Illness',
+                  width: kTextFieldWidth,
+                  onChanged: (s) {
+                    provider.onChanged(s, attribute: Attribute.illness);
+                  },
+                );
               },
             ),
           ],

@@ -36,7 +36,7 @@ class ProcedureGrid extends StatelessWidget {
                     : '',
                 name: i < procedures.length ? procedures[i].name : null,
                 cost: i < procedures.length
-                    ? procedures[i].cost.toString()
+                    ? procedures[i].cost?.toString()
                     : null,
                 onClose: () {
                   provider.removeProcedure(i);

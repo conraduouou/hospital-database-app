@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/constants.dart';
 
-class MyField extends StatelessWidget {
+class MyField extends StatefulWidget {
   const MyField({
     Key? key,
     this.width,
@@ -22,23 +23,52 @@ class MyField extends StatelessWidget {
   final void Function(String)? onChanged;
 
   @override
+  State<MyField> createState() => _MyFieldState();
+}
+
+class _MyFieldState extends State<MyField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.initialText);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
+      width: widget.width,
       child: TextField(
+        controller: _controller,
         style: kBoldStyle.copyWith(fontSize: kRegularSize),
         cursorColor: kPurpleColor,
-        onChanged: onChanged,
+        onChanged: (s) {
+          _controller.value = TextEditingValue(
+            text: s,
+            selection: TextSelection.fromPosition(
+              TextPosition(offset: _controller.text.length),
+            ),
+          );
+
+          if (widget.onChanged != null) widget.onChanged!(s);
+        },
         decoration: InputDecoration(
-          enabled: enabled,
+          enabled: widget.enabled,
           filled: true,
-          fillColor: color ?? kOffWhiteColor,
+          fillColor: widget.color ?? kOffWhiteColor,
           contentPadding: const EdgeInsets.all(15),
           hintStyle: kGrayBoldStyle.copyWith(fontSize: kRegularSize),
-          hintText: hintText,
+          hintText: widget.hintText,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(radius ?? 10),
+            borderRadius: BorderRadius.circular(widget.radius ?? 10),
           ),
         ),
       ),

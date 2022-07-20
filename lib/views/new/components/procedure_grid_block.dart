@@ -87,7 +87,7 @@ class ProcedureGridBlock extends StatelessWidget {
               width: kTextFieldWidth,
             ),
             MyField(
-              initialText: cost.toString(),
+              initialText: cost,
               hintText: 'Cost',
               width: kTextFieldWidth,
             ),
