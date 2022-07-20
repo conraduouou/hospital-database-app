@@ -22,10 +22,10 @@ class NewDetailsProvider with ChangeNotifier {
   late DoctorDetails doctor;
   late List<ProcedureDetails> procedures;
 
-  late String newAdmissionId;
-  late String newPatientId;
-  late String newDoctorId;
-  late int newRoomNumber;
+  String? newAdmissionId;
+  String? newPatientId;
+  String? newDoctorId;
+  int? newRoomNumber;
 
   // formula for setting new id in list: newProcedureId + (length - 1 - existing)
   late int newProcedureId;
@@ -42,6 +42,41 @@ class NewDetailsProvider with ChangeNotifier {
   bool get isGettingRoom => _isGettingRoom;
   bool get isGettingDoctor => _isGettingDoctor;
   bool isGettingProcedure(int index) => _isGettingProcedure[index];
+
+  /// This is called in the build method, not sure if this is a breaking bug...
+  ///
+  /// The setting of _inAsync in the first line of the method is deliberate,
+  /// since the app is currently undergoing a build method and does not need
+  /// to be notified of needing a new build, which is an exception.
+  ///
+  /// This method is made to be called every time before building a whole
+  /// New_Screen, and so the need to not call notifyListeners in the beginning.
+  void initClass() async {
+    _inAsync = true;
+
+    // instantiate objects
+    admission = AdmissionDetails();
+    patient = PatientDetails();
+    room = RoomDetails();
+    doctor = DoctorDetails();
+    procedures = [ProcedureDetails()];
+
+    // get IDs via SQLHelper
+    newAdmissionId = await helper.getNewAdmissionId();
+    newPatientId = await helper.getNewPatientId();
+    newDoctorId = await helper.getNewDoctorId();
+    newRoomNumber = await helper.getNewRoomNumber();
+    newProcedureId = await helper.getNewProcedureId();
+
+    // assign them to the corresponding objects
+    admission.id = newAdmissionId;
+    patient.id = newPatientId;
+    doctor.id = newDoctorId;
+    room.number = newRoomNumber;
+    procedures[0].id = NumberFormat('00000').format(newProcedureId);
+
+    _toggleInAsync();
+  }
 
   // big af switch case method for TextField onChanged
   void onChanged(String s, {required Attribute attribute, int? index}) {
@@ -151,43 +186,6 @@ class NewDetailsProvider with ChangeNotifier {
     _toggleGettingProcedure(index);
   }
 
-  /// This is called in the build method, not sure if this is a breaking bug...
-  ///
-  /// The setting of _inAsync in the first line of the method is deliberate,
-  /// since the app is currently undergoing a build method and does not need
-  /// to be notified of needing a new build, which is an exception.
-  ///
-  /// This method is made to be called every time before building a whole
-  /// New_Screen, and so the need to not call notifyListeners in the beginning.
-  void initClass() async {
-    _inAsync = true;
-
-    // instantiate objects
-    admission = AdmissionDetails();
-    patient = PatientDetails();
-    room = RoomDetails();
-    doctor = DoctorDetails();
-    procedures = [ProcedureDetails(), ProcedureDetails()];
-
-    // get IDs via SQLHelper
-    newAdmissionId = await helper.getNewAdmissionId();
-    newPatientId = await helper.getNewPatientId();
-    newDoctorId = await helper.getNewDoctorId();
-    newRoomNumber = await helper.getNewRoomNumber();
-    newProcedureId = await helper.getNewProcedureId();
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    // assign them to the corresponding objects
-    admission.id = newAdmissionId;
-    patient.id = newPatientId;
-    doctor.id = newDoctorId;
-    room.number = newRoomNumber;
-    procedures[0].id = NumberFormat('00000').format(newProcedureId);
-
-    _toggleInAsync();
-  }
-
   void _toggleInAsync() {
     _inAsync = !_inAsync;
     notifyListeners();
@@ -215,6 +213,16 @@ class NewDetailsProvider with ChangeNotifier {
 
   void addProcedure() {
     procedures.add(ProcedureDetails());
+
+    final existing = procedures.fold<int>(
+        0,
+        (previousValue, element) =>
+            (int.tryParse(element.id ?? '') ?? newProcedureId) < newProcedureId
+                ? previousValue + 1
+                : previousValue + 0);
+
+    final idValue = newProcedureId + (procedures.length - 1 - existing);
+    procedures.last.id = idValue.toString().padLeft(5, '0');
     notifyListeners();
   }
 

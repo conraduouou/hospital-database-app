@@ -17,13 +17,17 @@ class ProcedureGrid extends StatelessWidget {
       ),
       delegate: SliverChildListDelegate([
         ...(() {
-          final provider = Provider.of<NewDetailsProvider>(context);
+          final provider = context.read<NewDetailsProvider>();
+          final length = context.select<NewDetailsProvider, int>(
+            (provider) => provider.procedures.length,
+          );
           final procedures = provider.procedures;
           final list = <Widget>[];
 
-          for (int i = 0; i <= procedures.length; i++) {
+          for (int i = 0; i <= length; i++) {
             list.add(
               ProcedureGridBlock(
+                index: i,
                 showFirst: i != procedures.length,
                 showClose: i != 0,
                 heading: 'Procedure ${i + 1}',

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hospital_database_app/providers/new_details_provider.dart';
 import 'package:hospital_database_app/views/new/components/add_block.dart';
 import 'package:hospital_database_app/components/my_dropdown_button.dart';
 import 'package:hospital_database_app/components/my_field.dart';
 import 'package:hospital_database_app/constants.dart';
+import 'package:provider/provider.dart';
 
 class ProcedureGridBlock extends StatelessWidget {
   const ProcedureGridBlock({
@@ -11,6 +13,7 @@ class ProcedureGridBlock extends StatelessWidget {
     required this.showFirst,
     required this.heading,
     required this.id,
+    required this.index,
     this.isNew = false,
     this.showClose = false,
     this.name,
@@ -29,6 +32,10 @@ class ProcedureGridBlock extends StatelessWidget {
   final String? cost;
   final VoidCallback? onClose;
   final VoidCallback? addOnTap;
+
+  /// Supplied in order to track which procedure in the state list this widget
+  /// corresponds to.
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +67,19 @@ class ProcedureGridBlock extends StatelessWidget {
           showClose: showClose,
           onClose: onClose,
           children: [
-            MyDropdownButton(
-              showDropdown: !isNew,
-              text: id,
-              color: kLightGrayColor,
-              textColor: kDarkGrayColor,
-              enabled: true,
-              width: kTextFieldWidth,
+            Selector<NewDetailsProvider, String?>(
+              selector: (c, p) =>
+                  index == p.procedures.length ? null : p.procedures[index].id,
+              builder: (ctx, id, child) {
+                return MyDropdownButton(
+                  showDropdown: !isNew,
+                  text: id ?? '',
+                  color: kLightGrayColor,
+                  textColor: kDarkGrayColor,
+                  enabled: true,
+                  width: kTextFieldWidth,
+                );
+              },
             ),
             MyField(
               initialText: name,

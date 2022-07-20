@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_database_app/providers/new_details_provider.dart';
 import 'package:hospital_database_app/views/new/components/add_block.dart';
 import 'package:hospital_database_app/components/my_dropdown_button.dart';
 import 'package:hospital_database_app/components/my_field.dart';
 import 'package:hospital_database_app/constants.dart';
+import 'package:provider/provider.dart';
 
 class RoomRow extends StatelessWidget {
   const RoomRow({
@@ -37,26 +39,41 @@ class RoomBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<NewDetailsProvider>();
+
     return AddBlock(
       heading: isNew ? 'New Room' : 'Room',
       children: [
-        MyDropdownButton(
-          text: '302 (new)',
-          textColor: kDarkGrayColor,
-          showDropdown: !isNew,
-          width: kTextFieldWidth,
-        ),
-        const MyField(
+        Selector<NewDetailsProvider, int?>(
+            selector: (c, p) => p.newRoomNumber,
+            builder: (ctx, number, child) {
+              return MyDropdownButton(
+                text: number.toString(),
+                textColor: kDarkGrayColor,
+                showDropdown: !isNew,
+                width: kTextFieldWidth,
+              );
+            }),
+        MyField(
           hintText: 'Type',
           width: kTextFieldWidth,
+          onChanged: (s) {
+            provider.onChanged(s, attribute: Attribute.roomType);
+          },
         ),
-        const MyField(
+        MyField(
           hintText: 'Cost',
           width: kTextFieldWidth,
+          onChanged: (s) {
+            provider.onChanged(s, attribute: Attribute.roomCost);
+          },
         ),
-        const MyField(
+        MyField(
           hintText: 'Capacity',
           width: kTextFieldWidth,
+          onChanged: (s) {
+            provider.onChanged(s, attribute: Attribute.roomCapacity);
+          },
         ),
       ],
     );
@@ -72,26 +89,41 @@ class DoctorBlock extends StatelessWidget {
   final bool isNew;
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<NewDetailsProvider>();
     return AddBlock(
       heading: isNew ? 'New Doctor' : 'Doctor',
       children: [
-        MyDropdownButton(
-          text: 'DID-0032 (new)',
-          textColor: kDarkGrayColor,
-          showDropdown: !isNew,
-          width: kTextFieldWidth,
+        Selector<NewDetailsProvider, String?>(
+          selector: (c, p) => p.newDoctorId,
+          builder: (ctx, id, child) {
+            return MyDropdownButton(
+              text: id ?? '',
+              textColor: kDarkGrayColor,
+              showDropdown: !isNew,
+              width: kTextFieldWidth,
+            );
+          },
         ),
-        const MyField(
+        MyField(
           hintText: 'Name',
           width: kTextFieldWidth,
+          onChanged: (s) {
+            provider.onChanged(s, attribute: Attribute.doctorName);
+          },
         ),
-        const MyField(
+        MyField(
           hintText: 'PCF (Peso conversion factor)',
           width: kTextFieldWidth,
+          onChanged: (s) {
+            provider.onChanged(s, attribute: Attribute.doctorPCF);
+          },
         ),
-        const MyField(
+        MyField(
           hintText: 'Department',
           width: kTextFieldWidth,
+          onChanged: (s) {
+            provider.onChanged(s, attribute: Attribute.doctorDepartment);
+          },
         ),
       ],
     );

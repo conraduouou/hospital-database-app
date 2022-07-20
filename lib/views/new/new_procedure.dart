@@ -39,6 +39,7 @@ class NewProcedureScreen extends StatelessWidget {
                       ),
                       delegate: SliverChildListDelegate([
                         const ProcedureGridBlock(
+                          index: 0,
                           isNew: true,
                           showFirst: true,
                           heading: 'New Procedure',
