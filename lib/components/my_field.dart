@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/constants.dart';
 
-class MyField extends StatefulWidget {
+class MyField extends StatelessWidget {
   const MyField({
     Key? key,
     this.width,
@@ -10,6 +10,7 @@ class MyField extends StatefulWidget {
     this.initialText,
     this.hintText,
     this.enabled = true,
+    this.onChanged,
   }) : super(key: key);
 
   final double? width;
@@ -18,43 +19,26 @@ class MyField extends StatefulWidget {
   final String? initialText;
   final String? hintText;
   final bool enabled;
-
-  @override
-  State<MyField> createState() => _MyFieldState();
-}
-
-class _MyFieldState extends State<MyField> {
-  late TextEditingController controller;
-
-  @override
-  void initState() {
-    controller = TextEditingController(text: widget.initialText);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.width,
+      width: width,
       child: TextField(
         style: kBoldStyle.copyWith(fontSize: kRegularSize),
         cursorColor: kPurpleColor,
+        onChanged: onChanged,
         decoration: InputDecoration(
-          enabled: widget.enabled,
+          enabled: enabled,
           filled: true,
-          fillColor: widget.color ?? kOffWhiteColor,
+          fillColor: color ?? kOffWhiteColor,
           contentPadding: const EdgeInsets.all(15),
           hintStyle: kGrayBoldStyle.copyWith(fontSize: kRegularSize),
-          hintText: widget.hintText,
+          hintText: hintText,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(widget.radius ?? 10),
+            borderRadius: BorderRadius.circular(radius ?? 10),
           ),
         ),
       ),
