@@ -46,6 +46,7 @@ class NewDetailsProvider with ChangeNotifier {
   bool _isGettingDoctor = false;
   final List<bool> _isGettingProcedure = [false, false];
 
+  bool get inAsync => _inAsync;
   bool get isGettingPatient => _isGettingPatient;
   bool get isGettingRoom => _isGettingRoom;
   bool get isGettingDoctor => _isGettingDoctor;
