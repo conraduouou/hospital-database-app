@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hospital_database_app/constants.dart';
 
 class MyField extends StatefulWidget {
@@ -11,6 +11,7 @@ class MyField extends StatefulWidget {
     this.initialText,
     this.hintText,
     this.enabled = true,
+    this.isDigitsOnly = false,
     this.onChanged,
   }) : super(key: key);
 
@@ -20,6 +21,7 @@ class MyField extends StatefulWidget {
   final String? initialText;
   final String? hintText;
   final bool enabled;
+  final bool isDigitsOnly;
   final void Function(String)? onChanged;
 
   @override
@@ -46,6 +48,9 @@ class _MyFieldState extends State<MyField> {
     return SizedBox(
       width: widget.width,
       child: TextField(
+        inputFormatters: widget.isDigitsOnly
+            ? [FilteringTextInputFormatter.digitsOnly]
+            : null,
         controller: _controller,
         style: kBoldStyle.copyWith(fontSize: kRegularSize),
         cursorColor: kPurpleColor,

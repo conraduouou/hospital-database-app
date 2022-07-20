@@ -45,34 +45,55 @@ class RoomBlock extends StatelessWidget {
       heading: isNew ? 'New Room' : 'Room',
       children: [
         Selector<NewDetailsProvider, int?>(
-            selector: (c, p) => p.newRoomNumber,
-            builder: (ctx, number, child) {
-              return MyDropdownButton(
-                text: number.toString(),
-                textColor: kDarkGrayColor,
-                showDropdown: !isNew,
-                width: kTextFieldWidth,
-              );
-            }),
-        MyField(
-          hintText: 'Type',
-          width: kTextFieldWidth,
-          onChanged: (s) {
-            provider.onChanged(s, attribute: Attribute.roomType);
+          selector: (c, p) => p.newRoomNumber,
+          builder: (ctx, number, child) {
+            return MyDropdownButton(
+              text: number.toString(),
+              textColor: kDarkGrayColor,
+              showDropdown: !isNew,
+              width: kTextFieldWidth,
+            );
           },
         ),
-        MyField(
-          hintText: 'Cost',
-          width: kTextFieldWidth,
-          onChanged: (s) {
-            provider.onChanged(s, attribute: Attribute.roomCost);
+        Selector<NewDetailsProvider, String?>(
+          selector: (c, p) => p.room.type,
+          builder: (ctx, type, child) {
+            return MyField(
+              initialText: type,
+              hintText: 'Type',
+              width: kTextFieldWidth,
+              onChanged: (s) {
+                provider.onChanged(s, attribute: Attribute.roomType);
+              },
+            );
           },
         ),
-        MyField(
-          hintText: 'Capacity',
-          width: kTextFieldWidth,
-          onChanged: (s) {
-            provider.onChanged(s, attribute: Attribute.roomCapacity);
+        Selector<NewDetailsProvider, double?>(
+          selector: (c, p) => p.room.cost,
+          builder: (ctx, cost, child) {
+            return MyField(
+              initialText: cost?.toString(),
+              isDigitsOnly: true,
+              hintText: 'Cost',
+              width: kTextFieldWidth,
+              onChanged: (s) {
+                provider.onChanged(s, attribute: Attribute.roomCost);
+              },
+            );
+          },
+        ),
+        Selector<NewDetailsProvider, int?>(
+          selector: (c, p) => p.room.capacity,
+          builder: (ctx, capacity, child) {
+            return MyField(
+              initialText: capacity?.toString(),
+              isDigitsOnly: true,
+              hintText: 'Capacity',
+              width: kTextFieldWidth,
+              onChanged: (s) {
+                provider.onChanged(s, attribute: Attribute.roomCapacity);
+              },
+            );
           },
         ),
       ],
@@ -104,25 +125,44 @@ class DoctorBlock extends StatelessWidget {
             );
           },
         ),
-        MyField(
-          hintText: 'Name',
-          width: kTextFieldWidth,
-          onChanged: (s) {
-            provider.onChanged(s, attribute: Attribute.doctorName);
+        Selector<NewDetailsProvider, String?>(
+          selector: (c, p) => p.doctor.name,
+          builder: (ctx, name, child) {
+            return MyField(
+              initialText: name,
+              hintText: 'Name',
+              width: kTextFieldWidth,
+              onChanged: (s) {
+                provider.onChanged(s, attribute: Attribute.doctorName);
+              },
+            );
           },
         ),
-        MyField(
-          hintText: 'PCF (Peso conversion factor)',
-          width: kTextFieldWidth,
-          onChanged: (s) {
-            provider.onChanged(s, attribute: Attribute.doctorPCF);
+        Selector<NewDetailsProvider, int?>(
+          selector: (c, p) => p.doctor.pcf,
+          builder: (ctx, pcf, child) {
+            return MyField(
+              initialText: pcf?.toString(),
+              isDigitsOnly: true,
+              hintText: 'PCF (Peso conversion factor)',
+              width: kTextFieldWidth,
+              onChanged: (s) {
+                provider.onChanged(s, attribute: Attribute.doctorPCF);
+              },
+            );
           },
         ),
-        MyField(
-          hintText: 'Department',
-          width: kTextFieldWidth,
-          onChanged: (s) {
-            provider.onChanged(s, attribute: Attribute.doctorDepartment);
+        Selector<NewDetailsProvider, String?>(
+          selector: (c, p) => p.doctor.department,
+          builder: (ctx, department, child) {
+            return MyField(
+              initialText: department,
+              hintText: 'Department',
+              width: kTextFieldWidth,
+              onChanged: (s) {
+                provider.onChanged(s, attribute: Attribute.doctorDepartment);
+              },
+            );
           },
         ),
       ],
