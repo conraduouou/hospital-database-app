@@ -37,25 +37,43 @@ class PatientRow extends StatelessWidget {
                 );
               },
             ),
-            MyField(
-              hintText: 'Name',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.patientName);
+            Selector<NewDetailsProvider, String?>(
+              selector: (c, p) => p.patient.name,
+              builder: (ctx, name, child) {
+                return MyField(
+                  initialText: name,
+                  hintText: 'Name',
+                  width: kTextFieldWidth,
+                  onChanged: (s) {
+                    provider.onChanged(s, attribute: Attribute.patientName);
+                  },
+                );
               },
             ),
-            MyField(
-              hintText: 'Address',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.patientAddress);
+            Selector<NewDetailsProvider, String?>(
+              selector: (c, p) => p.patient.address,
+              builder: (ctx, address, child) {
+                return MyField(
+                  initialText: address,
+                  hintText: 'Address',
+                  width: kTextFieldWidth,
+                  onChanged: (s) {
+                    provider.onChanged(s, attribute: Attribute.patientAddress);
+                  },
+                );
               },
             ),
-            MyField(
-              hintText: 'Contact number',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.patientNumber);
+            Selector<NewDetailsProvider, String?>(
+              selector: (c, p) => p.patient.contactNumber,
+              builder: (ctx, number, child) {
+                return MyField(
+                  initialText: number,
+                  hintText: 'Contact number',
+                  width: kTextFieldWidth,
+                  onChanged: (s) {
+                    provider.onChanged(s, attribute: Attribute.patientNumber);
+                  },
+                );
               },
             ),
             SizedBox(
@@ -63,17 +81,29 @@ class PatientRow extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  MyField(
-                    hintText: 'Age',
-                    width: 170,
-                    onChanged: (s) {
-                      provider.onChanged(s, attribute: Attribute.patientAge);
+                  Selector<NewDetailsProvider, int?>(
+                    selector: (c, p) => p.patient.age,
+                    builder: (ctx, age, child) {
+                      return MyField(
+                        initialText: age?.toString(),
+                        hintText: 'Age',
+                        width: 170,
+                        onChanged: (s) {
+                          provider.onChanged(s,
+                              attribute: Attribute.patientAge);
+                        },
+                      );
                     },
                   ),
-                  const MyDropdownButton(
-                    width: 190,
-                    text: 'Gender',
-                    textColor: kDarkGrayColor,
+                  Selector<NewDetailsProvider, String?>(
+                    selector: (c, p) => p.patient.gender,
+                    builder: (ctx, gender, child) {
+                      return const MyDropdownButton(
+                        width: 190,
+                        text: 'Gender',
+                        textColor: kDarkGrayColor,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -87,25 +117,45 @@ class PatientRow extends StatelessWidget {
             AddBlock(
               heading: 'Contact person',
               children: [
-                MyField(
-                  hintText: 'Name',
-                  width: kTextFieldWidth,
-                  onChanged: (s) {
-                    provider.onChanged(s, attribute: Attribute.contactName);
+                Selector<NewDetailsProvider, String?>(
+                  selector: (c, p) => p.patient.contactPersonName,
+                  builder: (ctx, name, child) {
+                    return MyField(
+                      initialText: name,
+                      hintText: 'Name',
+                      width: kTextFieldWidth,
+                      onChanged: (s) {
+                        provider.onChanged(s, attribute: Attribute.contactName);
+                      },
+                    );
                   },
                 ),
-                MyField(
-                  hintText: 'Relation with patient',
-                  width: kTextFieldWidth,
-                  onChanged: (s) {
-                    provider.onChanged(s, attribute: Attribute.contactRelation);
+                Selector<NewDetailsProvider, String?>(
+                  selector: (c, p) => p.patient.contactPersonRelation,
+                  builder: (ctx, relation, child) {
+                    return MyField(
+                      initialText: relation,
+                      hintText: 'Relation with patient',
+                      width: kTextFieldWidth,
+                      onChanged: (s) {
+                        provider.onChanged(s,
+                            attribute: Attribute.contactRelation);
+                      },
+                    );
                   },
                 ),
-                MyField(
-                  hintText: 'Contact number',
-                  width: kTextFieldWidth,
-                  onChanged: (s) {
-                    provider.onChanged(s, attribute: Attribute.contactNumber);
+                Selector<NewDetailsProvider, String?>(
+                  selector: (c, p) => p.patient.contactPersonNumber,
+                  builder: (ctx, number, child) {
+                    return MyField(
+                      initialText: number,
+                      hintText: 'Contact number',
+                      width: kTextFieldWidth,
+                      onChanged: (s) {
+                        provider.onChanged(s,
+                            attribute: Attribute.contactNumber);
+                      },
+                    );
                   },
                 ),
               ],
