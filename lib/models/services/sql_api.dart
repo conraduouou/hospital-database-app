@@ -176,4 +176,39 @@ class SQLApi {
     final results = await connection.query(sql);
     return results;
   }
+
+  Future<Results> getNewAdmissionId() async {
+    const sql =
+        'select concat(\'AID-\', lpad(max(recorded_id), 4, 0)) as new_admission_id from id_history where table_name = \'admissions\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getNewDoctorId() async {
+    const sql =
+        'select concat(\'DID-\', lpad(max(recorded_id), 4, 0)) as new_doctor_id from id_history where table_name = \'doctors\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getNewRoomNumber() async {
+    const sql =
+        'select `Auto_increment` as new_room_number from INFORMATION_SCHEMA.TABLES where table_name = \'rooms\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getNewProcedureId() async {
+    const sql =
+        'select lpad(max(recorded_id), 5, 0) as new_procedure_id from id_history where table_name = \'procedures\'';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getNewPatientId() async {
+    const sql =
+        'select concat(\'PID-\', lpad(max(recorded_id), 4, 0)) as new_patient_id from id_history where table_name = \'patients\'';
+    final results = await connection.query(sql);
+    return results;
+  }
 }

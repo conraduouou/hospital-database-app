@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_database_app/providers/new_admission_provider.dart';
+import 'package:hospital_database_app/providers/new_details_provider.dart';
 import 'package:hospital_database_app/views/new/components/procedure_grid_block.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +17,7 @@ class ProcedureGrid extends StatelessWidget {
       ),
       delegate: SliverChildListDelegate([
         ...(() {
-          final provider = Provider.of<NewAdmissionProvider>(context);
+          final provider = Provider.of<NewDetailsProvider>(context);
           final procedures = provider.procedures;
           final list = <Widget>[];
 

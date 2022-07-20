@@ -4,8 +4,9 @@ import 'package:hospital_database_app/components/my_button.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/derived_components/appbar_options.dart';
 import 'package:hospital_database_app/derived_components/provided_appbar.dart';
+import 'package:hospital_database_app/models/helpers/sql_api_helper.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
-import 'package:hospital_database_app/providers/new_admission_provider.dart';
+import 'package:hospital_database_app/providers/new_details_provider.dart';
 import 'package:hospital_database_app/views/new/components/admission_row.dart';
 import 'package:hospital_database_app/views/new/components/patient_row.dart';
 import 'package:hospital_database_app/views/new/components/procedure_grid.dart';
@@ -20,9 +21,10 @@ class NewAdmissionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<AppBarProvider>();
+    final helper = context.read<SQLApiHelper>();
 
-    return ChangeNotifierProvider<NewAdmissionProvider>(
-      create: (context) => NewAdmissionProvider(),
+    return ChangeNotifierProvider<NewDetailsProvider>(
+      create: (context) => NewDetailsProvider(helper: helper),
       child: GestureDetector(
         onTap: provider.unshowOptions,
         child: Scaffold(

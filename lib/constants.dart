@@ -56,3 +56,27 @@ enum MenuType {
   add,
   gear,
 }
+
+enum Attribute {
+  illness,
+  patientId,
+  patientName,
+  patientAddress,
+  patientNumber,
+  patientAge,
+  patientGender,
+  contactName,
+  contactRelation,
+  contactNumber,
+  roomNumber,
+  roomType,
+  roomCost,
+  roomCapacity,
+  doctorId,
+  doctorName,
+  doctorPCF,
+  doctorDepartment,
+  procedureId,
+  procedureName,
+  procedureCost,
+}

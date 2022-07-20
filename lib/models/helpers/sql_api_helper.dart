@@ -180,9 +180,13 @@ class SQLApiHelper {
     return procedures;
   }
 
-  Future<PatientDetails> getPatientDetailsById(String id) async {
+  Future<PatientDetails> getPatientDetailsById(
+    String id, {
+    bool includeAdmissions = true,
+  }) async {
     final results = await sqlApi.getPatientDetailsById(id);
-    final admissions = await getAdmissionsByPatientId(id);
+    final admissions =
+        includeAdmissions ? await getAdmissionsByPatientId(id) : null;
     final patientData = results.single;
     final patient = PatientDetails(
       id: patientData['patient_id'],
@@ -222,9 +226,12 @@ class SQLApiHelper {
     return admissions;
   }
 
-  Future<RoomDetails> getRoomById(String id) async {
+  Future<RoomDetails> getRoomById(
+    String id, {
+    bool includePatients = true,
+  }) async {
     final results = await sqlApi.getRoomById(id);
-    final patients = await getPatientsByRoomNumber(id);
+    final patients = includePatients ? await getPatientsByRoomNumber(id) : null;
     final result = results.single;
     final room = RoomDetails(
       number: result['room_number'],
@@ -254,9 +261,13 @@ class SQLApiHelper {
     return patients;
   }
 
-  Future<ProcedureDetails> getProcedureById(String id) async {
+  Future<ProcedureDetails> getProcedureById(
+    String id, {
+    bool includeAdmissions = true,
+  }) async {
     final results = await sqlApi.getProcedureById(id);
-    final admissions = await getAdmissionsByProcedureId(id);
+    final admissions =
+        includeAdmissions ? await getAdmissionsByProcedureId(id) : null;
     final result = results.single;
     final procedure = ProcedureDetails(
       id: result['procedure_id'],
@@ -293,9 +304,13 @@ class SQLApiHelper {
     return admissions;
   }
 
-  Future<DoctorDetails> getDoctorDetailsById(String id) async {
+  Future<DoctorDetails> getDoctorDetailsById(
+    String id, {
+    bool includeAdmissions = true,
+  }) async {
     final results = await sqlApi.getDoctorDetailsById(id);
-    final admissions = await getAdmissionsByDoctorId(id);
+    final admissions =
+        includeAdmissions ? await getAdmissionsByDoctorId(id) : null;
     final result = results.single;
     final doctor = DoctorDetails(
       id: result['doctor_id'],
@@ -325,5 +340,40 @@ class SQLApiHelper {
       );
     }
     return admissions;
+  }
+
+  Future<String> getNewAdmissionId() async {
+    final results = await sqlApi.getNewAdmissionId();
+    final result = results.single;
+    final admissionId = result['new_admission_id'];
+    return admissionId;
+  }
+
+  Future<String> getNewDoctorId() async {
+    final results = await sqlApi.getNewDoctorId();
+    final result = results.single;
+    final doctorId = result['new_doctor_id'];
+    return doctorId;
+  }
+
+  Future<int> getNewRoomNumber() async {
+    final results = await sqlApi.getNewRoomNumber();
+    final result = results.single;
+    final roomNumber = result['new_room_number'];
+    return roomNumber;
+  }
+
+  Future<String> getNewProcedureId() async {
+    final results = await sqlApi.getNewProcedureId();
+    final result = results.single;
+    final procedureId = result['new_procedure_id'];
+    return procedureId;
+  }
+
+  Future<String> getNewPatientId() async {
+    final results = await sqlApi.getNewPatientId();
+    final result = results.single;
+    final patientId = result['new_patient_id'];
+    return patientId;
   }
 }
