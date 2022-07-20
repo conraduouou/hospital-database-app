@@ -6,6 +6,7 @@ import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
 import 'package:hospital_database_app/models/core/room_details.dart';
 import 'package:hospital_database_app/models/helpers/sql_api_helper.dart';
+import 'package:intl/intl.dart';
 
 class NewDetailsProvider with ChangeNotifier {
   NewDetailsProvider({required this.helper}) {
@@ -15,6 +16,8 @@ class NewDetailsProvider with ChangeNotifier {
     room = RoomDetails();
     doctor = DoctorDetails();
     procedures = [ProcedureDetails(), ProcedureDetails()];
+
+    _supplyNewIds();
   }
 
   final SQLApiHelper helper;
@@ -28,7 +31,16 @@ class NewDetailsProvider with ChangeNotifier {
   late DoctorDetails doctor;
   late List<ProcedureDetails> procedures;
 
+  late String newAdmissionId;
+  late String newPatientId;
+  late String newDoctorId;
+  late int newRoomNumber;
+
+  // formula for setting new id in list: newProcedureId + (length - 1 - existing)
+  late int newProcedureId;
+
   // state
+  bool _inAsync = false;
   bool _isGettingPatient = false;
   bool _isGettingRoom = false;
   bool _isGettingDoctor = false;
@@ -145,6 +157,29 @@ class NewDetailsProvider with ChangeNotifier {
     procedures[index] =
         await helper.getProcedureById(id, includeAdmissions: false);
     _toggleGettingProcedure(index);
+  }
+
+  void _supplyNewIds() async {
+    _toggleInAsync();
+    // get IDs via SQLHelper
+    newAdmissionId = await helper.getNewAdmissionId();
+    newPatientId = await helper.getNewPatientId();
+    newDoctorId = await helper.getNewDoctorId();
+    newRoomNumber = await helper.getNewRoomNumber();
+    newProcedureId = await helper.getNewProcedureId();
+
+    // assign them to the corresponding objects
+    admission.id = newAdmissionId;
+    patient.id = newPatientId;
+    doctor.id = newDoctorId;
+    room.number = newRoomNumber;
+    procedures[0].id = NumberFormat('00000').format(newProcedureId);
+    _toggleInAsync();
+  }
+
+  void _toggleInAsync() {
+    _inAsync = !_inAsync;
+    notifyListeners();
   }
 
   void _toggleGettingPatient() {

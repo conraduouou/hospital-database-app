@@ -200,7 +200,7 @@ class SQLApi {
 
   Future<Results> getNewProcedureId() async {
     const sql =
-        'select lpad(max(recorded_id), 5, 0) as new_procedure_id from id_history where table_name = \'procedures\'';
+        'select max(recorded_id) as new_procedure_id from id_history where table_name = \'procedures\'';
     final results = await connection.query(sql);
     return results;
   }

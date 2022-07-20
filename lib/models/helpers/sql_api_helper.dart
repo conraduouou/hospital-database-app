@@ -363,7 +363,7 @@ class SQLApiHelper {
     return roomNumber;
   }
 
-  Future<String> getNewProcedureId() async {
+  Future<int> getNewProcedureId() async {
     final results = await sqlApi.getNewProcedureId();
     final result = results.single;
     final procedureId = result['new_procedure_id'];
