@@ -20,10 +20,13 @@ class NewAdmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<AppBarProvider>();
+    final appBarProvider = context.read<AppBarProvider>();
+    final provider = context.read<NewDetailsProvider>();
+
+    provider.initClass();
 
     return GestureDetector(
-      onTap: provider.unshowOptions,
+      onTap: appBarProvider.unshowOptions,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: const ProvidedAppBar(),

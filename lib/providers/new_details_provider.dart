@@ -9,16 +9,7 @@ import 'package:hospital_database_app/models/helpers/sql_api_helper.dart';
 import 'package:intl/intl.dart';
 
 class NewDetailsProvider with ChangeNotifier {
-  NewDetailsProvider({required this.helper}) {
-    // instantiate objects
-    admission = AdmissionDetails();
-    patient = PatientDetails();
-    room = RoomDetails();
-    doctor = DoctorDetails();
-    procedures = [ProcedureDetails(), ProcedureDetails()];
-
-    _supplyNewIds();
-  }
+  NewDetailsProvider({required this.helper});
 
   final SQLApiHelper helper;
 
@@ -160,8 +151,24 @@ class NewDetailsProvider with ChangeNotifier {
     _toggleGettingProcedure(index);
   }
 
-  void _supplyNewIds() async {
-    _toggleInAsync();
+  /// This is called in the build method, not sure if this is a breaking bug...
+  ///
+  /// The setting of _inAsync in the first line of the method is deliberate,
+  /// since the app is currently undergoing a build method and does not need
+  /// to be notified of needing a new build, which is an exception.
+  ///
+  /// This method is made to be called every time before building a whole
+  /// New_Screen, and so the need to not call notifyListeners in the beginning.
+  void initClass() async {
+    _inAsync = true;
+
+    // instantiate objects
+    admission = AdmissionDetails();
+    patient = PatientDetails();
+    room = RoomDetails();
+    doctor = DoctorDetails();
+    procedures = [ProcedureDetails(), ProcedureDetails()];
+
     // get IDs via SQLHelper
     newAdmissionId = await helper.getNewAdmissionId();
     newPatientId = await helper.getNewPatientId();
@@ -169,12 +176,15 @@ class NewDetailsProvider with ChangeNotifier {
     newRoomNumber = await helper.getNewRoomNumber();
     newProcedureId = await helper.getNewProcedureId();
 
+    await Future.delayed(const Duration(seconds: 2));
+
     // assign them to the corresponding objects
     admission.id = newAdmissionId;
     patient.id = newPatientId;
     doctor.id = newDoctorId;
     room.number = newRoomNumber;
     procedures[0].id = NumberFormat('00000').format(newProcedureId);
+
     _toggleInAsync();
   }
 
