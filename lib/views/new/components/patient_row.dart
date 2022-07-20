@@ -63,25 +63,23 @@ class PatientRow extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            SizedBox(height: 30),
-            Flexible(
-              child: AddBlock(
-                heading: 'Contact person',
-                children: [
-                  MyField(
-                    hintText: 'Name',
-                    width: kTextFieldWidth,
-                  ),
-                  MyField(
-                    hintText: 'Relation with patient',
-                    width: kTextFieldWidth,
-                  ),
-                  MyField(
-                    hintText: 'Contact number',
-                    width: kTextFieldWidth,
-                  ),
-                ],
-              ),
+            SizedBox(height: 60),
+            AddBlock(
+              heading: 'Contact person',
+              children: [
+                MyField(
+                  hintText: 'Name',
+                  width: kTextFieldWidth,
+                ),
+                MyField(
+                  hintText: 'Relation with patient',
+                  width: kTextFieldWidth,
+                ),
+                MyField(
+                  hintText: 'Contact number',
+                  width: kTextFieldWidth,
+                ),
+              ],
             ),
             SizedBox(height: 110)
           ],
