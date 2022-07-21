@@ -35,10 +35,11 @@ class AdmissionRow extends StatelessWidget {
                 );
               },
             ),
-            //TODO: implement dropdown logic
-            const MyDropdownButton(
+            MyDropdownButton(
               text: '06/24/2022',
               width: kTextFieldWidth,
+              itemsHeading: 'Date',
+              items: [for (int i = 0; i < 5; i++) '06/24/2020'],
             ),
             Selector<NewDetailsProvider, String?>(
               selector: (c, p) => p.admission.illness,

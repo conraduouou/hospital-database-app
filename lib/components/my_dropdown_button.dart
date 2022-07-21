@@ -14,6 +14,8 @@ class MyDropdownButton extends StatefulWidget {
     this.enabled = true,
     this.showDropdown = true,
     this.width,
+    this.items,
+    this.itemsHeading,
   }) : super(key: key);
 
   final String text;
@@ -26,56 +28,199 @@ class MyDropdownButton extends StatefulWidget {
   final bool showDropdown;
   final double? width;
 
+  /// The `String` items that will be viewed in the dropdown. If enabled is
+  /// true, this must not be null.
+  final List<String>? items;
+
+  /// The heading that informs what the items are. This is shown in conjunction
+  /// with the first element of `items` and therefore will not show if it is
+  /// empty. If enabled is true, this must not be null.
+  final String? itemsHeading;
+
   @override
   State<MyDropdownButton> createState() => _MyDropdownButtonState();
 }
 
 class _MyDropdownButtonState extends State<MyDropdownButton> {
+  final _focusNode = FocusNode();
+  final _layerLink = LayerLink();
+  late OverlayEntry _overlayEntry;
+
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        _overlayEntry = _createOverlayEntry();
+        Overlay.of(context)!.insert(_overlayEntry);
+      } else {
+        _overlayEntry.remove();
+      }
+    });
+    super.initState();
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        width: size.width,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0, size.height + 5),
+          child: Material(
+            clipBehavior: Clip.antiAlias,
+            color: kGrayColor,
+            borderRadius: BorderRadius.circular(10),
+            child: SizedBox(
+              height: widget.items!.length < 5 ? null : 200,
+              child: ListView.builder(
+                shrinkWrap: widget.items!.length < 5,
+                itemCount: widget.items!.length,
+                itemBuilder: (context, index) => index == 0
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 10),
+                              Text(
+                                widget.itemsHeading!,
+                                style: kBoldStyle.copyWith(
+                                  fontSize: kRegularSize - 4,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          OverlayItem(text: widget.items![index])
+                        ],
+                      )
+                    : OverlayItem(text: widget.items![index]),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Focus(
+      focusNode: _focusNode,
+      onFocusChange: (value) {
+        if (!widget.enabled) {
+          _focusNode.unfocus();
+        }
+      },
+      child: InkWell(
+        onTap: () {
+          if (widget.enabled && _focusNode.hasFocus) {
+            _focusNode.unfocus();
+          } else {
+            _focusNode.requestFocus();
+          }
+
+          if (widget.enabled && widget.onTap != null) widget.onTap!();
+        },
+        onHover: (isHovered) {
+          setState(() {
+            _isHovered = isHovered;
+          });
+
+          if (widget.onHover != null) {
+            widget.onHover!();
+          }
+        },
+        borderRadius: BorderRadius.circular(10),
+        child: CompositedTransformTarget(
+          link: _layerLink,
+          child: Container(
+            width: widget.width,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              color: _isHovered
+                  ? widget.hoverColor ?? kGrayColor
+                  : widget.color ?? kLightGrayColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.text,
+                  style: kBoldStyle.copyWith(
+                    fontSize: kRegularSize,
+                    color: widget.textColor ?? Colors.black,
+                  ),
+                ),
+                widget.showDropdown
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: SvgPicture.asset(
+                          'assets/dropdown.svg',
+                          color: kDarkGrayColor,
+                        ),
+                      )
+                    : Container(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class OverlayItem extends StatefulWidget {
+  const OverlayItem({
+    Key? key,
+    required this.text,
+    this.isSelected = false,
+  }) : super(key: key);
+
+  final String text;
+  final bool isSelected;
+
+  @override
+  State<OverlayItem> createState() => _OverlayItemState();
+}
+
+class _OverlayItemState extends State<OverlayItem> {
   bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.enabled ? widget.onTap ?? () {} : null,
+      onTap: () {},
       onHover: (isHovered) {
         setState(() {
           _isHovered = isHovered;
         });
-
-        if (widget.onHover != null) {
-          widget.onHover!();
-        }
       },
-      borderRadius: BorderRadius.circular(10),
       child: Container(
-        width: widget.width,
-        height: 50,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          color: _isHovered && widget.enabled
-              ? widget.hoverColor ?? kGrayColor
-              : widget.color ?? kLightGrayColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
+        color: _isHovered || widget.isSelected
+            ? kDarkGrayColor.withOpacity(0.2)
+            : kGrayColor,
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(width: 20),
             Text(
               widget.text,
               style: kBoldStyle.copyWith(
-                fontSize: kRegularSize,
-                color: widget.textColor ?? Colors.black,
+                fontSize: kRegularSize - 2,
               ),
             ),
-            widget.showDropdown
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: SvgPicture.asset(
-                      'assets/dropdown.svg',
-                      color: kDarkGrayColor,
-                    ),
-                  )
-                : Container(),
           ],
         ),
       ),
