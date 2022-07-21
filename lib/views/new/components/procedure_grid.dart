@@ -30,81 +30,94 @@ class ProcedureGrid extends StatelessWidget {
 
               for (int i = 0; i <= length; i++) {
                 list.add(
-                  ProcedureGridBlock(
-                    key: ValueKey(i),
-                    showFirst: i != procedures.length,
-                    showClose: i != 0,
-                    heading: 'Procedure ${i + 1}',
-                    onClose: () {
-                      provider.removeProcedure(i);
+                  Selector<NewDetailsProvider, bool>(
+                    selector: (c, p) =>
+                        i != length ? p.isGettingProcedure(i) : false,
+                    builder: (ctx, inAsync, child) {
+                      return ProcedureGridBlock(
+                        key: ValueKey(i),
+                        inAsync: inAsync,
+                        showFirst: !inAsync && i != procedures.length,
+                        showClose: i != 0,
+                        heading: 'Procedure ${i + 1}',
+                        onClose: () {
+                          provider.removeProcedure(i);
+                        },
+                        addOnTap: provider.addProcedure,
+                        children: [
+                          Selector<NewDetailsProvider, String?>(
+                            selector: (c, p) =>
+                                i == length ? null : p.procedures[i].id,
+                            builder: (ctx, id, child) {
+                              return MyDropdownButton(
+                                showDropdown: i != length,
+                                text: id ?? '',
+                                textColor: id?.compareTo('New') == 0
+                                    ? kDarkGrayColor
+                                    : Colors.black,
+                                width: kTextFieldWidth,
+                                itemsHeading: 'Procedure ID',
+                                items: i != length
+                                    ? provider.procedureDropdowns[i]
+                                    : [],
+                                overlayTap: (index) {
+                                  provider.onSelectItem(
+                                    index,
+                                    dropdownType: DropdownType.procedure,
+                                    procedureIndex: i,
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          Selector<NewDetailsProvider, String?>(
+                            key: UniqueKey(),
+                            selector: (c, p) =>
+                                i == length ? null : p.procedures[i].name,
+                            builder: (ctx, name, child) {
+                              return MyField(
+                                enabled: i != length
+                                    ? !provider.procedures[i].isExisting
+                                    : false,
+                                initialText: name,
+                                hintText: 'Name',
+                                width: kTextFieldWidth,
+                                onChanged: (s) {
+                                  provider.onChanged(
+                                    s,
+                                    index: i,
+                                    attribute: Attribute.procedureName,
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          Selector<NewDetailsProvider, double?>(
+                            key: UniqueKey(),
+                            selector: (c, p) =>
+                                i == length ? null : p.procedures[i].cost,
+                            builder: (ctx, cost, child) {
+                              return MyField(
+                                enabled: i != length
+                                    ? !provider.procedures[i].isExisting
+                                    : false,
+                                initialText: cost?.toInt().toString(),
+                                isDigitsOnly: true,
+                                hintText: 'Cost',
+                                width: kTextFieldWidth,
+                                onChanged: (s) {
+                                  provider.onChanged(
+                                    s,
+                                    index: i,
+                                    attribute: Attribute.procedureCost,
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      );
                     },
-                    addOnTap: provider.addProcedure,
-                    children: [
-                      Selector<NewDetailsProvider, String?>(
-                        selector: (c, p) =>
-                            i == length ? null : p.procedures[i].id,
-                        builder: (ctx, id, child) {
-                          return MyDropdownButton(
-                            showDropdown: i != length,
-                            text: id ?? '',
-                            textColor: id?.compareTo('New') == 0
-                                ? kDarkGrayColor
-                                : Colors.black,
-                            width: kTextFieldWidth,
-                            itemsHeading: 'Procedure ID',
-                            items: i != length
-                                ? provider.procedureDropdowns[i]
-                                : [],
-                            overlayTap: (index) {
-                              provider.onSelectItem(
-                                index,
-                                dropdownType: DropdownType.procedure,
-                                procedureIndex: i,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      Selector<NewDetailsProvider, String?>(
-                        key: UniqueKey(),
-                        selector: (c, p) =>
-                            i == length ? null : p.procedures[i].name,
-                        builder: (ctx, name, child) {
-                          return MyField(
-                            initialText: name,
-                            hintText: 'Name',
-                            width: kTextFieldWidth,
-                            onChanged: (s) {
-                              provider.onChanged(
-                                s,
-                                index: i,
-                                attribute: Attribute.procedureName,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      Selector<NewDetailsProvider, double?>(
-                        key: UniqueKey(),
-                        selector: (c, p) =>
-                            i == length ? null : p.procedures[i].cost,
-                        builder: (ctx, cost, child) {
-                          return MyField(
-                            initialText: cost?.toInt().toString(),
-                            isDigitsOnly: true,
-                            hintText: 'Cost',
-                            width: kTextFieldWidth,
-                            onChanged: (s) {
-                              provider.onChanged(
-                                s,
-                                index: i,
-                                attribute: Attribute.procedureCost,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
                   ),
                 );
               }

@@ -113,6 +113,7 @@ class NewDetailsProvider with ChangeNotifier {
     patient.gender = genders[0].content;
     room.number = null;
     doctor.id = doctorIds[0].content;
+    procedures[0].id = procedureDropdowns[0][0].content;
 
     _toggleInAsync();
   }
@@ -186,6 +187,12 @@ class NewDetailsProvider with ChangeNotifier {
         final dropdown = procedureDropdowns[procedureIndex!];
         final item = dropdown[index];
         procedures[procedureIndex].id = item.content;
+
+        if (procedures[procedureIndex].id!.compareTo('New') != 0) {
+          _getProcedure(procedures[procedureIndex].id!, procedureIndex);
+        } else {
+          procedures[procedureIndex] = ProcedureDetails(id: 'New');
+        }
 
         for (final item in dropdown) {
           if (item.isSelected) {

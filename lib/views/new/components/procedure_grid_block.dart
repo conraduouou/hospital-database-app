@@ -9,6 +9,7 @@ class ProcedureGridBlock extends StatelessWidget {
     required this.showFirst,
     required this.heading,
     required this.children,
+    this.inAsync = false,
     this.showClose = false,
     this.onClose,
     this.addOnTap,
@@ -16,6 +17,7 @@ class ProcedureGridBlock extends StatelessWidget {
 
   /// Tells which child to show.
   final bool showFirst;
+  final bool inAsync;
   final String heading;
   final List<Widget> children;
   final bool showClose;
@@ -54,23 +56,30 @@ class ProcedureGridBlock extends StatelessWidget {
           children: children,
         ),
       ),
-      secondChild: SizedBox(
-        width: kTextFieldWidth,
-        child: Center(
-          child: SizedBox(
-            height: 160,
-            child: InkWell(
-              onTap: addOnTap,
-              borderRadius: BorderRadius.circular(35),
-              child: SvgPicture.asset(
-                'assets/add.svg',
-                height: 160,
+      secondChild: inAsync
+          ? const Padding(
+              padding: EdgeInsets.only(left: 170),
+              child: CircularProgressIndicator(
                 color: kPurpleColor,
               ),
+            )
+          : SizedBox(
+              width: kTextFieldWidth,
+              child: Center(
+                child: SizedBox(
+                  height: 160,
+                  child: InkWell(
+                    onTap: addOnTap,
+                    borderRadius: BorderRadius.circular(35),
+                    child: SvgPicture.asset(
+                      'assets/add.svg',
+                      height: 160,
+                      color: kPurpleColor,
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
