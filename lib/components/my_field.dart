@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hospital_database_app/constants.dart';
@@ -44,6 +45,16 @@ class _MyFieldState extends State<MyField> {
   }
 
   @override
+  void didUpdateWidget(covariant MyField oldWidget) {
+    _controller.value = TextEditingValue(
+      text: widget.initialText ?? '',
+      selection: TextSelection.fromPosition(
+          TextPosition(offset: (widget.initialText ?? '').length)),
+    );
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.width,
@@ -52,7 +63,10 @@ class _MyFieldState extends State<MyField> {
             ? [FilteringTextInputFormatter.digitsOnly]
             : null,
         controller: _controller,
-        style: kBoldStyle.copyWith(fontSize: kRegularSize),
+        style: kBoldStyle.copyWith(
+          fontSize: kRegularSize,
+          color: widget.enabled ? Colors.black : kDarkGrayColor,
+        ),
         cursorColor: kPurpleColor,
         onChanged: widget.onChanged,
         decoration: InputDecoration(

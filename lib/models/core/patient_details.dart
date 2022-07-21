@@ -31,6 +31,10 @@ class PatientDetails implements Details {
 
   List<AdmissionDetails>? admissions;
 
+  // to be used for state, determining if this is editable in the new admission
+  // screen or not.
+  bool get isExisting => id != null && id?.compareTo('New') != 0;
+
   Map<String, String> get patient => <String, String>{
         'Patient ID': id!,
         'Name': name!,

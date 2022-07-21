@@ -180,7 +180,7 @@ class NewDetailsProvider with ChangeNotifier {
     int index, {
     required DropdownType dropdownType,
     int? procedureIndex,
-  }) {
+  }) async {
     switch (dropdownType) {
       case DropdownType.procedure:
         final dropdown = procedureDropdowns[procedureIndex!];
@@ -208,12 +208,26 @@ class NewDetailsProvider with ChangeNotifier {
         break;
       case DropdownType.patient:
         patient.id = _dropdowns[dropdownType]![index].content;
+
+        if (patient.id!.compareTo('New') != 0) {
+          _getPatient(patient.id!);
+        } else {
+          patient = PatientDetails(id: 'New', gender: genders[0].content);
+        }
         break;
       case DropdownType.doctor:
         doctor.id = _dropdowns[dropdownType]![index].content;
+
+        if (doctor.id!.compareTo('New') != 0) {
+          _getDoctor(doctor.id!);
+        }
         break;
       case DropdownType.room:
         room.number = int.tryParse(_dropdowns[dropdownType]![index].content);
+
+        if (room.number != null) {
+          _getRoom(room.number.toString());
+        }
         break;
     }
 
