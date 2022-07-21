@@ -26,11 +26,23 @@ class PatientRow extends StatelessWidget {
         AddBlock(
           heading: isNew ? 'New Patient' : 'Patient',
           children: [
-            MyDropdownButton(
-              text: 'New',
-              textColor: kDarkGrayColor,
-              showDropdown: !isNew,
-              width: kTextFieldWidth,
+            Selector<NewDetailsProvider, String?>(
+              selector: (c, p) => p.patient.id,
+              builder: (ctx, id, child) {
+                return MyDropdownButton(
+                  text: id ?? '',
+                  textColor:
+                      id?.compareTo('New') == 0 ? kDarkGrayColor : Colors.black,
+                  showDropdown: !isNew,
+                  width: kTextFieldWidth,
+                  itemsHeading: 'Patient ID',
+                  items: provider.patientIds,
+                  overlayTap: (index) {
+                    provider.onSelectItem(index,
+                        dropdownType: DropdownType.patient);
+                  },
+                );
+              },
             ),
             Selector<NewDetailsProvider, String?>(
               selector: (c, p) => p.patient.name,
@@ -93,10 +105,16 @@ class PatientRow extends StatelessWidget {
                   Selector<NewDetailsProvider, String?>(
                     selector: (c, p) => p.patient.gender,
                     builder: (ctx, gender, child) {
-                      return const MyDropdownButton(
+                      return MyDropdownButton(
                         width: 190,
-                        text: 'Gender',
-                        textColor: kDarkGrayColor,
+                        text: gender ?? '', // is null at build time
+                        textColor: Colors.black,
+                        itemsHeading: 'Gender',
+                        items: provider.genders,
+                        overlayTap: (index) {
+                          provider.onSelectItem(index,
+                              dropdownType: DropdownType.gender);
+                        },
                       );
                     },
                   ),

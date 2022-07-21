@@ -44,11 +44,21 @@ class RoomBlock extends StatelessWidget {
     return AddBlock(
       heading: isNew ? 'New Room' : 'Room',
       children: [
-        MyDropdownButton(
-          text: 'New',
-          textColor: kDarkGrayColor,
-          showDropdown: !isNew,
-          width: kTextFieldWidth,
+        Selector<NewDetailsProvider, int?>(
+          selector: (c, p) => p.room.number,
+          builder: (ctx, number, child) {
+            return MyDropdownButton(
+              text: number?.toString() ?? 'New',
+              textColor: number == null ? kDarkGrayColor : Colors.black,
+              showDropdown: !isNew,
+              width: kTextFieldWidth,
+              itemsHeading: 'Room number',
+              items: provider.roomNumbers,
+              overlayTap: (index) {
+                provider.onSelectItem(index, dropdownType: DropdownType.room);
+              },
+            );
+          },
         ),
         Selector<NewDetailsProvider, String?>(
           selector: (c, p) => p.room.type,
@@ -109,11 +119,24 @@ class DoctorBlock extends StatelessWidget {
     return AddBlock(
       heading: isNew ? 'New Doctor' : 'Doctor',
       children: [
-        MyDropdownButton(
-          text: 'New',
-          textColor: kDarkGrayColor,
-          showDropdown: !isNew,
-          width: kTextFieldWidth,
+        Selector<NewDetailsProvider, String?>(
+          selector: (c, p) => p.doctor.id,
+          builder: (ctx, id, child) {
+            return MyDropdownButton(
+              // will be null at buildtime, but probably won't matter since at
+              // scroll, it would be finished loading up resources...
+              text: id ?? '',
+              textColor:
+                  id?.compareTo('New') == 0 ? kDarkGrayColor : Colors.black,
+              showDropdown: !isNew,
+              width: kTextFieldWidth,
+              itemsHeading: 'Doctor ID',
+              items: provider.doctorIds,
+              overlayTap: (index) {
+                provider.onSelectItem(index, dropdownType: DropdownType.doctor);
+              },
+            );
+          },
         ),
         Selector<NewDetailsProvider, String?>(
           selector: (c, p) => p.doctor.name,

@@ -23,62 +23,46 @@ class AdmissionRow extends StatelessWidget {
         mainAxisExtent: 350,
       ),
       delegate: SliverChildListDelegate([
-        Selector<NewDetailsProvider, bool>(
-          selector: (c, p) => p.inAsync,
-          builder: (ctx, inAsync, child) {
-            return CrossFadedWrapper(
-              alignment: Alignment.centerLeft,
-              inAsync: inAsync,
-              loadingWidget: const Padding(
-                padding: EdgeInsets.only(left: 170),
-                child: CircularProgressIndicator(
-                  color: kPurpleColor,
-                ),
-              ),
-              child: AddBlock(
-                heading: 'New Admission',
-                children: [
-                  const MyField(
-                    enabled: false,
-                    color: kLightGrayColor,
-                    hintText: 'New',
-                    width: kTextFieldWidth,
-                  ),
-                  Selector<NewDetailsProvider, DateTime?>(
-                    selector: (c, p) => p.admission.admissionDate,
-                    builder: (ctx, date, child) {
-                      return MyDropdownButton(
-                        text: date != null
-                            ? DateFormat.yMd().format(date)
-                            : 'Choose..',
-                        width: kTextFieldWidth,
-                        itemsHeading: 'Date',
-                        enabled: true,
-                        items: provider.dates,
-                        overlayTap: (index) {
-                          provider.onSelectItem(index,
-                              dropdownType: DropdownType.date);
-                        },
-                      );
-                    },
-                  ),
-                  Selector<NewDetailsProvider, String?>(
-                    selector: (c, p) => p.admission.illness,
-                    builder: (ctx, illness, child) {
-                      return MyField(
-                        initialText: illness,
-                        hintText: 'Illness',
-                        width: kTextFieldWidth,
-                        onChanged: (s) {
-                          provider.onChanged(s, attribute: Attribute.illness);
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
+        AddBlock(
+          heading: 'New Admission',
+          children: [
+            const MyField(
+              enabled: false,
+              color: kLightGrayColor,
+              hintText: 'New',
+              width: kTextFieldWidth,
+            ),
+            Selector<NewDetailsProvider, DateTime?>(
+              selector: (c, p) => p.admission.admissionDate,
+              builder: (ctx, date, child) {
+                return MyDropdownButton(
+                  text:
+                      date != null ? DateFormat.yMd().format(date) : 'Choose..',
+                  textColor: date == null ? kDarkGrayColor : Colors.black,
+                  width: kTextFieldWidth,
+                  itemsHeading: 'Date',
+                  items: provider.dates,
+                  overlayTap: (index) {
+                    provider.onSelectItem(index,
+                        dropdownType: DropdownType.date);
+                  },
+                );
+              },
+            ),
+            Selector<NewDetailsProvider, String?>(
+              selector: (c, p) => p.admission.illness,
+              builder: (ctx, illness, child) {
+                return MyField(
+                  initialText: illness,
+                  hintText: 'Illness',
+                  width: kTextFieldWidth,
+                  onChanged: (s) {
+                    provider.onChanged(s, attribute: Attribute.illness);
+                  },
+                );
+              },
+            ),
+          ],
         ),
       ]),
     );

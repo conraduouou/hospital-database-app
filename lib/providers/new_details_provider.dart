@@ -39,7 +39,7 @@ class NewDetailsProvider with ChangeNotifier {
   bool _isGettingPatient = false;
   bool _isGettingRoom = false;
   bool _isGettingDoctor = false;
-  final List<bool> _isGettingProcedure = [false, false];
+  final List<bool> _isGettingProcedure = [false];
 
   bool get inAsync => _inAsync;
   bool get isGettingPatient => _isGettingPatient;
@@ -80,10 +80,11 @@ class NewDetailsProvider with ChangeNotifier {
     procedureDropdowns.add([AnimatedMenuItem(content: 'New')]);
 
     // fill lists
-    patientIds = await helper.getPatientIds();
-    roomNumbers = await helper.getRoomNumbers();
-    procedureDropdowns[0] = await helper.getProcedureIds();
-    doctorIds = await helper.getDoctorIds();
+
+    patientIds.addAll(await helper.getPatientIds());
+    roomNumbers.addAll(await helper.getRoomNumbers());
+    procedureDropdowns[0].addAll(await helper.getProcedureIds());
+    doctorIds.addAll(await helper.getDoctorIds());
     genders = List.generate(
         2, (index) => AnimatedMenuItem(content: index == 0 ? 'M' : 'F'));
     dates = List.generate(
@@ -105,6 +106,13 @@ class NewDetailsProvider with ChangeNotifier {
       DropdownType.room: roomNumbers,
       DropdownType.doctor: doctorIds,
     };
+
+    final split = dates[0].content.split('/').map((e) => int.parse(e)).toList();
+    admission.admissionDate = DateTime(split[2], split[0], split[1]);
+    patient.id = patientIds[0].content;
+    patient.gender = genders[0].content;
+    room.number = null;
+    doctor.id = doctorIds[0].content;
 
     _toggleInAsync();
   }
@@ -205,7 +213,7 @@ class NewDetailsProvider with ChangeNotifier {
         doctor.id = _dropdowns[dropdownType]![index].content;
         break;
       case DropdownType.room:
-        room.number = int.parse(_dropdowns[dropdownType]![index].content);
+        room.number = int.tryParse(_dropdowns[dropdownType]![index].content);
         break;
     }
 
@@ -275,9 +283,13 @@ class NewDetailsProvider with ChangeNotifier {
     procedureDropdowns.add(
       List.generate(
         procedureDropdowns[0].length,
-        (index) => procedureDropdowns[0][index]..isSelected = false,
+        (index) => AnimatedMenuItem(
+          content: procedureDropdowns[0][index].content,
+        ),
       ),
     );
+
+    _isGettingProcedure.add(false);
 
     notifyListeners();
   }
@@ -285,6 +297,7 @@ class NewDetailsProvider with ChangeNotifier {
   void removeProcedure(int i) {
     procedures.removeAt(i);
     procedureDropdowns.removeAt(i);
+    _isGettingProcedure.removeAt(i);
 
     notifyListeners();
   }

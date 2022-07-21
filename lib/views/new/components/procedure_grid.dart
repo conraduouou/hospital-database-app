@@ -31,6 +31,7 @@ class ProcedureGrid extends StatelessWidget {
               for (int i = 0; i <= length; i++) {
                 list.add(
                   ProcedureGridBlock(
+                    key: ValueKey(i),
                     showFirst: i != procedures.length,
                     showClose: i != 0,
                     heading: 'Procedure ${i + 1}',
@@ -46,10 +47,21 @@ class ProcedureGrid extends StatelessWidget {
                           return MyDropdownButton(
                             showDropdown: i != length,
                             text: id ?? '',
-                            color: kLightGrayColor,
-                            textColor: kDarkGrayColor,
-                            enabled: true,
+                            textColor: id?.compareTo('New') == 0
+                                ? kDarkGrayColor
+                                : Colors.black,
                             width: kTextFieldWidth,
+                            itemsHeading: 'Procedure ID',
+                            items: i != length
+                                ? provider.procedureDropdowns[i]
+                                : [],
+                            overlayTap: (index) {
+                              provider.onSelectItem(
+                                index,
+                                dropdownType: DropdownType.procedure,
+                                procedureIndex: i,
+                              );
+                            },
                           );
                         },
                       ),
