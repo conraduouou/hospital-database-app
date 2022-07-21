@@ -1,5 +1,6 @@
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
+import 'package:hospital_database_app/models/core/animated_menu_item.dart';
 import 'package:hospital_database_app/models/core/doctor_details.dart';
 import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
@@ -375,5 +376,49 @@ class SQLApiHelper {
     final result = results.single;
     final patientId = result['new_patient_id'];
     return patientId;
+  }
+
+  Future<List<AnimatedMenuItem>> getPatientIds() async {
+    final results = await sqlApi.getPatientIds();
+    final patientIds = <AnimatedMenuItem>[];
+
+    for (final row in results) {
+      patientIds.add(AnimatedMenuItem(content: row['patient_id']));
+    }
+
+    return patientIds;
+  }
+
+  Future<List<AnimatedMenuItem>> getDoctorIds() async {
+    final results = await sqlApi.getDoctorIds();
+    final doctorIds = <AnimatedMenuItem>[];
+
+    for (final row in results) {
+      doctorIds.add(AnimatedMenuItem(content: row['doctor_id']));
+    }
+
+    return doctorIds;
+  }
+
+  Future<List<AnimatedMenuItem>> getRoomNumbers() async {
+    final results = await sqlApi.getRoomNumbers();
+    final roomNumbers = <AnimatedMenuItem>[];
+
+    for (final row in results) {
+      roomNumbers.add(AnimatedMenuItem(content: row['room_number']));
+    }
+
+    return roomNumbers;
+  }
+
+  Future<List<AnimatedMenuItem>> getProcedureIds() async {
+    final results = await sqlApi.getProcedureIds();
+    final procedureIds = <AnimatedMenuItem>[];
+
+    for (final row in results) {
+      procedureIds.add(AnimatedMenuItem(content: row['procedure_ids']));
+    }
+
+    return procedureIds;
   }
 }

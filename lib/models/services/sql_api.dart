@@ -211,4 +211,28 @@ class SQLApi {
     final results = await connection.query(sql);
     return results;
   }
+
+  Future<Results> getPatientIds() async {
+    const sql = 'select patient_id from patients';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getDoctorIds() async {
+    const sql = 'select doctor_id from doctors';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getRoomNumbers() async {
+    const sql = 'select room_number from rooms';
+    final results = await connection.query(sql);
+    return results;
+  }
+
+  Future<Results> getProcedureIds() async {
+    const sql = 'select procedure_id from procedures';
+    final results = await connection.query(sql);
+    return results;
+  }
 }

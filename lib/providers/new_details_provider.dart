@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_database_app/constants.dart';
 import 'package:hospital_database_app/models/core/admission_details.dart';
+import 'package:hospital_database_app/models/core/animated_menu_item.dart';
 import 'package:hospital_database_app/models/core/doctor_details.dart';
 import 'package:hospital_database_app/models/core/patient_details.dart';
 import 'package:hospital_database_app/models/core/procedure_details.dart';
@@ -26,6 +27,14 @@ class NewDetailsProvider with ChangeNotifier {
   String? newPatientId;
   String? newDoctorId;
   int? newRoomNumber;
+
+  // list of AnimatedMenuItem classes to store state of the dropdown items
+  List<AnimatedMenuItem> dates = [];
+  List<AnimatedMenuItem> genders = [];
+  List<AnimatedMenuItem> patientIds = [];
+  List<AnimatedMenuItem> roomNumbers = [];
+  List<AnimatedMenuItem> doctorIds = [];
+  List<AnimatedMenuItem> procedureIds = [];
 
   // formula for setting new id in list: newProcedureId + (length - 1 - existing)
   late int newProcedureId;

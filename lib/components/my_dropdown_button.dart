@@ -180,6 +180,9 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
   }
 }
 
+/// Especially made for the custom Dropdown overlay. Makes use of the
+/// `AnimatedMenuItem` class for state management of this widget's `isSelected`
+/// feature.
 class OverlayItem extends StatefulWidget {
   const OverlayItem({
     Key? key,

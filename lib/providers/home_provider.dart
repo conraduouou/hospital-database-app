@@ -80,8 +80,6 @@ class HomeProvider with ChangeNotifier {
     final results =
         await apiHelper.callbacksForHome[_heading]!() as List<Details>;
 
-    await Future.delayed(const Duration(seconds: 2));
-
     // clear both headers and bodyRows
     headers.clear();
     bodyRows.clear();
