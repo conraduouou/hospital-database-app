@@ -23,21 +23,13 @@ class NewDetailsProvider with ChangeNotifier {
   late DoctorDetails doctor;
   late List<ProcedureDetails> procedures;
 
-  String? newAdmissionId;
-  String? newPatientId;
-  String? newDoctorId;
-  int? newRoomNumber;
-
   // list of AnimatedMenuItem classes to store state of the dropdown items
   List<AnimatedMenuItem> dates = [];
   List<AnimatedMenuItem> genders = [];
   List<AnimatedMenuItem> patientIds = [];
   List<AnimatedMenuItem> roomNumbers = [];
   List<AnimatedMenuItem> doctorIds = [];
-  List<AnimatedMenuItem> procedureIds = [];
-
-  // formula for setting new id in list: newProcedureId + (length - 1 - existing)
-  late int newProcedureId;
+  List<List<AnimatedMenuItem>> procedureDropdowns = [];
 
   // state
   bool _inAsync = false;
@@ -63,26 +55,44 @@ class NewDetailsProvider with ChangeNotifier {
   void initClass() async {
     _inAsync = true;
 
+    // clear lists
+    dates.clear();
+    genders.clear();
+    patientIds.clear();
+    roomNumbers.clear();
+    procedureDropdowns.clear();
+    doctorIds.clear();
+
     // instantiate objects
     admission = AdmissionDetails();
     patient = PatientDetails();
     room = RoomDetails();
     doctor = DoctorDetails();
-    procedures = [ProcedureDetails()];
+    procedures = [ProcedureDetails(id: 'New')];
 
-    // get IDs via SQLHelper
-    newAdmissionId = await helper.getNewAdmissionId();
-    newPatientId = await helper.getNewPatientId();
-    newDoctorId = await helper.getNewDoctorId();
-    newRoomNumber = await helper.getNewRoomNumber();
-    newProcedureId = await helper.getNewProcedureId();
+    // add 'New' values to the list
+    patientIds.add(AnimatedMenuItem(content: 'New'));
+    doctorIds.add(AnimatedMenuItem(content: 'New'));
+    roomNumbers.add(AnimatedMenuItem(content: 'New'));
+    procedureDropdowns.add([AnimatedMenuItem(content: 'New')]);
 
-    // assign them to the corresponding objects
-    admission.id = newAdmissionId;
-    patient.id = newPatientId;
-    doctor.id = newDoctorId;
-    room.number = newRoomNumber;
-    procedures[0].id = NumberFormat('00000').format(newProcedureId);
+    // fill lists
+    patientIds = await helper.getPatientIds();
+    roomNumbers = await helper.getRoomNumbers();
+    procedureDropdowns[0] = await helper.getProcedureIds();
+    doctorIds = await helper.getDoctorIds();
+    genders = List.generate(
+        2, (index) => AnimatedMenuItem(content: index == 0 ? 'M' : 'F'));
+    dates = List.generate(
+      15,
+      (index) => AnimatedMenuItem(
+        content: DateFormat.yMd().format(
+          DateTime.now().add(
+            Duration(days: index),
+          ),
+        ),
+      ),
+    );
 
     _toggleInAsync();
   }
@@ -96,10 +106,6 @@ class NewDetailsProvider with ChangeNotifier {
       case Attribute.illness:
         admission.illness = s;
         break;
-      case Attribute.patientId:
-        patient.id = s;
-        _getPatient(patient.id!);
-        break;
       case Attribute.patientName:
         patient.name = s;
         break;
@@ -112,9 +118,6 @@ class NewDetailsProvider with ChangeNotifier {
       case Attribute.patientAge:
         patient.age = int.tryParse(s) ?? 0;
         break;
-      case Attribute.patientGender:
-        patient.gender = s;
-        break;
       case Attribute.contactName:
         patient.contactPersonName = s;
         break;
@@ -123,10 +126,6 @@ class NewDetailsProvider with ChangeNotifier {
         break;
       case Attribute.contactNumber:
         patient.contactPersonNumber = s;
-        break;
-      case Attribute.roomNumber:
-        room.number = int.tryParse(s);
-        _getRoom(room.number.toString());
         break;
       case Attribute.roomType:
         room.type = s;
@@ -137,10 +136,6 @@ class NewDetailsProvider with ChangeNotifier {
       case Attribute.roomCapacity:
         room.capacity = int.tryParse(s);
         break;
-      case Attribute.doctorId:
-        doctor.id = s;
-        _getDoctor(doctor.id!);
-        break;
       case Attribute.doctorName:
         doctor.name = s;
         break;
@@ -149,10 +144,6 @@ class NewDetailsProvider with ChangeNotifier {
         break;
       case Attribute.doctorDepartment:
         doctor.department = s;
-        break;
-      case Attribute.procedureId:
-        procedures[index!].id = s;
-        _getProcedure(procedures[index].id!, index);
         break;
       case Attribute.procedureName:
         procedures[index!].name = s;
@@ -165,10 +156,7 @@ class NewDetailsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void onChangeDate(DateTime date) {
-    admission.admissionDate = date;
-    notifyListeners();
-  }
+  void onSelectItem(int index, {required DropdownType dropdownType}) {}
 
   void _getPatient(String id) async {
     _toggleGettingPatient();
@@ -221,29 +209,20 @@ class NewDetailsProvider with ChangeNotifier {
   }
 
   void addProcedure() {
-    procedures.add(ProcedureDetails());
+    procedures.add(ProcedureDetails(id: 'New'));
+    procedureDropdowns.add(
+      List.generate(
+        procedureDropdowns[0].length,
+        (index) => procedureDropdowns[0][index]..isSelected = false,
+      ),
+    );
 
-    final existing = procedures.fold<int>(
-        0,
-        (previousValue, element) =>
-            (int.tryParse(element.id ?? '') ?? newProcedureId) < newProcedureId
-                ? previousValue + 1
-                : previousValue + 0);
-
-    final idValue = newProcedureId + (procedures.length - 1 - existing);
-    procedures.last.id = idValue.toString().padLeft(5, '0');
     notifyListeners();
   }
 
   void removeProcedure(int i) {
     procedures.removeAt(i);
-    int id = newProcedureId;
-
-    for (final procedure in procedures) {
-      if (int.parse(procedure.id!) >= id) {
-        procedure.id = (id++).toString().padLeft(5, '0');
-      }
-    }
+    procedureDropdowns.removeAt(i);
 
     notifyListeners();
   }

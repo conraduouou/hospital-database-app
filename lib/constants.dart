@@ -59,24 +59,28 @@ enum MenuType {
 
 enum Attribute {
   illness,
-  patientId,
   patientName,
   patientAddress,
   patientNumber,
   patientAge,
-  patientGender,
   contactName,
   contactRelation,
   contactNumber,
-  roomNumber,
   roomType,
   roomCost,
   roomCapacity,
-  doctorId,
   doctorName,
   doctorPCF,
   doctorDepartment,
-  procedureId,
   procedureName,
   procedureCost,
+}
+
+enum DropdownType {
+  date,
+  patient,
+  gender,
+  room,
+  doctor,
+  procedure,
 }

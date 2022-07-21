@@ -24,16 +24,11 @@ class AdmissionRow extends StatelessWidget {
         AddBlock(
           heading: 'New Admission',
           children: [
-            Selector<NewDetailsProvider, String?>(
-              selector: (ctx, provider) => provider.newAdmissionId,
-              builder: (ctx, id, child) {
-                return MyField(
-                  enabled: false,
-                  color: kLightGrayColor,
-                  hintText: id,
-                  width: kTextFieldWidth,
-                );
-              },
+            const MyField(
+              enabled: false,
+              color: kLightGrayColor,
+              hintText: 'New',
+              width: kTextFieldWidth,
             ),
             MyDropdownButton(
               text: '06/24/2022',

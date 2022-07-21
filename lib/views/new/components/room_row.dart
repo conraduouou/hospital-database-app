@@ -44,16 +44,11 @@ class RoomBlock extends StatelessWidget {
     return AddBlock(
       heading: isNew ? 'New Room' : 'Room',
       children: [
-        Selector<NewDetailsProvider, int?>(
-          selector: (c, p) => p.newRoomNumber,
-          builder: (ctx, number, child) {
-            return MyDropdownButton(
-              text: number.toString(),
-              textColor: kDarkGrayColor,
-              showDropdown: !isNew,
-              width: kTextFieldWidth,
-            );
-          },
+        MyDropdownButton(
+          text: 'New',
+          textColor: kDarkGrayColor,
+          showDropdown: !isNew,
+          width: kTextFieldWidth,
         ),
         Selector<NewDetailsProvider, String?>(
           selector: (c, p) => p.room.type,
@@ -114,16 +109,11 @@ class DoctorBlock extends StatelessWidget {
     return AddBlock(
       heading: isNew ? 'New Doctor' : 'Doctor',
       children: [
-        Selector<NewDetailsProvider, String?>(
-          selector: (c, p) => p.newDoctorId,
-          builder: (ctx, id, child) {
-            return MyDropdownButton(
-              text: id ?? '',
-              textColor: kDarkGrayColor,
-              showDropdown: !isNew,
-              width: kTextFieldWidth,
-            );
-          },
+        MyDropdownButton(
+          text: 'New',
+          textColor: kDarkGrayColor,
+          showDropdown: !isNew,
+          width: kTextFieldWidth,
         ),
         Selector<NewDetailsProvider, String?>(
           selector: (c, p) => p.doctor.name,

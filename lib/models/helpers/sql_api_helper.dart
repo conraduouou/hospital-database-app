@@ -405,7 +405,7 @@ class SQLApiHelper {
     final roomNumbers = <AnimatedMenuItem>[];
 
     for (final row in results) {
-      roomNumbers.add(AnimatedMenuItem(content: row['room_number']));
+      roomNumbers.add(AnimatedMenuItem(content: row['room_number'].toString()));
     }
 
     return roomNumbers;
@@ -416,7 +416,7 @@ class SQLApiHelper {
     final procedureIds = <AnimatedMenuItem>[];
 
     for (final row in results) {
-      procedureIds.add(AnimatedMenuItem(content: row['procedure_ids']));
+      procedureIds.add(AnimatedMenuItem(content: row['procedure_id']));
     }
 
     return procedureIds;

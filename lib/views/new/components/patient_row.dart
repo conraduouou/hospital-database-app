@@ -26,16 +26,11 @@ class PatientRow extends StatelessWidget {
         AddBlock(
           heading: isNew ? 'New Patient' : 'Patient',
           children: [
-            Selector<NewDetailsProvider, String?>(
-              selector: (ctx, provider) => provider.newPatientId,
-              builder: (ctx, id, child) {
-                return MyDropdownButton(
-                  text: id ?? '',
-                  textColor: kDarkGrayColor,
-                  showDropdown: !isNew,
-                  width: kTextFieldWidth,
-                );
-              },
+            MyDropdownButton(
+              text: 'New',
+              textColor: kDarkGrayColor,
+              showDropdown: !isNew,
+              width: kTextFieldWidth,
             ),
             Selector<NewDetailsProvider, String?>(
               selector: (c, p) => p.patient.name,
