@@ -31,6 +31,9 @@ class NewDetailsProvider with ChangeNotifier {
   List<AnimatedMenuItem> doctorIds = [];
   List<List<AnimatedMenuItem>> procedureDropdowns = [];
 
+  // Map to refer to the AnimatedMenuItem lists
+  late Map<DropdownType, List<AnimatedMenuItem>> _dropdowns;
+
   // state
   bool _inAsync = false;
   bool _isGettingPatient = false;
@@ -87,12 +90,21 @@ class NewDetailsProvider with ChangeNotifier {
       15,
       (index) => AnimatedMenuItem(
         content: DateFormat.yMd().format(
-          DateTime.now().add(
+          DateTime.now().subtract(
             Duration(days: index),
           ),
         ),
       ),
     );
+
+    // assign for utility
+    _dropdowns = {
+      DropdownType.date: dates,
+      DropdownType.gender: genders,
+      DropdownType.patient: patientIds,
+      DropdownType.room: roomNumbers,
+      DropdownType.doctor: doctorIds,
+    };
 
     _toggleInAsync();
   }
@@ -156,7 +168,57 @@ class NewDetailsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void onSelectItem(int index, {required DropdownType dropdownType}) {}
+  void onSelectItem(
+    int index, {
+    required DropdownType dropdownType,
+    int? procedureIndex,
+  }) {
+    switch (dropdownType) {
+      case DropdownType.procedure:
+        final dropdown = procedureDropdowns[procedureIndex!];
+        final item = dropdown[index];
+        procedures[procedureIndex].id = item.content;
+
+        for (final item in dropdown) {
+          if (item.isSelected) {
+            item.isSelected = false;
+            break;
+          }
+        }
+
+        item.isSelected = true;
+
+        notifyListeners();
+        return;
+      case DropdownType.date:
+        final split =
+            dates[index].content.split('/').map((e) => int.parse(e)).toList();
+        admission.admissionDate = DateTime(split[2], split[0], split[1]);
+        break;
+      case DropdownType.gender:
+        patient.gender = _dropdowns[dropdownType]![index].content;
+        break;
+      case DropdownType.patient:
+        patient.id = _dropdowns[dropdownType]![index].content;
+        break;
+      case DropdownType.doctor:
+        doctor.id = _dropdowns[dropdownType]![index].content;
+        break;
+      case DropdownType.room:
+        room.number = int.parse(_dropdowns[dropdownType]![index].content);
+        break;
+    }
+
+    for (final item in _dropdowns[dropdownType]!) {
+      if (item.isSelected) {
+        item.isSelected = false;
+        break;
+      }
+    }
+
+    _dropdowns[dropdownType]![index].isSelected = true;
+    notifyListeners();
+  }
 
   void _getPatient(String id) async {
     _toggleGettingPatient();

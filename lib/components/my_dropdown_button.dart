@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_database_app/constants.dart';
+import 'package:hospital_database_app/models/core/animated_menu_item.dart';
 
 class MyDropdownButton extends StatefulWidget {
   const MyDropdownButton({
@@ -16,6 +17,7 @@ class MyDropdownButton extends StatefulWidget {
     this.width,
     this.items,
     this.itemsHeading,
+    this.overlayTap,
   }) : super(key: key);
 
   final String text;
@@ -27,10 +29,11 @@ class MyDropdownButton extends StatefulWidget {
   final bool enabled;
   final bool showDropdown;
   final double? width;
+  final void Function(int)? overlayTap;
 
   /// The `String` items that will be viewed in the dropdown. If enabled is
   /// true, this must not be null.
-  final List<String>? items;
+  final List<AnimatedMenuItem>? items;
 
   /// The heading that informs what the items are. This is shown in conjunction
   /// with the first element of `items` and therefore will not show if it is
@@ -99,10 +102,30 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          OverlayItem(text: widget.items![index])
+                          OverlayItem(
+                            text: widget.items![index].content,
+                            isSelected: widget.items![index].isSelected,
+                            onTap: () {
+                              _focusNode.unfocus();
+
+                              if (widget.overlayTap != null) {
+                                widget.overlayTap!(index);
+                              }
+                            },
+                          )
                         ],
                       )
-                    : OverlayItem(text: widget.items![index]),
+                    : OverlayItem(
+                        text: widget.items![index].content,
+                        isSelected: widget.items![index].isSelected,
+                        onTap: () {
+                          _focusNode.unfocus();
+
+                          if (widget.overlayTap != null) {
+                            widget.overlayTap!(index);
+                          }
+                        },
+                      ),
               ),
             ),
           ),
@@ -188,10 +211,12 @@ class OverlayItem extends StatefulWidget {
     Key? key,
     required this.text,
     this.isSelected = false,
+    this.onTap,
   }) : super(key: key);
 
   final String text;
   final bool isSelected;
+  final VoidCallback? onTap;
 
   @override
   State<OverlayItem> createState() => _OverlayItemState();
@@ -203,7 +228,7 @@ class _OverlayItemState extends State<OverlayItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: widget.onTap ?? () {},
       onHover: (isHovered) {
         setState(() {
           _isHovered = isHovered;

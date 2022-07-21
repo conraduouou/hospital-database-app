@@ -8,11 +8,13 @@ class CrossFadedWrapper extends StatelessWidget {
     required this.inAsync,
     this.loadingWidget,
     this.child,
+    this.alignment,
   }) : super(key: key);
 
   final bool inAsync;
   final Widget? loadingWidget;
   final Widget? child;
+  final Alignment? alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,12 @@ class CrossFadedWrapper extends StatelessWidget {
           clipBehavior: Clip.none,
           children: <Widget>[
             Align(
-              alignment: Alignment.center,
+              alignment: alignment ?? Alignment.center,
               key: secondKey,
               child: secondChild,
             ),
             Align(
-              alignment: Alignment.center,
+              alignment: alignment ?? Alignment.center,
               key: firstKey,
               child: firstChild,
             ),
