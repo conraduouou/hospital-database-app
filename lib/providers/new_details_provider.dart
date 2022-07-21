@@ -227,6 +227,8 @@ class NewDetailsProvider with ChangeNotifier {
 
         if (room.number != null) {
           _getRoom(room.number.toString());
+        } else {
+          room = RoomDetails();
         }
         break;
     }

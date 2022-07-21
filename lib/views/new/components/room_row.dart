@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_database_app/derived_components/cross_faded_wrapper.dart';
 import 'package:hospital_database_app/providers/new_details_provider.dart';
 import 'package:hospital_database_app/views/new/components/add_block.dart';
 import 'package:hospital_database_app/components/my_dropdown_button.dart';
@@ -41,67 +42,86 @@ class RoomBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.read<NewDetailsProvider>();
 
-    return AddBlock(
-      heading: isNew ? 'New Room' : 'Room',
-      children: [
-        Selector<NewDetailsProvider, int?>(
-          selector: (c, p) => p.room.number,
-          builder: (ctx, number, child) {
-            return MyDropdownButton(
-              text: number?.toString() ?? 'New',
-              textColor: number == null ? kDarkGrayColor : Colors.black,
-              showDropdown: !isNew,
-              width: kTextFieldWidth,
-              itemsHeading: 'Room number',
-              items: provider.roomNumbers,
-              overlayTap: (index) {
-                provider.onSelectItem(index, dropdownType: DropdownType.room);
-              },
-            );
-          },
-        ),
-        Selector<NewDetailsProvider, String?>(
-          selector: (c, p) => p.room.type,
-          builder: (ctx, type, child) {
-            return MyField(
-              initialText: type,
-              hintText: 'Type',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.roomType);
-              },
-            );
-          },
-        ),
-        Selector<NewDetailsProvider, double?>(
-          selector: (c, p) => p.room.cost,
-          builder: (ctx, cost, child) {
-            return MyField(
-              initialText: cost?.toString(),
-              isDigitsOnly: true,
-              hintText: 'Cost',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.roomCost);
-              },
-            );
-          },
-        ),
-        Selector<NewDetailsProvider, int?>(
-          selector: (c, p) => p.room.capacity,
-          builder: (ctx, capacity, child) {
-            return MyField(
-              initialText: capacity?.toString(),
-              isDigitsOnly: true,
-              hintText: 'Capacity',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.roomCapacity);
-              },
-            );
-          },
-        ),
-      ],
+    return Selector<NewDetailsProvider, bool>(
+      selector: (c, p) => p.isGettingRoom,
+      builder: (ctx, inAsync, child) {
+        return CrossFadedWrapper(
+          inAsync: inAsync,
+          alignment: Alignment.centerLeft,
+          loadingWidget: const Padding(
+            padding: EdgeInsets.only(left: 170),
+            child: CircularProgressIndicator(
+              color: kPurpleColor,
+            ),
+          ),
+          child: AddBlock(
+            heading: isNew ? 'New Room' : 'Room',
+            children: [
+              Selector<NewDetailsProvider, int?>(
+                selector: (c, p) => p.room.number,
+                builder: (ctx, number, child) {
+                  return MyDropdownButton(
+                    text: number?.toString() ?? 'New',
+                    textColor: number == null ? kDarkGrayColor : Colors.black,
+                    showDropdown: !isNew,
+                    width: kTextFieldWidth,
+                    itemsHeading: 'Room number',
+                    items: provider.roomNumbers,
+                    overlayTap: (index) {
+                      provider.onSelectItem(index,
+                          dropdownType: DropdownType.room);
+                    },
+                  );
+                },
+              ),
+              Selector<NewDetailsProvider, String?>(
+                selector: (c, p) => p.room.type,
+                builder: (ctx, type, child) {
+                  return MyField(
+                    enabled: !provider.room.isExisting,
+                    initialText: type,
+                    hintText: 'Type',
+                    width: kTextFieldWidth,
+                    onChanged: (s) {
+                      provider.onChanged(s, attribute: Attribute.roomType);
+                    },
+                  );
+                },
+              ),
+              Selector<NewDetailsProvider, double?>(
+                selector: (c, p) => p.room.cost,
+                builder: (ctx, cost, child) {
+                  return MyField(
+                    enabled: !provider.room.isExisting,
+                    initialText: cost?.toString(),
+                    isDigitsOnly: true,
+                    hintText: 'Cost',
+                    width: kTextFieldWidth,
+                    onChanged: (s) {
+                      provider.onChanged(s, attribute: Attribute.roomCost);
+                    },
+                  );
+                },
+              ),
+              Selector<NewDetailsProvider, int?>(
+                selector: (c, p) => p.room.capacity,
+                builder: (ctx, capacity, child) {
+                  return MyField(
+                    enabled: !provider.room.isExisting,
+                    initialText: capacity?.toString(),
+                    isDigitsOnly: true,
+                    hintText: 'Capacity',
+                    width: kTextFieldWidth,
+                    onChanged: (s) {
+                      provider.onChanged(s, attribute: Attribute.roomCapacity);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
