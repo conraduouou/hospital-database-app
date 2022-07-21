@@ -54,16 +54,7 @@ class _MyFieldState extends State<MyField> {
         controller: _controller,
         style: kBoldStyle.copyWith(fontSize: kRegularSize),
         cursorColor: kPurpleColor,
-        onChanged: (s) {
-          _controller.value = TextEditingValue(
-            text: s,
-            selection: TextSelection.fromPosition(
-              TextPosition(offset: _controller.text.length),
-            ),
-          );
-
-          if (widget.onChanged != null) widget.onChanged!(s);
-        },
+        onChanged: widget.onChanged,
         decoration: InputDecoration(
           enabled: widget.enabled,
           filled: true,

@@ -228,6 +228,14 @@ class NewDetailsProvider with ChangeNotifier {
 
   void removeProcedure(int i) {
     procedures.removeAt(i);
+    int id = newProcedureId;
+
+    for (final procedure in procedures) {
+      if (int.parse(procedure.id!) >= id) {
+        procedure.id = (id++).toString().padLeft(5, '0');
+      }
+    }
+
     notifyListeners();
   }
 }
