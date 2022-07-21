@@ -120,9 +120,6 @@ class NewDetailsProvider with ChangeNotifier {
 
   // big af switch case method for TextField onChanged
   void onChanged(String s, {required Attribute attribute, int? index}) {
-    //TODO: wrap get methods with if-else statement. only get the corresponding
-    // details if they don't equal the requested new id. return immediately in
-    // that situation.
     switch (attribute) {
       case Attribute.illness:
         admission.illness = s;

@@ -30,7 +30,10 @@ class ProcedureDetails implements Details {
   String get lastDoneFormatted =>
       lastDone == null ? 'N/A' : DateFormat.yMd().format(lastDone!);
   String get procedureDateFormatted => DateFormat.yMd().format(procedureDate!);
+
   bool get isExisting => id != null && id!.compareTo('New') != 0;
+
+  bool get isCompleteForNew => name != null && cost != null;
 
   Map<String, String> get procedure => {
         'Procedure ID': id!,

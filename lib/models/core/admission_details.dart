@@ -29,6 +29,9 @@ class AdmissionDetails implements Details {
   String? illness;
   int? stayDuration;
 
+  // for error checking purposes and incomplete data form
+  bool get isCompleteForNew => admissionDate != null && illness != null;
+
   // grouped admission-specific data
   Map<String, String> get admissionDetails => <String, String>{
         'Admission ID': id!,

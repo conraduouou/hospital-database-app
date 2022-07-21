@@ -23,6 +23,8 @@ class DoctorDetails implements Details {
   List<AdmissionDetails>? admissions;
 
   bool get isExisting => id != null && id!.compareTo('New') != 0;
+  bool get isCompleteForNew =>
+      name != null && pcf != null && department != null;
 
   Map<String, String> get doctor => {
         'Doctor ID': id!,

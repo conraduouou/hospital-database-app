@@ -35,6 +35,16 @@ class PatientDetails implements Details {
   // screen or not.
   bool get isExisting => id != null && id?.compareTo('New') != 0;
 
+  bool get isCompleteForNew =>
+      name != null &&
+      address != null &&
+      contactNumber != null &&
+      age != null &&
+      gender != null &&
+      contactPersonName != null &&
+      contactPersonRelation != null &&
+      contactPersonNumber != null;
+
   Map<String, String> get patient => <String, String>{
         'Patient ID': id!,
         'Name': name!,
