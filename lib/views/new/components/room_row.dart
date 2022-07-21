@@ -136,69 +136,90 @@ class DoctorBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<NewDetailsProvider>();
-    return AddBlock(
-      heading: isNew ? 'New Doctor' : 'Doctor',
-      children: [
-        Selector<NewDetailsProvider, String?>(
-          selector: (c, p) => p.doctor.id,
-          builder: (ctx, id, child) {
-            return MyDropdownButton(
-              // will be null at buildtime, but probably won't matter since at
-              // scroll, it would be finished loading up resources...
-              text: id ?? '',
-              textColor:
-                  id?.compareTo('New') == 0 ? kDarkGrayColor : Colors.black,
-              showDropdown: !isNew,
-              width: kTextFieldWidth,
-              itemsHeading: 'Doctor ID',
-              items: provider.doctorIds,
-              overlayTap: (index) {
-                provider.onSelectItem(index, dropdownType: DropdownType.doctor);
-              },
-            );
-          },
-        ),
-        Selector<NewDetailsProvider, String?>(
-          selector: (c, p) => p.doctor.name,
-          builder: (ctx, name, child) {
-            return MyField(
-              initialText: name,
-              hintText: 'Name',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.doctorName);
-              },
-            );
-          },
-        ),
-        Selector<NewDetailsProvider, int?>(
-          selector: (c, p) => p.doctor.pcf,
-          builder: (ctx, pcf, child) {
-            return MyField(
-              initialText: pcf?.toString(),
-              isDigitsOnly: true,
-              hintText: 'PCF (Peso conversion factor)',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.doctorPCF);
-              },
-            );
-          },
-        ),
-        Selector<NewDetailsProvider, String?>(
-          selector: (c, p) => p.doctor.department,
-          builder: (ctx, department, child) {
-            return MyField(
-              initialText: department,
-              hintText: 'Department',
-              width: kTextFieldWidth,
-              onChanged: (s) {
-                provider.onChanged(s, attribute: Attribute.doctorDepartment);
-              },
-            );
-          },
-        ),
-      ],
+    return Selector<NewDetailsProvider, bool>(
+      selector: (c, p) => p.isGettingDoctor,
+      builder: (ctx, inAsync, child) {
+        return CrossFadedWrapper(
+          inAsync: inAsync,
+          alignment: Alignment.centerLeft,
+          loadingWidget: const Padding(
+            padding: EdgeInsets.only(left: 170),
+            child: CircularProgressIndicator(
+              color: kPurpleColor,
+            ),
+          ),
+          child: AddBlock(
+            heading: isNew ? 'New Doctor' : 'Doctor',
+            children: [
+              Selector<NewDetailsProvider, String?>(
+                selector: (c, p) => p.doctor.id,
+                builder: (ctx, id, child) {
+                  return MyDropdownButton(
+                    // will be null at buildtime, but probably won't matter since at
+                    // scroll, it would be finished loading up resources...
+                    text: id ?? '',
+                    textColor: id?.compareTo('New') == 0
+                        ? kDarkGrayColor
+                        : Colors.black,
+                    showDropdown: !isNew,
+                    width: kTextFieldWidth,
+                    itemsHeading: 'Doctor ID',
+                    items: provider.doctorIds,
+                    overlayTap: (index) {
+                      provider.onSelectItem(index,
+                          dropdownType: DropdownType.doctor);
+                    },
+                  );
+                },
+              ),
+              Selector<NewDetailsProvider, String?>(
+                selector: (c, p) => p.doctor.name,
+                builder: (ctx, name, child) {
+                  return MyField(
+                    enabled: !provider.doctor.isExisting,
+                    initialText: name,
+                    hintText: 'Name',
+                    width: kTextFieldWidth,
+                    onChanged: (s) {
+                      provider.onChanged(s, attribute: Attribute.doctorName);
+                    },
+                  );
+                },
+              ),
+              Selector<NewDetailsProvider, int?>(
+                selector: (c, p) => p.doctor.pcf,
+                builder: (ctx, pcf, child) {
+                  return MyField(
+                    enabled: !provider.doctor.isExisting,
+                    initialText: pcf?.toString(),
+                    isDigitsOnly: true,
+                    hintText: 'PCF (Peso conversion factor)',
+                    width: kTextFieldWidth,
+                    onChanged: (s) {
+                      provider.onChanged(s, attribute: Attribute.doctorPCF);
+                    },
+                  );
+                },
+              ),
+              Selector<NewDetailsProvider, String?>(
+                selector: (c, p) => p.doctor.department,
+                builder: (ctx, department, child) {
+                  return MyField(
+                    enabled: !provider.doctor.isExisting,
+                    initialText: department,
+                    hintText: 'Department',
+                    width: kTextFieldWidth,
+                    onChanged: (s) {
+                      provider.onChanged(s,
+                          attribute: Attribute.doctorDepartment);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

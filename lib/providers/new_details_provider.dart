@@ -220,6 +220,8 @@ class NewDetailsProvider with ChangeNotifier {
 
         if (doctor.id!.compareTo('New') != 0) {
           _getDoctor(doctor.id!);
+        } else {
+          doctor = DoctorDetails(id: 'New');
         }
         break;
       case DropdownType.room:
