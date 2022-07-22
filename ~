@@ -1,0 +1,19 @@
++1: implement error message in room and doctor blocks
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Fri Jul 22 08:29:52 2022 +0800
+#
+# On branch develop
+# Changes to be committed:
+#	modified:   lib/views/new/components/room_row.dart
+#
+# Changes not staged for commit:
+#	modified:   lib/views/new/components/admission_row.dart
+#	modified:   lib/views/new/components/patient_row.dart
+#	modified:   lib/views/new/components/procedure_grid.dart
+#	modified:   lib/views/new/components/procedure_grid_block.dart
+#	modified:   lib/views/new/components/room_row.dart
+#	modified:   lib/views/new/new_admission.dart
+#

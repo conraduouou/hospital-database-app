@@ -36,69 +36,62 @@ class NewAdmissionScreen extends StatelessWidget {
             Selector<NewDetailsProvider, bool>(
               selector: (ctx, provider) => provider.inAsync,
               builder: (ctx, inAsync, child) {
-                return Selector<NewDetailsProvider, bool>(
-                  selector: (ctx, provider) => provider.hasPressed,
-                  builder: (ctx, hasPressed, child) {
-                    return CrossFadedWrapper(
-                      inAsync: inAsync,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 150),
-                        child: FocusTraversalGroup(
-                          child: CustomScrollView(
-                            slivers: [
-                              const SliverToBoxAdapter(
-                                child: SizedBox(height: 70),
-                              ),
-                              const AdmissionRow(),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(height: 70),
-                              ),
-                              const PatientRow(),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(height: 70),
-                              ),
-                              const RoomRow(),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(height: 70),
-                              ),
-                              const ProcedureGrid(),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(height: 70),
-                              ),
-                              SliverToBoxAdapter(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 200),
-                                  alignment: Alignment.centerRight,
-                                  child: Selector<NewDetailsProvider, bool>(
-                                    selector: (c, p) =>
-                                        p.isValidForNewAdmission,
-                                    builder: (ctx, isValid, child) {
-                                      return MyButton(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 40,
-                                          vertical: 22,
-                                        ),
-                                        text: 'Add new admission',
-                                        color:
-                                            isValid ? kPurpleColor : kGrayColor,
-                                        onPressed: !isValid
-                                            ? provider.toggleHasPressed
-                                            : () {},
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(height: 150),
-                              ),
-                            ],
+                return CrossFadedWrapper(
+                  inAsync: inAsync,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 150),
+                    child: FocusTraversalGroup(
+                      child: CustomScrollView(
+                        slivers: [
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 70),
                           ),
-                        ),
+                          const AdmissionRow(),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 70),
+                          ),
+                          const PatientRow(),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 70),
+                          ),
+                          const RoomRow(),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 70),
+                          ),
+                          const ProcedureGrid(),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 70),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 200),
+                              alignment: Alignment.centerRight,
+                              child: Selector<NewDetailsProvider, bool>(
+                                selector: (c, p) => p.isValidForNewAdmission,
+                                builder: (ctx, isValid, child) {
+                                  return MyButton(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 40,
+                                      vertical: 22,
+                                    ),
+                                    text: 'Add new admission',
+                                    color: isValid ? kPurpleColor : kGrayColor,
+                                    onPressed: !isValid
+                                        ? provider.toggleHasPressed
+                                        : () {},
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 150),
+                          ),
+                        ],
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 );
               },
             ),

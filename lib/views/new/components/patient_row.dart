@@ -38,119 +38,124 @@ class PatientRow extends StatelessWidget {
                 ),
               ),
               child: Selector<NewDetailsProvider, bool>(
-                selector: (c, p) => p.patient.isCompleteForNew,
-                builder: (ctx, isComplete, child) {
-                  return AddBlock(
-                    showError: !isComplete && provider.hasPressed,
-                    heading: isNew ? 'New Patient' : 'Patient',
-                    children: [
-                      Selector<NewDetailsProvider, String?>(
-                        selector: (c, p) => p.patient.id,
-                        builder: (ctx, id, child) {
-                          return MyDropdownButton(
-                            text: id ?? '',
-                            textColor: id?.compareTo('New') == 0
-                                ? kDarkGrayColor
-                                : Colors.black,
-                            showDropdown: !isNew,
-                            width: kTextFieldWidth,
-                            itemsHeading: 'Patient ID',
-                            items: provider.patientIds,
-                            overlayTap: (index) {
-                              provider.onSelectItem(index,
-                                  dropdownType: DropdownType.patient);
+                selector: (c, p) => p.hasPressed,
+                builder: (ctx, hasPressed, child) {
+                  return Selector<NewDetailsProvider, bool>(
+                    selector: (c, p) => p.patient.isCompleteForNew,
+                    builder: (ctx, isComplete, child) {
+                      return AddBlock(
+                        showError: !isComplete && hasPressed,
+                        heading: isNew ? 'New Patient' : 'Patient',
+                        children: [
+                          Selector<NewDetailsProvider, String?>(
+                            selector: (c, p) => p.patient.id,
+                            builder: (ctx, id, child) {
+                              return MyDropdownButton(
+                                text: id ?? '',
+                                textColor: id?.compareTo('New') == 0
+                                    ? kDarkGrayColor
+                                    : Colors.black,
+                                showDropdown: !isNew,
+                                width: kTextFieldWidth,
+                                itemsHeading: 'Patient ID',
+                                items: provider.patientIds,
+                                overlayTap: (index) {
+                                  provider.onSelectItem(index,
+                                      dropdownType: DropdownType.patient);
+                                },
+                              );
                             },
-                          );
-                        },
-                      ),
-                      Selector<NewDetailsProvider, String?>(
-                        selector: (c, p) => p.patient.name,
-                        builder: (ctx, name, child) {
-                          return MyField(
-                            enabled: !provider.patient.isExisting,
-                            initialText: name,
-                            hintText: 'Name',
-                            width: kTextFieldWidth,
-                            onChanged: (s) {
-                              provider.onChanged(s,
-                                  attribute: Attribute.patientName);
+                          ),
+                          Selector<NewDetailsProvider, String?>(
+                            selector: (c, p) => p.patient.name,
+                            builder: (ctx, name, child) {
+                              return MyField(
+                                enabled: !provider.patient.isExisting,
+                                initialText: name,
+                                hintText: 'Name',
+                                width: kTextFieldWidth,
+                                onChanged: (s) {
+                                  provider.onChanged(s,
+                                      attribute: Attribute.patientName);
+                                },
+                              );
                             },
-                          );
-                        },
-                      ),
-                      Selector<NewDetailsProvider, String?>(
-                        selector: (c, p) => p.patient.address,
-                        builder: (ctx, address, child) {
-                          return MyField(
-                            enabled: !provider.patient.isExisting,
-                            initialText: address,
-                            hintText: 'Address',
-                            width: kTextFieldWidth,
-                            onChanged: (s) {
-                              provider.onChanged(s,
-                                  attribute: Attribute.patientAddress);
+                          ),
+                          Selector<NewDetailsProvider, String?>(
+                            selector: (c, p) => p.patient.address,
+                            builder: (ctx, address, child) {
+                              return MyField(
+                                enabled: !provider.patient.isExisting,
+                                initialText: address,
+                                hintText: 'Address',
+                                width: kTextFieldWidth,
+                                onChanged: (s) {
+                                  provider.onChanged(s,
+                                      attribute: Attribute.patientAddress);
+                                },
+                              );
                             },
-                          );
-                        },
-                      ),
-                      Selector<NewDetailsProvider, String?>(
-                        selector: (c, p) => p.patient.contactNumber,
-                        builder: (ctx, number, child) {
-                          return MyField(
-                            enabled: !provider.patient.isExisting,
-                            initialText: number,
-                            hintText: 'Contact number',
-                            width: kTextFieldWidth,
-                            onChanged: (s) {
-                              provider.onChanged(s,
-                                  attribute: Attribute.patientNumber);
+                          ),
+                          Selector<NewDetailsProvider, String?>(
+                            selector: (c, p) => p.patient.contactNumber,
+                            builder: (ctx, number, child) {
+                              return MyField(
+                                enabled: !provider.patient.isExisting,
+                                initialText: number,
+                                hintText: 'Contact number',
+                                width: kTextFieldWidth,
+                                onChanged: (s) {
+                                  provider.onChanged(s,
+                                      attribute: Attribute.patientNumber);
+                                },
+                              );
                             },
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        width: 380,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Selector<NewDetailsProvider, int?>(
-                              selector: (c, p) => p.patient.age,
-                              builder: (ctx, age, child) {
-                                return MyField(
-                                  enabled: !provider.patient.isExisting,
-                                  initialText: age?.toString(),
-                                  hintText: 'Age',
-                                  isDigitsOnly: true,
-                                  width: 170,
-                                  onChanged: (s) {
-                                    provider.onChanged(s,
-                                        attribute: Attribute.patientAge);
+                          ),
+                          SizedBox(
+                            width: 380,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Selector<NewDetailsProvider, int?>(
+                                  selector: (c, p) => p.patient.age,
+                                  builder: (ctx, age, child) {
+                                    return MyField(
+                                      enabled: !provider.patient.isExisting,
+                                      initialText: age?.toString(),
+                                      hintText: 'Age',
+                                      isDigitsOnly: true,
+                                      width: 170,
+                                      onChanged: (s) {
+                                        provider.onChanged(s,
+                                            attribute: Attribute.patientAge);
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                            ),
-                            Selector<NewDetailsProvider, String?>(
-                              selector: (c, p) => p.patient.gender,
-                              builder: (ctx, gender, child) {
-                                return MyDropdownButton(
-                                  enabled: !provider.patient.isExisting,
-                                  width: 190,
-                                  text: gender ??
-                                      'Choose', // is null at build time
-                                  textColor: Colors.black,
-                                  itemsHeading: 'Gender',
-                                  items: provider.genders,
-                                  overlayTap: (index) {
-                                    provider.onSelectItem(index,
-                                        dropdownType: DropdownType.gender);
+                                ),
+                                Selector<NewDetailsProvider, String?>(
+                                  selector: (c, p) => p.patient.gender,
+                                  builder: (ctx, gender, child) {
+                                    return MyDropdownButton(
+                                      enabled: !provider.patient.isExisting,
+                                      width: 190,
+                                      text: gender ??
+                                          'Choose', // is null at build time
+                                      textColor: Colors.black,
+                                      itemsHeading: 'Gender',
+                                      items: provider.genders,
+                                      overlayTap: (index) {
+                                        provider.onSelectItem(index,
+                                            dropdownType: DropdownType.gender);
+                                      },
+                                    );
                                   },
-                                );
-                              },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
               ),

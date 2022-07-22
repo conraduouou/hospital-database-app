@@ -11,6 +11,7 @@ class ProcedureGridBlock extends StatelessWidget {
     required this.children,
     this.inAsync = false,
     this.showClose = false,
+    this.showError = false,
     this.onClose,
     this.addOnTap,
   }) : super(key: key);
@@ -21,6 +22,7 @@ class ProcedureGridBlock extends StatelessWidget {
   final String heading;
   final List<Widget> children;
   final bool showClose;
+  final bool showError;
   final VoidCallback? onClose;
   final VoidCallback? addOnTap;
 
@@ -50,6 +52,7 @@ class ProcedureGridBlock extends StatelessWidget {
       firstChild: SizedBox(
         height: 350,
         child: AddBlock(
+          showError: showError,
           heading: heading,
           showClose: showClose,
           onClose: onClose,
