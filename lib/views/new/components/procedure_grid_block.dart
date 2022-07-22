@@ -50,7 +50,7 @@ class ProcedureGridBlock extends StatelessWidget {
         );
       },
       firstChild: SizedBox(
-        height: 350,
+        height: 500,
         child: AddBlock(
           showError: showError,
           heading: heading,

@@ -74,6 +74,7 @@ enum Attribute {
   doctorDepartment,
   procedureName,
   procedureCost,
+  labNumber,
 }
 
 enum DropdownType {
@@ -83,4 +84,5 @@ enum DropdownType {
   room,
   doctor,
   procedure,
+  procedureDate,
 }

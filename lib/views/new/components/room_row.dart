@@ -102,7 +102,7 @@ class RoomBlock extends StatelessWidget {
                         builder: (ctx, cost, child) {
                           return MyField(
                             enabled: !provider.room.isExisting,
-                            initialText: cost?.toString(),
+                            initialText: cost?.toInt().toString(),
                             isDigitsOnly: true,
                             hintText: 'Cost',
                             width: kTextFieldWidth,

@@ -33,7 +33,13 @@ class ProcedureDetails implements Details {
 
   bool get isExisting => id != null && id!.compareTo('New') != 0;
 
-  bool get isCompleteForNew => name != null && cost != null;
+  bool get isCompleteForNew =>
+      name != null &&
+      name!.isNotEmpty &&
+      cost != null &&
+      labNumber != null &&
+      labNumber!.isNotEmpty &&
+      procedureDate != null;
 
   Map<String, String> get procedure => {
         'Procedure ID': id!,

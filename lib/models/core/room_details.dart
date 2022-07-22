@@ -25,7 +25,8 @@ class RoomDetails implements Details {
   String get roomCostString => '${cost!.toStringAsFixed(0)} php';
   bool get isExisting => number != null;
 
-  bool get isCompleteForNew => type != null && cost != null && capacity != null;
+  bool get isCompleteForNew =>
+      type != null && type!.isNotEmpty && cost != null && capacity != null;
 
   Map<String, String> get room => {
         'Room number': number!.toString(),

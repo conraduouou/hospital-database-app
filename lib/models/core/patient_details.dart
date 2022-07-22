@@ -37,13 +37,20 @@ class PatientDetails implements Details {
 
   bool get isCompleteForNew =>
       name != null &&
+      name!.isNotEmpty &&
       address != null &&
+      address!.isNotEmpty &&
       contactNumber != null &&
+      contactNumber!.isNotEmpty &&
       age != null &&
       gender != null &&
+      gender!.isNotEmpty &&
       contactPersonName != null &&
+      contactPersonName!.isNotEmpty &&
       contactPersonRelation != null &&
-      contactPersonNumber != null;
+      contactPersonRelation!.isNotEmpty &&
+      contactPersonNumber != null &&
+      contactPersonNumber!.isNotEmpty;
 
   Map<String, String> get patient => <String, String>{
         'Patient ID': id!,

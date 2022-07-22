@@ -30,6 +30,7 @@ class NewDetailsProvider with ChangeNotifier {
   List<AnimatedMenuItem> roomNumbers = [];
   List<AnimatedMenuItem> doctorIds = [];
   List<List<AnimatedMenuItem>> procedureDropdowns = [];
+  List<List<AnimatedMenuItem>> procedureDates = [];
 
   // Map to refer to the AnimatedMenuItem lists
   late Map<DropdownType, List<AnimatedMenuItem>> _dropdowns;
@@ -74,6 +75,7 @@ class NewDetailsProvider with ChangeNotifier {
     patientIds.clear();
     roomNumbers.clear();
     procedureDropdowns.clear();
+    procedureDates.clear();
     doctorIds.clear();
 
     // instantiate objects
@@ -88,9 +90,13 @@ class NewDetailsProvider with ChangeNotifier {
     doctorIds.add(AnimatedMenuItem(content: 'New'));
     roomNumbers.add(AnimatedMenuItem(content: 'New'));
     procedureDropdowns.add([AnimatedMenuItem(content: 'New')]);
+    procedureDates.add(
+      [
+        AnimatedMenuItem(content: DateFormat.yMd().format(DateTime.now())),
+      ],
+    );
 
     // fill lists
-
     patientIds.addAll(await helper.getPatientIds());
     roomNumbers.addAll(await helper.getRoomNumbers());
     procedureDropdowns[0].addAll(await helper.getProcedureIds());
@@ -103,6 +109,18 @@ class NewDetailsProvider with ChangeNotifier {
         content: DateFormat.yMd().format(
           DateTime.now().subtract(
             Duration(days: index),
+          ),
+        ),
+      ),
+    );
+    procedureDates[0].addAll(
+      List.generate(
+        15,
+        (index) => AnimatedMenuItem(
+          content: DateFormat.yMd().format(
+            DateTime.now().subtract(
+              Duration(days: index),
+            ),
           ),
         ),
       ),
@@ -179,6 +197,9 @@ class NewDetailsProvider with ChangeNotifier {
       case Attribute.procedureCost:
         procedures[index!].cost = double.tryParse(s);
         break;
+      case Attribute.labNumber:
+        procedures[index!].labNumber = s;
+        break;
     }
 
     notifyListeners();
@@ -217,6 +238,27 @@ class NewDetailsProvider with ChangeNotifier {
             dates[index].content.split('/').map((e) => int.parse(e)).toList();
         admission.admissionDate = DateTime(split[2], split[0], split[1]);
         break;
+      case DropdownType.procedureDate:
+        final dropdown = procedureDates[procedureIndex!];
+        final item = dropdown[index];
+        final split = item.content.split('/').map((e) => int.parse(e)).toList();
+
+        procedures[procedureIndex].procedureDate = DateTime(
+          split[2],
+          split[0],
+          split[1],
+        );
+
+        for (final item in dropdown) {
+          if (item.isSelected) {
+            item.isSelected = false;
+            break;
+          }
+        }
+
+        item.isSelected = true;
+        notifyListeners();
+        return;
       case DropdownType.gender:
         patient.gender = _dropdowns[dropdownType]![index].content;
         break;
