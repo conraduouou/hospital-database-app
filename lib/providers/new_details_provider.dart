@@ -326,6 +326,12 @@ class NewDetailsProvider with ChangeNotifier {
     _toggleGettingProcedure(index);
   }
 
+  Future<void> insertAdmission() async {
+    _toggleInAsync();
+    await helper.insertAdmission(admission);
+    _toggleInAsync();
+  }
+
   bool proceduresAreComplete() {
     for (final procedure in procedures) {
       if (!procedure.isCompleteForNew) {

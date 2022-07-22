@@ -7,6 +7,7 @@ import 'package:hospital_database_app/derived_components/cross_faded_wrapper.dar
 import 'package:hospital_database_app/derived_components/provided_appbar.dart';
 import 'package:hospital_database_app/providers/appbar_provider.dart';
 import 'package:hospital_database_app/providers/new_details_provider.dart';
+import 'package:hospital_database_app/views/home/home_screen.dart';
 import 'package:hospital_database_app/views/new/components/admission_row.dart';
 import 'package:hospital_database_app/views/new/components/patient_row.dart';
 import 'package:hospital_database_app/views/new/components/procedure_grid.dart';
@@ -79,7 +80,15 @@ class NewAdmissionScreen extends StatelessWidget {
                                     color: isValid ? kPurpleColor : kGrayColor,
                                     onPressed: !isValid
                                         ? provider.toggleHasPressed
-                                        : () {},
+                                        : () async {
+                                            final navigator =
+                                                Navigator.of(context);
+                                            await provider.insertAdmission();
+
+                                            navigator.popUntil(
+                                                ModalRoute.withName(
+                                                    HomeScreen.id));
+                                          },
                                   );
                                 },
                               ),

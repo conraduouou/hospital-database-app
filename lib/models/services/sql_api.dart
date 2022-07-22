@@ -225,7 +225,14 @@ class SQLApi {
   }
 
   Future<Results> getRoomNumbers() async {
-    const sql = 'select room_number from rooms';
+    const sql =
+        'select R.room_number, room_capacity, if(R.room_number in (select room_number from admissions), count(*), 0) as occupants '
+        'from rooms as R, admissions as A '
+        'where A.room_number = R.room_number and date_discharged is null or '
+        'R.room_number not in (select room_number from admissions) '
+        'group by R.room_number '
+        'having count(*) < room_capacity or occupants = 0';
+
     final results = await connection.query(sql);
     return results;
   }

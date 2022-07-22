@@ -144,15 +144,17 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         }
       },
       child: InkWell(
-        onTap: () {
-          if (widget.enabled && _focusNode.hasFocus) {
-            _focusNode.unfocus();
-          } else {
-            _focusNode.requestFocus();
-          }
+        onTap: widget.enabled
+            ? () {
+                if (_focusNode.hasFocus) {
+                  _focusNode.unfocus();
+                } else {
+                  _focusNode.requestFocus();
+                }
 
-          if (widget.enabled && widget.onTap != null) widget.onTap!();
-        },
+                if (widget.onTap != null) widget.onTap!();
+              }
+            : null,
         onHover: (isHovered) {
           setState(() {
             _isHovered = isHovered;
