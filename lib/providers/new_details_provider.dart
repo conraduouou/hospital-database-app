@@ -47,6 +47,13 @@ class NewDetailsProvider with ChangeNotifier {
   bool get isGettingDoctor => _isGettingDoctor;
   bool isGettingProcedure(int index) => _isGettingProcedure[index];
 
+  bool get isValidForNewAdmission =>
+      admission.isCompleteForNew &&
+      patient.isCompleteForNew &&
+      room.isCompleteForNew &&
+      doctor.isCompleteForNew &&
+      proceduresAreComplete();
+
   /// This is called in the build method, not sure if this is a breaking bug...
   ///
   /// The setting of _inAsync in the first line of the method is deliberate,
@@ -273,6 +280,16 @@ class NewDetailsProvider with ChangeNotifier {
     procedures[index] =
         await helper.getProcedureById(id, includeAdmissions: false);
     _toggleGettingProcedure(index);
+  }
+
+  bool proceduresAreComplete() {
+    for (final procedure in procedures) {
+      if (!procedure.isCompleteForNew) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   void _toggleInAsync() {
