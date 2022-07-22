@@ -54,71 +54,79 @@ class RoomBlock extends StatelessWidget {
               color: kPurpleColor,
             ),
           ),
-          child: AddBlock(
-            heading: isNew ? 'New Room' : 'Room',
-            children: [
-              Selector<NewDetailsProvider, int?>(
-                selector: (c, p) => p.room.number,
-                builder: (ctx, number, child) {
-                  return MyDropdownButton(
-                    text: number?.toString() ?? 'New',
-                    textColor: number == null ? kDarkGrayColor : Colors.black,
-                    showDropdown: !isNew,
-                    width: kTextFieldWidth,
-                    itemsHeading: 'Room number',
-                    items: provider.roomNumbers,
-                    overlayTap: (index) {
-                      provider.onSelectItem(index,
-                          dropdownType: DropdownType.room);
+          child: Selector<NewDetailsProvider, bool>(
+            selector: (c, p) => p.room.isCompleteForNew,
+            builder: (ctx, isComplete, child) {
+              return AddBlock(
+                showError: !isComplete && provider.hasPressed,
+                heading: isNew ? 'New Room' : 'Room',
+                children: [
+                  Selector<NewDetailsProvider, int?>(
+                    selector: (c, p) => p.room.number,
+                    builder: (ctx, number, child) {
+                      return MyDropdownButton(
+                        text: number?.toString() ?? 'New',
+                        textColor:
+                            number == null ? kDarkGrayColor : Colors.black,
+                        showDropdown: !isNew,
+                        width: kTextFieldWidth,
+                        itemsHeading: 'Room number',
+                        items: provider.roomNumbers,
+                        overlayTap: (index) {
+                          provider.onSelectItem(index,
+                              dropdownType: DropdownType.room);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-              Selector<NewDetailsProvider, String?>(
-                selector: (c, p) => p.room.type,
-                builder: (ctx, type, child) {
-                  return MyField(
-                    enabled: !provider.room.isExisting,
-                    initialText: type,
-                    hintText: 'Type',
-                    width: kTextFieldWidth,
-                    onChanged: (s) {
-                      provider.onChanged(s, attribute: Attribute.roomType);
+                  ),
+                  Selector<NewDetailsProvider, String?>(
+                    selector: (c, p) => p.room.type,
+                    builder: (ctx, type, child) {
+                      return MyField(
+                        enabled: !provider.room.isExisting,
+                        initialText: type,
+                        hintText: 'Type',
+                        width: kTextFieldWidth,
+                        onChanged: (s) {
+                          provider.onChanged(s, attribute: Attribute.roomType);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-              Selector<NewDetailsProvider, double?>(
-                selector: (c, p) => p.room.cost,
-                builder: (ctx, cost, child) {
-                  return MyField(
-                    enabled: !provider.room.isExisting,
-                    initialText: cost?.toString(),
-                    isDigitsOnly: true,
-                    hintText: 'Cost',
-                    width: kTextFieldWidth,
-                    onChanged: (s) {
-                      provider.onChanged(s, attribute: Attribute.roomCost);
+                  ),
+                  Selector<NewDetailsProvider, double?>(
+                    selector: (c, p) => p.room.cost,
+                    builder: (ctx, cost, child) {
+                      return MyField(
+                        enabled: !provider.room.isExisting,
+                        initialText: cost?.toString(),
+                        isDigitsOnly: true,
+                        hintText: 'Cost',
+                        width: kTextFieldWidth,
+                        onChanged: (s) {
+                          provider.onChanged(s, attribute: Attribute.roomCost);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-              Selector<NewDetailsProvider, int?>(
-                selector: (c, p) => p.room.capacity,
-                builder: (ctx, capacity, child) {
-                  return MyField(
-                    enabled: !provider.room.isExisting,
-                    initialText: capacity?.toString(),
-                    isDigitsOnly: true,
-                    hintText: 'Capacity',
-                    width: kTextFieldWidth,
-                    onChanged: (s) {
-                      provider.onChanged(s, attribute: Attribute.roomCapacity);
+                  ),
+                  Selector<NewDetailsProvider, int?>(
+                    selector: (c, p) => p.room.capacity,
+                    builder: (ctx, capacity, child) {
+                      return MyField(
+                        enabled: !provider.room.isExisting,
+                        initialText: capacity?.toString(),
+                        isDigitsOnly: true,
+                        hintText: 'Capacity',
+                        width: kTextFieldWidth,
+                        onChanged: (s) {
+                          provider.onChanged(s,
+                              attribute: Attribute.roomCapacity);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
           ),
         );
       },
@@ -148,75 +156,82 @@ class DoctorBlock extends StatelessWidget {
               color: kPurpleColor,
             ),
           ),
-          child: AddBlock(
-            heading: isNew ? 'New Doctor' : 'Doctor',
-            children: [
-              Selector<NewDetailsProvider, String?>(
-                selector: (c, p) => p.doctor.id,
-                builder: (ctx, id, child) {
-                  return MyDropdownButton(
-                    // will be null at buildtime, but probably won't matter since at
-                    // scroll, it would be finished loading up resources...
-                    text: id ?? '',
-                    textColor: id?.compareTo('New') == 0
-                        ? kDarkGrayColor
-                        : Colors.black,
-                    showDropdown: !isNew,
-                    width: kTextFieldWidth,
-                    itemsHeading: 'Doctor ID',
-                    items: provider.doctorIds,
-                    overlayTap: (index) {
-                      provider.onSelectItem(index,
-                          dropdownType: DropdownType.doctor);
+          child: Selector<NewDetailsProvider, bool>(
+            selector: (c, p) => p.doctor.isCompleteForNew,
+            builder: (ctx, isComplete, child) {
+              return AddBlock(
+                showError: !isComplete && provider.hasPressed,
+                heading: isNew ? 'New Doctor' : 'Doctor',
+                children: [
+                  Selector<NewDetailsProvider, String?>(
+                    selector: (c, p) => p.doctor.id,
+                    builder: (ctx, id, child) {
+                      return MyDropdownButton(
+                        // will be null at buildtime, but probably won't matter since at
+                        // scroll, it would be finished loading up resources...
+                        text: id ?? '',
+                        textColor: id?.compareTo('New') == 0
+                            ? kDarkGrayColor
+                            : Colors.black,
+                        showDropdown: !isNew,
+                        width: kTextFieldWidth,
+                        itemsHeading: 'Doctor ID',
+                        items: provider.doctorIds,
+                        overlayTap: (index) {
+                          provider.onSelectItem(index,
+                              dropdownType: DropdownType.doctor);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-              Selector<NewDetailsProvider, String?>(
-                selector: (c, p) => p.doctor.name,
-                builder: (ctx, name, child) {
-                  return MyField(
-                    enabled: !provider.doctor.isExisting,
-                    initialText: name,
-                    hintText: 'Name',
-                    width: kTextFieldWidth,
-                    onChanged: (s) {
-                      provider.onChanged(s, attribute: Attribute.doctorName);
+                  ),
+                  Selector<NewDetailsProvider, String?>(
+                    selector: (c, p) => p.doctor.name,
+                    builder: (ctx, name, child) {
+                      return MyField(
+                        enabled: !provider.doctor.isExisting,
+                        initialText: name,
+                        hintText: 'Name',
+                        width: kTextFieldWidth,
+                        onChanged: (s) {
+                          provider.onChanged(s,
+                              attribute: Attribute.doctorName);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-              Selector<NewDetailsProvider, int?>(
-                selector: (c, p) => p.doctor.pcf,
-                builder: (ctx, pcf, child) {
-                  return MyField(
-                    enabled: !provider.doctor.isExisting,
-                    initialText: pcf?.toString(),
-                    isDigitsOnly: true,
-                    hintText: 'PCF (Peso conversion factor)',
-                    width: kTextFieldWidth,
-                    onChanged: (s) {
-                      provider.onChanged(s, attribute: Attribute.doctorPCF);
+                  ),
+                  Selector<NewDetailsProvider, int?>(
+                    selector: (c, p) => p.doctor.pcf,
+                    builder: (ctx, pcf, child) {
+                      return MyField(
+                        enabled: !provider.doctor.isExisting,
+                        initialText: pcf?.toString(),
+                        isDigitsOnly: true,
+                        hintText: 'PCF (Peso conversion factor)',
+                        width: kTextFieldWidth,
+                        onChanged: (s) {
+                          provider.onChanged(s, attribute: Attribute.doctorPCF);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-              Selector<NewDetailsProvider, String?>(
-                selector: (c, p) => p.doctor.department,
-                builder: (ctx, department, child) {
-                  return MyField(
-                    enabled: !provider.doctor.isExisting,
-                    initialText: department,
-                    hintText: 'Department',
-                    width: kTextFieldWidth,
-                    onChanged: (s) {
-                      provider.onChanged(s,
-                          attribute: Attribute.doctorDepartment);
+                  ),
+                  Selector<NewDetailsProvider, String?>(
+                    selector: (c, p) => p.doctor.department,
+                    builder: (ctx, department, child) {
+                      return MyField(
+                        enabled: !provider.doctor.isExisting,
+                        initialText: department,
+                        hintText: 'Department',
+                        width: kTextFieldWidth,
+                        onChanged: (s) {
+                          provider.onChanged(s,
+                              attribute: Attribute.doctorDepartment);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
           ),
         );
       },
