@@ -8,12 +8,14 @@ class AddBlock extends StatelessWidget {
     required this.children,
     this.showClose = false,
     this.onClose,
+    this.showError = false,
   }) : super(key: key);
 
   final String heading;
   final List<Widget> children;
   final bool showClose;
   final VoidCallback? onClose;
+  final bool showError;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +27,26 @@ class AddBlock extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                heading,
-                style: kBoldStyle.copyWith(
-                  fontSize: kXLargeSize,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    heading,
+                    style: kBoldStyle.copyWith(
+                      fontSize: kXLargeSize,
+                    ),
+                  ),
+                  showError ? const SizedBox(height: 10) : Container(),
+                  showError
+                      ? Text(
+                          'There were fields that weren\'t supplied with data.',
+                          style: kBoldStyle.copyWith(
+                            fontSize: kRegularSize - 2,
+                            color: Colors.red,
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
               const SizedBox(width: 90),
               showClose

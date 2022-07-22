@@ -40,12 +40,14 @@ class NewDetailsProvider with ChangeNotifier {
   bool _isGettingRoom = false;
   bool _isGettingDoctor = false;
   final List<bool> _isGettingProcedure = [false];
+  bool _hasPressed = false;
 
   bool get inAsync => _inAsync;
   bool get isGettingPatient => _isGettingPatient;
   bool get isGettingRoom => _isGettingRoom;
   bool get isGettingDoctor => _isGettingDoctor;
   bool isGettingProcedure(int index) => _isGettingProcedure[index];
+  bool get hasPressed => _hasPressed;
 
   bool get isValidForNewAdmission =>
       admission.isCompleteForNew &&
@@ -63,6 +65,7 @@ class NewDetailsProvider with ChangeNotifier {
   /// This method is made to be called every time before building a whole
   /// New_Screen, and so the need to not call notifyListeners in the beginning.
   void initClass() async {
+    _hasPressed = false;
     _inAsync = true;
 
     // clear lists
@@ -314,6 +317,11 @@ class NewDetailsProvider with ChangeNotifier {
 
   void _toggleGettingProcedure(int index) {
     _isGettingProcedure[index] = !_isGettingProcedure[index];
+    notifyListeners();
+  }
+
+  void toggleHasPressed() {
+    _hasPressed = true;
     notifyListeners();
   }
 

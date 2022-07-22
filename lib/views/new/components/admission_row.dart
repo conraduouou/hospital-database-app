@@ -23,46 +23,53 @@ class AdmissionRow extends StatelessWidget {
         mainAxisExtent: 350,
       ),
       delegate: SliverChildListDelegate([
-        AddBlock(
-          heading: 'New Admission',
-          children: [
-            const MyField(
-              enabled: false,
-              color: kLightGrayColor,
-              hintText: 'New',
-              width: kTextFieldWidth,
-            ),
-            Selector<NewDetailsProvider, DateTime?>(
-              selector: (c, p) => p.admission.admissionDate,
-              builder: (ctx, date, child) {
-                return MyDropdownButton(
-                  text:
-                      date != null ? DateFormat.yMd().format(date) : 'Choose..',
-                  textColor: date == null ? kDarkGrayColor : Colors.black,
+        Selector<NewDetailsProvider, bool>(
+          selector: (c, p) => p.admission.isCompleteForNew,
+          builder: (ctx, isComplete, child) {
+            return AddBlock(
+              showError: !isComplete && provider.hasPressed,
+              heading: 'New Admission',
+              children: [
+                const MyField(
+                  enabled: false,
+                  color: kLightGrayColor,
+                  hintText: 'New',
                   width: kTextFieldWidth,
-                  itemsHeading: 'Date',
-                  items: provider.dates,
-                  overlayTap: (index) {
-                    provider.onSelectItem(index,
-                        dropdownType: DropdownType.date);
+                ),
+                Selector<NewDetailsProvider, DateTime?>(
+                  selector: (c, p) => p.admission.admissionDate,
+                  builder: (ctx, date, child) {
+                    return MyDropdownButton(
+                      text: date != null
+                          ? DateFormat.yMd().format(date)
+                          : 'Choose..',
+                      textColor: date == null ? kDarkGrayColor : Colors.black,
+                      width: kTextFieldWidth,
+                      itemsHeading: 'Date',
+                      items: provider.dates,
+                      overlayTap: (index) {
+                        provider.onSelectItem(index,
+                            dropdownType: DropdownType.date);
+                      },
+                    );
                   },
-                );
-              },
-            ),
-            Selector<NewDetailsProvider, String?>(
-              selector: (c, p) => p.admission.illness,
-              builder: (ctx, illness, child) {
-                return MyField(
-                  initialText: illness,
-                  hintText: 'Illness',
-                  width: kTextFieldWidth,
-                  onChanged: (s) {
-                    provider.onChanged(s, attribute: Attribute.illness);
+                ),
+                Selector<NewDetailsProvider, String?>(
+                  selector: (c, p) => p.admission.illness,
+                  builder: (ctx, illness, child) {
+                    return MyField(
+                      initialText: illness,
+                      hintText: 'Illness',
+                      width: kTextFieldWidth,
+                      onChanged: (s) {
+                        provider.onChanged(s, attribute: Attribute.illness);
+                      },
+                    );
                   },
-                );
-              },
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ]),
     );
