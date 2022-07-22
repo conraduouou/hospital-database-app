@@ -425,8 +425,7 @@ class SQLApiHelper {
 
   Future<void> insertAdmission(AdmissionDetails details) async {
     await sqlApi.insertAdmission(
-      admissionDate: DateFormat.yMd().format(details.admissionDate!),
-      illness: details.illness!,
+      illness: details.illness,
       patientId: details.patient!.id!,
       roomNumber: details.room!.number!,
       doctorId: details.doctor!.id!,
@@ -436,13 +435,13 @@ class SQLApiHelper {
   Future<void> insertPatient(PatientDetails details) async {
     await sqlApi.insertPatient(
       name: details.name!,
-      address: details.address!,
-      number: details.contactNumber!,
-      age: details.age!,
-      gender: details.gender!,
-      contactName: details.contactPersonName!,
-      contactRelation: details.contactPersonRelation!,
-      contactPersonNumber: details.contactPersonNumber!,
+      address: details.address,
+      number: details.contactNumber,
+      age: details.age,
+      gender: details.gender,
+      contactName: details.contactPersonName,
+      contactRelation: details.contactPersonRelation,
+      contactPersonNumber: details.contactPersonNumber,
     );
   }
 

@@ -237,29 +237,28 @@ class SQLApi {
   }
 
   Future<Results> insertAdmission({
-    required String admissionDate,
-    required String illness,
+    String? illness,
     required String patientId,
     required int roomNumber,
     required String doctorId,
   }) async {
     const sql =
-        'insert into admissions (admission_date, patient_illness, patient_id, room_number, doctor_id) '
+        'insert into admissions (patient_illness, patient_id, room_number, doctor_id) '
         'values (?, ?, ?, ?, ?)';
-    final values = [admissionDate, illness, patientId, roomNumber, doctorId];
+    final values = [illness, patientId, roomNumber, doctorId];
     final results = await connection.query(sql, values);
     return results;
   }
 
   Future<Results> insertPatient({
     required String name,
-    required String address,
-    required String number,
-    required int age,
-    required String gender,
-    required String contactName,
-    required String contactRelation,
-    required String contactPersonNumber,
+    String? address,
+    String? number,
+    int? age,
+    String? gender,
+    String? contactName,
+    String? contactRelation,
+    String? contactPersonNumber,
   }) async {
     const sql =
         'insert into patients (patient_name, patient_address, patient_contact_no, patient_age, '

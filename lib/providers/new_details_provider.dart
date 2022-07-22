@@ -51,7 +51,6 @@ class NewDetailsProvider with ChangeNotifier {
   bool get hasPressed => _hasPressed;
 
   bool get isValidForNewAdmission =>
-      admission.isCompleteForNew &&
       patient.isCompleteForNew &&
       room.isCompleteForNew &&
       doctor.isCompleteForNew &&
