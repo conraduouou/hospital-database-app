@@ -156,8 +156,9 @@ class HomeProvider with ChangeNotifier {
       }
     }
 
-    _sortText = headers[index].contents;
-    headers[index].isSelected = !headers[index].isSelected;
+    final shownHeaders = headers.where((e) => e.shouldShow).toList();
+    _sortText = shownHeaders[index].contents;
+    shownHeaders[index].isSelected = !shownHeaders[index].isSelected;
     notifyListeners();
   }
 
