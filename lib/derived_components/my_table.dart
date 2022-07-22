@@ -129,28 +129,32 @@ class MyTable extends StatelessWidget {
                 // pass cells to show and construct via MyTableRow
                 widgets.add(
                   MyTableRow(
+                    canBeHovered: i < bodyRows.length,
                     cellsToShow: cellsToShow,
-                    onTap: () {
-                      // set isHome to false in order to prevent
-                      // back button from showing on _Details screens.
+                    onTap: i < bodyRows.length
+                        ? () {
+                            // set isHome to false in order to prevent
+                            // back button from showing on _Details screens.
 
-                      // while the `ProvidedAppBar` can be explicitly
-                      // set with an isHome boolean parameter, this is
-                      // good practice nonetheless to prevent more
-                      // issues in the future.
-                      final appBarProvider = context.read<AppBarProvider>();
-                      appBarProvider.isHome = false;
+                            // while the `ProvidedAppBar` can be explicitly
+                            // set with an isHome boolean parameter, this is
+                            // good practice nonetheless to prevent more
+                            // issues in the future.
+                            final appBarProvider =
+                                context.read<AppBarProvider>();
+                            appBarProvider.isHome = false;
 
-                      Navigator.pushNamed(
-                        context,
-                        RoutesHandler.detailsScreenIds[tableType] ??
-                            AdmissionDetailsScreen.id,
-                        // explicitly set to 0 since the id is the first column
-                        // in the home screen. might make this better implemented
-                        // in the future.
-                        arguments: cellsToShow[0].contents,
-                      );
-                    },
+                            Navigator.pushNamed(
+                              context,
+                              RoutesHandler.detailsScreenIds[tableType] ??
+                                  AdmissionDetailsScreen.id,
+                              // explicitly set to 0 since the id is the first column
+                              // in the home screen. might make this better implemented
+                              // in the future.
+                              arguments: cellsToShow[0].contents,
+                            );
+                          }
+                        : null,
                   ),
                 );
               }

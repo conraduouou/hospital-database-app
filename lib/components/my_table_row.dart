@@ -10,10 +10,12 @@ class MyTableRow extends StatefulWidget {
     Key? key,
     required this.cellsToShow,
     this.onTap,
+    this.canBeHovered = true,
   }) : super(key: key);
 
   final List<ColumnField> cellsToShow;
   final VoidCallback? onTap;
+  final bool canBeHovered;
 
   @override
   State<MyTableRow> createState() => _MyTableRowState();
@@ -25,12 +27,14 @@ class _MyTableRowState extends State<MyTableRow> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onHover: (isHovered) {
-        setState(() {
-          color = isHovered ? kGrayColor : null;
-        });
-      },
-      onTap: widget.onTap ?? () {},
+      onHover: widget.canBeHovered
+          ? (isHovered) {
+              setState(() {
+                color = isHovered ? kGrayColor : null;
+              });
+            }
+          : null,
+      onTap: widget.onTap,
       child: Container(
         color: color,
         padding: const EdgeInsets.symmetric(horizontal: 30),
