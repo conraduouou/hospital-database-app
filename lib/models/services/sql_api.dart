@@ -235,4 +235,97 @@ class SQLApi {
     final results = await connection.query(sql);
     return results;
   }
+
+  Future<Results> insertAdmission({
+    required String admissionDate,
+    required String illness,
+    required String patientId,
+    required int roomNumber,
+    required String doctorId,
+  }) async {
+    const sql =
+        'insert into admissions (admission_date, patient_illness, patient_id, room_number, doctor_id) '
+        'values (?, ?, ?, ?, ?)';
+    final values = [admissionDate, illness, patientId, roomNumber, doctorId];
+    final results = await connection.query(sql, values);
+    return results;
+  }
+
+  Future<Results> insertPatient({
+    required String name,
+    required String address,
+    required String number,
+    required int age,
+    required String gender,
+    required String contactName,
+    required String contactRelation,
+    required String contactPersonNumber,
+  }) async {
+    const sql =
+        'insert into patients (patient_name, patient_address, patient_contact_no, patient_age, '
+        'patient_gender, contact_person, patient_contact_relation, contact_person_no) '
+        'values (?, ?, ?, ?, ?, ?, ?, ?)';
+    final values = [
+      name,
+      address,
+      number,
+      age,
+      gender,
+      contactName,
+      contactRelation,
+      contactPersonNumber
+    ];
+    final results = await connection.query(sql, values);
+    return results;
+  }
+
+  Future<Results> insertDoctor({
+    required String name,
+    required String department,
+    required int pcf,
+  }) async {
+    const sql =
+        'insert into doctors (doctor_name, doctor_department, doctor_pcf) '
+        'values (?, ?, ?)';
+    final values = [name, department, pcf];
+    final results = await connection.query(sql, values);
+    return results;
+  }
+
+  Future<Results> insertRoom({
+    required String type,
+    required double cost,
+    required int capacity,
+  }) async {
+    const sql = 'insert into rooms (room_type, room_cost, room_capacity) '
+        'values (?, ?, ?)';
+    final values = [type, cost, capacity];
+    final results = await connection.query(sql, values);
+    return results;
+  }
+
+  Future<Results> insertProcedure({
+    required String name,
+    required double cost,
+  }) async {
+    const sql = 'insert into procedures (procedure_name, procedure_cost) '
+        'values (?, ?)';
+    final values = [name, cost];
+    final results = await connection.query(sql, values);
+    return results;
+  }
+
+  Future<Results> insertProcedureDone({
+    required String admissionId,
+    required String procedureId,
+    required String labNumber,
+    required String procedureDate,
+  }) async {
+    const sql =
+        'insert into procedure_done (admission_id, procedure_id, lab_number, procedure_date) '
+        'values (?, ?, ?, ?)';
+    final values = [admissionId, procedureId, labNumber, procedureDate];
+    final results = await connection.query(sql, values);
+    return results;
+  }
 }

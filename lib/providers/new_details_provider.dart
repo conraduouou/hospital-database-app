@@ -377,6 +377,14 @@ class NewDetailsProvider with ChangeNotifier {
         ),
       ),
     );
+    procedureDates.add(
+      List.generate(
+        procedureDates[0].length,
+        (index) => AnimatedMenuItem(
+          content: procedureDates[0][index].content,
+        ),
+      ),
+    );
 
     _isGettingProcedure.add(false);
 
@@ -386,6 +394,7 @@ class NewDetailsProvider with ChangeNotifier {
   void removeProcedure(int i) {
     procedures.removeAt(i);
     procedureDropdowns.removeAt(i);
+    procedureDates.removeAt(i);
     _isGettingProcedure.removeAt(i);
 
     notifyListeners();

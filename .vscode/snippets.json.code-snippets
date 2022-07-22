@@ -40,6 +40,16 @@
 		],
 		"description": "Boilerplate code for getting via sql query with final sql variable"
 	},
+	"SQL Helper - Insert": {
+		"scope": "dart",
+		"prefix": ["sql-insert"],
+		"body": [
+			"Future<void> $1($2) async {",
+			"\tawait sqlApi.$3($4);",
+			"}",
+		],
+		"description": "Boilerplate code for inserting data into a table in the database."
+	},
 	"SQL Helper - List": {
 		"scope": "dart",
 		"prefix": ["sql-helper-list", "get-list-helper"],

@@ -25,7 +25,6 @@ class ProcedureGrid extends StatelessWidget {
             return Selector<NewDetailsProvider, bool>(
               selector: (c, p) => p.proceduresAreComplete(),
               builder: (ctx, isComplete, child) {
-                print(isComplete);
                 return SliverGrid(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
