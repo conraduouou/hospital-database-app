@@ -52,19 +52,19 @@ class PatientDetails implements Details {
       contactPersonNumber != null &&
       contactPersonNumber!.isNotEmpty;
 
-  Map<String, String> get patient => <String, String>{
+  Map<String, String?> get patient => <String, String?>{
         'Patient ID': id!,
         'Name': name!,
-        'Address': address!,
-        'Contact number': contactNumber!,
-        'Age': age!.toString(),
+        'Address': address,
+        'Contact number': contactNumber,
+        'Age': age?.toString(),
         'Gender': gender!
       };
 
-  Map<String, String> get contactPerson => <String, String>{
-        'Name': contactPersonName!,
-        'Relation to patient': contactPersonRelation!,
-        'Contact number': contactPersonNumber!,
+  Map<String, String?> get contactPerson => <String, String?>{
+        'Name': contactPersonName,
+        'Relation to patient': contactPersonRelation,
+        'Contact number': contactPersonNumber,
       };
 
   @override
@@ -75,7 +75,7 @@ class PatientDetails implements Details {
         name!,
         age!.toString(),
         gender!,
-        address!,
+        address ?? 'N/A',
       ];
     }
 
